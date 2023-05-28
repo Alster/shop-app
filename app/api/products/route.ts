@@ -17,6 +17,13 @@ export async function GET(request: Request) {
     //         'API-Key': process.env.DATA_API_KEY,
     //     },
     // });
+
+    const products = await getProductsList();
+
+    return NextResponse.json({ products });
+}
+
+export async function getProductsList(): Promise<ProductsListType> {
     const products: ProductsListType = [
         {
             id: "1",
@@ -39,7 +46,6 @@ export async function GET(request: Request) {
             description: "This is product 3",
             image: "https://picsum.photos/200/300"
         }
-    ]
-
-    return NextResponse.json({ products });
+    ];
+    return products;
 }

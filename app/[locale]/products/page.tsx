@@ -1,11 +1,9 @@
-import {ProductsListType} from "@/app/api/products/route";
+import {getProductsList, ProductsListType} from "@/app/api/products/route";
 import ProductsList from "@/app/[locale]/products/productsList";
 import {useTranslations, useFormatter} from 'next-intl';
 
 export default async function Products() {
-    const res = await fetch(`http://localhost:3000/api/products`);
-    const data = await res.json();
-    const products: ProductsListType = data.products;
+    const products: ProductsListType = await getProductsList();
 
     return <ProductsContent
         products={products}

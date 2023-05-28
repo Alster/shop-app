@@ -6,7 +6,10 @@ import {useTranslations, useFormatter} from 'next-intl';
 
 export default function ProductsList({ defaultList }: { defaultList: ProductsListType }) {
     const t = useTranslations('ProductsList');
+    const format = useFormatter();
+
     const [products, setProducts] = useState<ProductsListType>(defaultList);
+
     const fetchProducts = async () => {
         const response = await fetch("http://localhost:3000/api/products")
         const data = await response.json();
@@ -14,6 +17,7 @@ export default function ProductsList({ defaultList }: { defaultList: ProductsLis
         // setProducts(data ? data.products : []);
         setProducts(data.products);
     };
+
     useEffect(() => {
         void fetchProducts();
     }, []);
