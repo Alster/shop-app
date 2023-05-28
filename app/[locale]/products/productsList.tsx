@@ -2,8 +2,10 @@
 
 import {ProductsListType} from "@/app/api/products/route";
 import {useEffect, useState} from "react";
+import {useTranslations, useFormatter} from 'next-intl';
 
 export default function ProductsList({ defaultList }: { defaultList: ProductsListType }) {
+    const t = useTranslations('ProductsList');
     const [products, setProducts] = useState<ProductsListType>(defaultList);
     const fetchProducts = async () => {
         const response = await fetch("http://localhost:3000/api/products")
@@ -17,7 +19,7 @@ export default function ProductsList({ defaultList }: { defaultList: ProductsLis
     }, []);
 
     return <div>
-        Products list
+        Products list {t('hello')}
         {products.length}
         {products.map(product => (
             <div key={product.id} className="bg-amber-50">

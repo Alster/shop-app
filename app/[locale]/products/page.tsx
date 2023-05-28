@@ -1,6 +1,6 @@
-import {useTranslations, useFormatter} from 'next-intl';
 import {ProductsListType} from "@/app/api/products/route";
 import ProductsList from "@/app/[locale]/products/productsList";
+import {useTranslations, useFormatter} from 'next-intl';
 
 export default async function Products() {
     const res = await fetch(`http://localhost:3000/api/products`);
@@ -15,10 +15,10 @@ export default async function Products() {
 function ProductsContent ({ products }: {
     products: ProductsListType,
 }) {
-    const t = useTranslations('Home');
+    const t = useTranslations('ProductsList');
 
     return <div>
-        hello: {t('hello')}
+        {t("hello")}
         <ProductsList
             defaultList={products}
         ></ProductsList>
