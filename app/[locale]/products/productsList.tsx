@@ -22,14 +22,8 @@ export default function ProductsList({defaultList, attributes, categories}: {
 
     const updateProducts = async () => {
         const data = await fetchProducts(locale);
-        console.log(data)
-        // setProducts(data ? data.products : []);
         setProducts(data);
     };
-
-    useEffect(() => {
-        void updateProducts();
-    }, []);
 
     const drawColorAttributes = (product: ProductDto) => {
         const attr = product.attrs['color'];
@@ -67,35 +61,37 @@ export default function ProductsList({defaultList, attributes, categories}: {
         </div>
     }
 
-    return <div className="flex gap-2">
-        Products list {t('hello')}
+    return <div>
+        {t('hello')}
         {products.length}
-        {products.map(product => (
-            <div key={product.id} className="border-2 border-gray-300 dark:border-gray-700">
-                <Link href={`/product/${product.id}`}>
-                    <Image
-                        src="https://picsum.photos/200/200"
-                        alt={product.title}
-                        width={300}
-                        height={300}
-                        loading="lazy"
-                    />
-                </Link>
-                <div className="p-3">
-                    <div className="flex">
-                        {drawColorAttributes(product)}
-                        {drawSizeAttributes(product)}
-                    </div>
-                    <div className="flex flex-wrap">
-                        <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
-                            {product.title}
-                        </h1>
-                        <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                            ${product.price}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+            {products.map(product => (
+                <div key={product.id} className="border-2 border-gray-300 dark:border-gray-700 m-1">
+                    <Link href={`/product/${product.id}`}>
+                        <Image
+                            src="https://picsum.photos/200/200"
+                            alt={product.title}
+                            width={400}
+                            height={400}
+                            loading="lazy"
+                        />
+                    </Link>
+                    <div className="p-3">
+                        <div className="flex">
+                            {drawColorAttributes(product)}
+                            {drawSizeAttributes(product)}
+                        </div>
+                        <div className="flex flex-wrap">
+                            <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+                                {product.title}
+                            </h1>
+                            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                                ${product.price}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        ))}
+            ))}
+        </div>
     </div>
 }

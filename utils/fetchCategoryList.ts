@@ -3,8 +3,6 @@ import {fetchApi} from "@/utils/fetchApi";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 
-export type ProductsListType = ProductDto[];
-
 export async function fetchCategoryList(lang: string): Promise<CategoryDto[]> {
     return await fetchApi<CategoryDto[]>("category/list", {
         lang,

@@ -30,7 +30,6 @@ function ProductsContent ({ products, attributes, categories }: {
     const t = useTranslations('ProductsList');
 
     return <div>
-        {t("hello")}
         <ProductsList
             defaultList={products}
             attributes={attributes}

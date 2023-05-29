@@ -1,0 +1,15 @@
+.products-page {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .products-page {
+        width: 700px
+    }
+}
+@media (min-width: 1024px) {
+
+    .products-page {
+        width: 1300px;
+    }
+}
