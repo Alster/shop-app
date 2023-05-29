@@ -58,7 +58,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                 </div>
 
                 <div className="mt-4">
-                    {Object.entries(product.attrs).map(([key, values]) => {
+                    {Object.entries({ ...product.characteristics, ...product.attrs}).map(([key, values]) => {
                         const attribute = attributes.find(attr => attr.key === key);
                         return <div key={key} className="mt-4">
                             <div className="text-slate-600 dark:text-slate-300">
