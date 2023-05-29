@@ -3,8 +3,14 @@
 import {useEffect, useState} from "react";
 import {useTranslations, useFormatter, useLocale} from 'next-intl';
 import {fetchProducts, ProductsListType} from "@/utils/fetchProducts";
+import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
+import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 
-export default function ProductsList({ defaultList }: { defaultList: ProductsListType }) {
+export default function ProductsList({defaultList, attributes, categories}: {
+    defaultList: ProductsListType,
+    attributes: AttributeDto[],
+    categories: CategoryDto[],
+}) {
     const t = useTranslations('ProductsList');
     const format = useFormatter();
     const locale = useLocale();
