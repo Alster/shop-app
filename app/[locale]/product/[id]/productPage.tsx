@@ -1,27 +1,44 @@
 "use client"
 
-import {useEffect, useState} from "react";
+import './productPage.css'
+import {ChangeEvent, useEffect, useState} from "react";
 import {useTranslations, useFormatter, useLocale} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 import Image from "next/image";
 import {ProductDto} from "@/shop-shared/dto/product/product.dto";
+import {useRouter} from "next/navigation";
+import {usePathname} from "next-intl/client";
+import * as qs from "qs";
 
-import './productPage.css'
-
-export default function ProductPage({product, attributes, categories}: {
+export default function ProductPage({product, attributes, categories, pageQuery }: {
     product: ProductDto,
     attributes: AttributeDto[],
     categories: CategoryDto[],
+    pageQuery: {
+        color: string
+    },
 }) {
     const t = useTranslations('ProductsPage');
     const format = useFormatter();
     const locale = useLocale();
 
+    const [color, setColor] = useState<string>(pageQuery.color);
+
+    const router = useRouter()
+    const pathName = usePathname();
+
+    const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newColor = e.target.value;
+        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, color: newColor })}`);
+        setColor(newColor);
+    };
+
+    console.log(color)
 
     return <div className="flex items-center justify-center">
-        <div className="products-page grid grid-cols-1 lg:grid-cols-2">
+        <form className="products-page grid grid-cols-1 lg:grid-cols-2">
             <Link href={`/product/${product.id}`}>
                 <Image
                     src="https://picsum.photos/200/200"
@@ -40,7 +57,52 @@ export default function ProductPage({product, attributes, categories}: {
                     ${product.price}
                 </div>
 
-                <div className="flex space-x-4 mb-5 text-sm font-medium mt-4">
+                <div className="mt-4">
+                    {Object.entries(product.attrs).map(([key, values]) => {
+                        const attribute = attributes.find(attr => attr.key === key);
+                        return <div key={key} className="mt-4">
+                            <div className="text-slate-600 dark:text-slate-300">
+                                {attribute?.title}
+                            </div>
+                            <div className="space-x-4 flex text-sm mt-2">
+                                {values.map(value => {
+                                    if (key === "color"){
+                                        return <label key={value}>
+                                            <input
+                                                className="sr-only peer"
+                                                name={key} type="radio"
+                                                value={value}
+                                                checked={value === color}
+                                                onChange={onColorChange}
+                                            />
+                                            <div
+                                                className="h-9 w-9 flex items-center justify-center
+                                                border-2 peer-checked:border-4
+                                                border-black
+                                                dark:border-white
+                                                "
+                                                style={{backgroundColor: value}}
+                                            >
+                                            </div>
+                                        </label>
+                                    }
+                                    return <label key={value}>
+                                        <input className="sr-only peer" name={key} type="radio" value={value}/>
+                                        <div
+                                            className="h-9 p-3 flex items-center justify-center peer-checked:font-semibold border
+                                            text-slate-700 peer-checked:bg-slate-900 peer-checked:text-white
+                                            dark:text-slate-200 dark:peer-checked:bg-slate-100 dark:peer-checked:text-black dark:border-white
+                                            ">
+                                            {attribute?.values.find(val => val.key === value)?.title}
+                                        </div>
+                                    </label>
+                                })}
+                            </div>
+                        </div>
+                    })}
+                </div>
+
+                <div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
                     <div className="flex-auto flex space-x-4 pr-4">
                         <button
                             className="
@@ -71,6 +133,6 @@ export default function ProductPage({product, attributes, categories}: {
                     </button>
                 </div>
             </div>
-        </div>
+        </form >
     </div>
 }

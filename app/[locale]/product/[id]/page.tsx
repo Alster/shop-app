@@ -9,7 +9,7 @@ export interface Params_ProductId {
     id: string
 }
 
-export default async function Products({ params }: { params: Params_ProductId }) {
+export default async function Products({ params, searchParams }: { params: Params_ProductId, searchParams: any }) {
     const locale = useLocale();
 
     const [product, attributes, categories ] = await Promise.all([
@@ -18,5 +18,5 @@ export default async function Products({ params }: { params: Params_ProductId })
         fetchCategoryList(locale)]
     );
 
-    return <ProductPage product={product} attributes={attributes} categories={categories}></ProductPage>
+    return <ProductPage product={product} attributes={attributes} categories={categories} pageQuery={searchParams}></ProductPage>
 }

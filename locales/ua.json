@@ -1,5 +1,8 @@
 {
   "ProductsList": {
     "hello": "Привіт!"
+  },
+  "ProductsPage": {
+    "hello": "Привіт!"
   }
 }

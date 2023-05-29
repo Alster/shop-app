@@ -1,5 +1,8 @@
 {
   "ProductsList": {
     "hello": "Welcome to Next.js!"
+  },
+  "ProductsPage": {
+    "hello": "Welcome to Next.js!"
   }
 }
