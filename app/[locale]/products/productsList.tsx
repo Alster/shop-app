@@ -1,25 +1,25 @@
 "use client"
 
-import {ProductsListType} from "@/app/api/products/route";
 import {useEffect, useState} from "react";
-import {useTranslations, useFormatter} from 'next-intl';
+import {useTranslations, useFormatter, useLocale} from 'next-intl';
+import {fetchProducts, ProductsListType} from "@/utils/fetchProducts";
 
 export default function ProductsList({ defaultList }: { defaultList: ProductsListType }) {
     const t = useTranslations('ProductsList');
     const format = useFormatter();
+    const locale = useLocale();
 
     const [products, setProducts] = useState<ProductsListType>(defaultList);
 
-    const fetchProducts = async () => {
-        const response = await fetch("http://localhost:3000/api/products")
-        const data = await response.json();
+    const updateProducts = async () => {
+        const data = await fetchProducts(locale);
         console.log(data)
         // setProducts(data ? data.products : []);
-        setProducts(data.products);
+        setProducts(data);
     };
 
     useEffect(() => {
-        void fetchProducts();
+        void updateProducts();
     }, []);
 
     return <div>
@@ -29,7 +29,7 @@ export default function ProductsList({ defaultList }: { defaultList: ProductsLis
             <div key={product.id} className="bg-amber-50">
                 <div className="flex font-sans">
                     <div className="flex-none w-48 relative">
-                        <img src={product.image} alt=""
+                        <img src="https://picsum.photos/200/300" alt=""
                              className="absolute inset-0 w-full h-full object-cover" loading="lazy"/>
                     </div>
                     <form className="flex-auto p-6">
