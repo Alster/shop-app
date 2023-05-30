@@ -3,6 +3,8 @@
     "hello": "Привіт!"
   },
   "ProductsPage": {
-    "hello": "Привіт!"
+    "hello": "Привіт!",
+    "selectColor": "Виберіть колір",
+    "selectSize": "Виберіть розмір"
   }
 }

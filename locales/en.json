@@ -3,6 +3,8 @@
     "hello": "Welcome to Next.js!"
   },
   "ProductsPage": {
-    "hello": "Welcome to Next.js!"
+    "hello": "Welcome to Next.js!",
+    "selectColor": "Select Color",
+    "selectSize": "Select Size"
   }
 }

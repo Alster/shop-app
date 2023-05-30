@@ -1,8 +1,8 @@
 "use client"
 
 import './productPage.css'
-import {ChangeEvent, useEffect, useState} from "react";
-import {useTranslations, useFormatter, useLocale} from 'next-intl';
+import {ChangeEvent, useState} from "react";
+import {useFormatter, useLocale, useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
@@ -11,31 +11,152 @@ import {ProductDto} from "@/shop-shared/dto/product/product.dto";
 import {useRouter} from "next/navigation";
 import {usePathname} from "next-intl/client";
 import * as qs from "qs";
+import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
+
+const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
 export default function ProductPage({product, attributes, categories, pageQuery }: {
     product: ProductDto,
     attributes: AttributeDto[],
     categories: CategoryDto[],
     pageQuery: {
-        color: string
+        [ATTRIBUTES.COLOR]: string
     },
 }) {
     const t = useTranslations('ProductsPage');
     const format = useFormatter();
     const locale = useLocale();
 
-    const [color, setColor] = useState<string>(pageQuery.color);
+    const [buyButtonClicked, setBuyButtonClicked] = useState(false);
+    const [color, setColor] = useState(pageQuery[ATTRIBUTES.COLOR]);
+    const [selectedSizeValue, setSelectedSizeValue] = useState<string | null>(null);
 
     const router = useRouter()
     const pathName = usePathname();
 
     const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newColor = e.target.value;
-        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, color: newColor })}`);
         setColor(newColor);
+        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, [ATTRIBUTES.COLOR]: newColor })}`);
+        refreshSelectableSizeValues();
     };
 
-    console.log(color)
+    const onSizeChange = (key: string, value: string) => {
+
+    };
+
+    const sizeSelect = (value: string) => {
+        setSelectedSizeValue(value);
+    };
+    const sizeReset = () => {
+        setSelectedSizeValue(null);
+    };
+
+    const selectableSizeValues: Set<string> = new Set();
+    const refreshSelectableSizeValues = () => {
+        selectableSizeValues.clear();
+        Object.entries(product.items).forEach(([sku, item]) => {
+            if (item.attributes[ATTRIBUTES.COLOR]?.includes(color)) {
+                const values = Array.from(SIZE_ATTRS.values())
+                    .map(key => item.attributes[key])
+                    .find(values => values) || [];
+                values.forEach(value => selectableSizeValues.add(value));
+            }
+        });
+
+        if (selectedSizeValue && !selectableSizeValues.has(selectedSizeValue)) {
+            sizeReset();
+        }
+    };
+    refreshSelectableSizeValues();
+
+    const drawAttributeTitle = (title: string, highlightMustSelect: boolean, highlightText: string) => {
+        return <div className="text-slate-600 dark:text-slate-300">
+            {title}
+            {highlightMustSelect && <span className="pl-3 text-red-500">{highlightText}</span>}
+        </div>
+    };
+
+    const drawColorAttributes = () => {
+        const attribute = attributes.find(attr => attr.key === ATTRIBUTES.COLOR);
+        if (!attribute) {
+            return null;
+        }
+
+        const key = attribute.key;
+        const values = product.attrs[key] || [];
+
+        const highlightMustSelect = !color && buyButtonClicked;
+
+        return <div key={key} className="mt-4">
+            {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectColor"))}
+            <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
+                {values.map(value => {
+                    return <label key={value}>
+                        <input
+                            className="sr-only peer"
+                            name={key} type="radio"
+                            value={value}
+                            checked={value === color}
+                            onChange={onColorChange}
+                        />
+                        <div
+                            className="h-9 w-9 flex items-center justify-center
+                                                border-2 peer-checked:border-4
+                                                border-black
+                                                dark:border-white
+                                                peer-checked:outline peer-checked:outline-4
+                                                outline-black
+                                                dark:outline-white
+                                                "
+                            style={{backgroundColor: value}}
+                        >
+                        </div>
+                    </label>
+                })}
+            </div>
+        </div>
+    };
+
+    const drawSizeAttributes = () => {
+        const attribute = attributes.find(attr => SIZE_ATTRS.includes(attr.key as ATTRIBUTES));
+        if (!attribute) {
+            return null;
+        }
+
+        const key = attribute.key;
+        const values = product.attrs[key] || [];
+
+        const highlightMustSelect = !selectedSizeValue && buyButtonClicked;
+
+        return <div key={key} className="mt-4">
+            {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectSize"))}
+            <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
+                {values.map(value => {
+                    return <label key={value}>
+                        <input
+                            className="sr-only peer"
+                            name={key}
+                            type="radio"
+                            value={value}
+                            onChange={(e) => onSizeChange(key, e.target.value)}
+                            disabled={!selectableSizeValues.has(value)}
+                            checked={value === selectedSizeValue}
+                        />
+                        <div
+                            onClick={() => sizeSelect(value)}
+                            className="h-9 p-3 flex items-center justify-center peer-checked:font-semibold border
+                                            text-slate-700 peer-checked:bg-slate-900 peer-checked:text-white
+                                            dark:text-slate-200 dark:peer-checked:bg-slate-100 dark:peer-checked:text-black dark:border-white
+                                            peer-disabled:opacity-30
+                                            ">
+                            {attribute?.values.find(val => val.key === value)?.title}
+                        </div>
+                    </label>
+                })}
+            </div>
+        </div>
+    };
 
     return <div className="flex items-center justify-center">
         <form className="products-page grid grid-cols-1 lg:grid-cols-2">
@@ -58,53 +179,14 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                 </div>
 
                 <div className="mt-4">
-                    {Object.entries({ ...product.characteristics, ...product.attrs}).map(([key, values]) => {
-                        const attribute = attributes.find(attr => attr.key === key);
-                        return <div key={key} className="mt-4">
-                            <div className="text-slate-600 dark:text-slate-300">
-                                {attribute?.title}
-                            </div>
-                            <div className="space-x-4 flex text-sm mt-2">
-                                {values.map(value => {
-                                    if (key === "color"){
-                                        return <label key={value}>
-                                            <input
-                                                className="sr-only peer"
-                                                name={key} type="radio"
-                                                value={value}
-                                                checked={value === color}
-                                                onChange={onColorChange}
-                                            />
-                                            <div
-                                                className="h-9 w-9 flex items-center justify-center
-                                                border-2 peer-checked:border-4
-                                                border-black
-                                                dark:border-white
-                                                "
-                                                style={{backgroundColor: value}}
-                                            >
-                                            </div>
-                                        </label>
-                                    }
-                                    return <label key={value}>
-                                        <input className="sr-only peer" name={key} type="radio" value={value}/>
-                                        <div
-                                            className="h-9 p-3 flex items-center justify-center peer-checked:font-semibold border
-                                            text-slate-700 peer-checked:bg-slate-900 peer-checked:text-white
-                                            dark:text-slate-200 dark:peer-checked:bg-slate-100 dark:peer-checked:text-black dark:border-white
-                                            ">
-                                            {attribute?.values.find(val => val.key === value)?.title}
-                                        </div>
-                                    </label>
-                                })}
-                            </div>
-                        </div>
-                    })}
+                    {drawColorAttributes()}
+                    {drawSizeAttributes()}
                 </div>
 
                 <div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
                     <div className="flex-auto flex space-x-4 pr-4">
                         <button
+                            onClick={() => setBuyButtonClicked(true)}
                             className="
                                 flex-none w-1/2 h-12 uppercase font-medium tracking-wider
                                  dark:bg-slate-200 dark:text-black
@@ -114,6 +196,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                             Buy now
                         </button>
                         <button
+                            onClick={() => setBuyButtonClicked(true)}
                             className="
                                 flex-none w-1/2 h-12 uppercase font-medium tracking-wider border
                                 dark:border-slate-200 dark:text-white
