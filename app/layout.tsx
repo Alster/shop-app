@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import {NextIntlClientProvider, useLocale} from "next-intl";
 import {notFound} from "next/navigation";
 import Header from "@/components/header";
+import {usePathname} from "next-intl/client";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,7 +13,7 @@ export const metadata = {
 }
 
 export default async function RootLayout({
-  children, params,
+  children, params
 }: {
   children: React.ReactNode
   params: any
@@ -31,6 +32,9 @@ export default async function RootLayout({
   } catch (error) {
     notFound();
   }
+
+  // const pathname = usePathname();
+  console.log(params)
 
   return <html lang={locale}>
     <body className={inter.className}>
