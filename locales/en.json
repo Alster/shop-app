@@ -4,7 +4,7 @@
   },
   "ProductsPage": {
     "hello": "Welcome to Next.js!",
-    "selectColor": "Select Color",
-    "selectSize": "Select Size"
+    "selectColor": "Please, choose Color",
+    "selectSize": "Please, select Size"
   }
 }

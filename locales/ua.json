@@ -4,7 +4,7 @@
   },
   "ProductsPage": {
     "hello": "Привіт!",
-    "selectColor": "Виберіть колір",
-    "selectSize": "Виберіть розмір"
+    "selectColor": "Будь ласка, оберіть колір",
+    "selectSize": "Будь ласка, оберіть розмір"
   }
 }

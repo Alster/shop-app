@@ -108,6 +108,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                                                 peer-checked:outline peer-checked:outline-4
                                                 outline-black
                                                 dark:outline-white
+                                                cursor-pointer
                                                 "
                             style={{backgroundColor: value}}
                         >
@@ -149,6 +150,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                                             text-slate-700 peer-checked:bg-slate-900 peer-checked:text-white
                                             dark:text-slate-200 dark:peer-checked:bg-slate-100 dark:peer-checked:text-black dark:border-white
                                             peer-disabled:opacity-30
+                                            cursor-pointer
                                             ">
                             {attribute?.values.find(val => val.key === value)?.title}
                         </div>
@@ -207,7 +209,9 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                         </button>
                     </div>
                     <button
-                        className="flex-none flex items-center justify-center w-12 h-12 text-slate-300 border border-slate-200"
+                        className="
+                            flex-none flex items-center justify-center w-12 h-12 text-slate-300 border border-slate-200\
+                        "
                         type="button" aria-label="Like">
                         <svg width="20" height="20" fill="currentColor" aria-hidden="true">
                             <path fillRule="evenodd" clipRule="evenodd"
