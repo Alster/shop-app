@@ -2,6 +2,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import {NextIntlClientProvider, useLocale} from "next-intl";
 import {notFound} from "next/navigation";
+import Header from "@/components/header";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -34,6 +35,7 @@ export default async function RootLayout({
   return <html lang={locale}>
     <body className={inter.className}>
       <NextIntlClientProvider locale={locale} messages={messages}>
+        <Header></Header>
         {children}
       </NextIntlClientProvider>
     </body>

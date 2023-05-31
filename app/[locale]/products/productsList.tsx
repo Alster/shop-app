@@ -65,8 +65,6 @@ export default function ProductsList({defaultList, attributes, categories}: {
     }
 
     return <div>
-        {t('hello')}
-        {products.length}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
             {products.map(product => (
                 <div key={product.id} className="border-2 border-gray-300 dark:border-gray-700 m-1">
