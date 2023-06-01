@@ -9,7 +9,7 @@ export interface Params_ProductId {
     id: string
 }
 
-export default async function Products({ params, searchParams }: { params: Params_ProductId, searchParams: any }) {
+export default async function Product({ params, searchParams }: { params: Params_ProductId, searchParams: any }) {
     const locale = useLocale();
 
     const [product, attributes, categories ] = await Promise.all([

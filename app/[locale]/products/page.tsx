@@ -6,7 +6,7 @@ import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {fetchCategoryList} from "@/utils/fetchCategoryList";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 
-export default async function Products() {
+export default async function ProductsPage() {
     const locale = useLocale();
 
     const [products, attributes, categories ] = await Promise.all([
