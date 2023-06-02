@@ -160,6 +160,27 @@ export default function ProductPage({product, attributes, categories, pageQuery 
         </div>
     };
 
+    const drawCharacteristics = () => {
+        const attribute = attributes.find(attr => ![ATTRIBUTES.COLOR, ...SIZE_ATTRS].includes(attr.key as ATTRIBUTES));
+        if (!attribute) {
+            return null;
+        }
+
+        const key = attribute.key;
+        const values = product.attrs[key] || [];
+
+        return <div key={key} className="mt-8 mb-8 flex">
+            {drawAttributeTitle(attribute?.title + ":", false, "")}
+            <div className="pl-3">
+                {values.map(value => {
+                    return <div key={value}>
+                        {attribute?.values.find(val => val.key === value)?.title}
+                    </div>
+                })}
+            </div>
+        </div>
+    };
+
     return <div className="flex items-center justify-center">
         <form className="products-page grid grid-cols-1 lg:grid-cols-2">
             <Link href={`/product/${product.id}`}>
@@ -183,6 +204,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                 <div className="mt-4">
                     {drawColorAttributes()}
                     {drawSizeAttributes()}
+                    {drawCharacteristics()}
                 </div>
 
                 <div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
