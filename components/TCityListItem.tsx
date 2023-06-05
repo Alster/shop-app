@@ -2,9 +2,7 @@ import * as React from 'react'
 import classNames from 'classnames'
 
 export type CityData = {
-    city: string
-    population: string
-    url: string
+    title: string
     selected: boolean
 }
 
@@ -13,14 +11,12 @@ export type CityDataAsProps = CityData & {
 }
 
 export function TCityListItem({
-                                  city,
-                                  population,
-                                  url,
+                                  title,
                                   selected,
                                   onItemClick
                               }: CityDataAsProps) {
     return (
-        <li className="py-3 sm:py-2 cursor-pointer hover:bg-slate-100" onMouseDown={() => onItemClick(city)}>
+        <li className="p-3 sm:py-2 cursor-pointer hover:bg-slate-100 hover:dark:bg-slate-700" onMouseDown={() => onItemClick(title)}>
             <div
                 className={classNames('flex items-center space-x-4 rounded-md', {
                     'bg-sky-100': selected
@@ -31,7 +27,7 @@ export function TCityListItem({
                 {/*</div>*/}
                 <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                        {city}
+                        {title}
                     </p>
                     {/*<p className="text-sm text-gray-500 truncate dark:text-gray-400">*/}
                     {/*    {population}*/}

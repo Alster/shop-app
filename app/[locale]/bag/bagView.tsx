@@ -45,14 +45,14 @@ export default function BagView() {
                     <div className="flex-auto">
                         <div className="font-semibold text-lg">{bagItem.title}</div>
                         <div className="text-md flex text-slate-500">
-                            <div>{t("color")}:</div>
+                            <div className="text-sm">{t("color")}:</div>
                             <div
                                 style={{backgroundColor: bagItem.attributes[ATTRIBUTES.COLOR][0]}}
                                 className="ml-2 w-6 h-6 border-2 border-gray-300 dark:border-gray-700"
                             ></div>
                         </div>
                         <div>
-                            <span className="text-slate-500">{t("size")}</span>:
+                            <span className="text-slate-500 text-sm">{t("size")}</span>:
                             <span className="font-bold pl-2">{drawSize(bagItem)}</span>
                         </div>
                     </div>
@@ -87,7 +87,7 @@ export default function BagView() {
     }
 
     return <div className="flex flex-col lg:flex-row">
-        <div className="pl-8 pr-8 flex-auto">
+        <div className="flex-auto lg:px-8">
             {Object
                 .entries(bagItems)
                 .map(([key, bagItem]) => drawItem(key, bagItem))

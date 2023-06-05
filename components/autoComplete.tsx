@@ -1,62 +1,24 @@
 import * as React from 'react'
-import Image from "next/image";
 import { KeyboardEvent} from 'react'
 import { TCityListItem, CityData } from './TCityListItem'
 
-const searchData = [
-    {
-        url: '/img/item-icon.svg',
-        city: 'Tokyo',
-        population: '37,468,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'Delhi',
-        population: '28,514,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'Shanghai',
-        population: '25,582,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'São Paulo',
-        population: '21,650,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'Mexico City',
-        population: '21,581,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'Mumbai',
-        population: '19,980,000',
-        selected: false
-    },
-    {
-        url: '/img/item-icon.svg',
-        city: 'Beijing',
-        population: '19,618,000',
-        selected: false
-    }
-]
-
 export default function Autocomplete({
-    cityName, setCityName
-                                     }: any) {
+    cityName,
+    setCityName,
+    searchData,
+    onUserInput
+}: {
+    cityName: string,
+    setCityName: (name: string) => void,
+    searchData: CityData[],
+    onUserInput: (name: string) => void
+}) {
     const [cities, setCities] = React.useState<CityData[]>([])
 
     function filterOptions() {
         if (cityName.length) {
             const filtered = searchData.filter(e =>
-                e.city.toLocaleLowerCase().startsWith(cityName.toLocaleLowerCase())
+                e.title.toLocaleLowerCase().startsWith(cityName.toLocaleLowerCase())
             )
             setCities(filtered)
         } else {
@@ -69,7 +31,7 @@ export default function Autocomplete({
         if (key === 'Enter') {
             const selected = cities.find(e => e.selected)
             if (selected) {
-                setCityName(selected.city)
+                setCityName(selected.title)
             }
             setCities([])
             return
@@ -110,15 +72,20 @@ export default function Autocomplete({
                 City
             </label>
 
-            <div className="relative">
+            <div className="">
                 <input
-                    className="outline-4 p-2.5 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-200 block dark:bg-gray-200 dark:border-gray-200 dark:placeholder-gray-200 dark:text-white"
+                    className="
+                    bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
+                                        "
                     id="cityName"
                     type="text"
                     placeholder="City name"
                     autoComplete="off"
                     value={cityName}
-                    onInput={e => setCityName(e.currentTarget.value)}
+                    onInput={e => {
+                        setCityName(e.currentTarget.value);
+                        onUserInput(cityName);
+                    }}
                     onKeyUp={onKeyUp}
                     onBlur={onBlur}
                     onFocus={filterOptions}
@@ -126,7 +93,7 @@ export default function Autocomplete({
 
                 {cities.length ? (
                     <div className="w-full absolute">
-                        <div className="max-w-md bg-white p-2 rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+                        <div style={{height: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <div className="flow-root">
                                 <ul
                                     role="list"
@@ -134,7 +101,7 @@ export default function Autocomplete({
                                 >
                                     {cities.map(e => (
                                         <TCityListItem
-                                            key={`${e.city}-${e.population}`}
+                                            key={e.title}
                                             {...e}
                                             onItemClick={onItemClick}
                                         />

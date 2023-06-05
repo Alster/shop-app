@@ -10,6 +10,8 @@ import {useFormatter, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
 import * as React from "react";
+import {CityData} from "@/components/TCityListItem";
+import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 
 export default function CheckoutView() {
     const t = useTranslations('CheckoutPage');
@@ -29,10 +31,11 @@ export default function CheckoutView() {
         );
     };
 
-    const [cityName, setCityName] = React.useState('')
+    const [cityName, setCityName] = React.useState('');
+    const [searchDataCity, setSearchDataCity] = React.useState<CityData[]>([]);
 
     return <form className="flex flex-col lg:flex-row" action="/api/" method="post">
-        <div className="pl-8 pr-8 flex-auto">
+        <div className="px-2 lg:px-8 flex-auto">
             {drawStepTitle(1, t("contactInfo"))}
             <div className="">
                 <div className="py-1">
@@ -100,6 +103,28 @@ export default function CheckoutView() {
                     <AutoComplete
                         cityName={cityName}
                         setCityName={setCityName}
+                        searchData={searchDataCity}
+                        onUserInput={async (input) => {
+                            console.log(input);
+                            const result: {
+                                data: {
+                                    Description: string,
+                                    AreaDescription: string,
+                                }[]
+                            } = await fetchNovaPoshta({
+                                modelName: "Address",
+                                calledMethod: "getSettlements",
+                                methodProperties: {
+                                    FindByString: input,
+                                    Warehouse: "1",
+                                }
+                            });
+                            setSearchDataCity(result.data.map(item => ({
+                                title: `${item.Description}, ${item.AreaDescription}`,
+                                selected: false,
+                            })));
+                            console.log(result)
+                        }}
                     ></AutoComplete>
                     <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>
                 </div>
