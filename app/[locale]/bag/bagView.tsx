@@ -84,8 +84,8 @@ export default function BagView() {
         </div>;
     }
 
-    return <div className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="pl-8 pr-8">
+    return <div className="flex flex-col lg:flex-row">
+        <div className="pl-8 pr-8 flex-auto">
             {Object
                 .entries(bagItems)
                 .map(([key, bagItem]) => drawItem(key, bagItem))
@@ -98,7 +98,7 @@ export default function BagView() {
                 }, [] as ReactElement[])
             }
         </div>
-        <div className="m-2 p-2 bg-gray-100 dark:bg-gray-900">
+        <div className="m-2 p-2 bg-gray-100 dark:bg-gray-900 lg:w-1/3">
             <div className="text-lg flex">
                 <div className="flex-auto">{t("totalPrice")}:</div>
                 <div className="font-bold">{
