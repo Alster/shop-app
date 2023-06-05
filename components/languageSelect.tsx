@@ -92,7 +92,7 @@ export default function LanguageSelect() {
                 type="button"
                 onClick={toggleList}
             >
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap text-white">
                     {drawItem(selectedLanguage)}
                 </div>
             </button>

@@ -1,3 +1,5 @@
+import CheckoutView from "@/app/[locale]/checkout/checkoutView";
+
 export default function CheckoutPage() {
-    return <div>Checkout page</div>
+    return <CheckoutView></CheckoutView>
 }

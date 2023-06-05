@@ -18,5 +18,14 @@
     "size": "Розмір",
     "totalPrice": "Загальна ціна",
     "bCheckout": "Оформити замовлення"
+  },
+  "CheckoutPage": {
+    "totalPrice": "Загальна ціна",
+    "bCheckout": "Оформити замовлення",
+    "contactInfo": "Контактна інформація",
+    "firstName": "Ім'я",
+    "lastName": "Фамілія",
+    "phoneNumber": "Номер телефону",
+    "delivery": "Доставка"
   }
 }

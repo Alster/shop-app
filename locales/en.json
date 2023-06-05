@@ -18,5 +18,14 @@
     "size": "Size",
     "totalPrice": "Total price",
     "bCheckout": "Checkout"
+  },
+  "CheckoutPage": {
+    "totalPrice": "Total price",
+    "bCheckout": "Checkout",
+    "contactInfo": "Contact information",
+    "firstName": "First name",
+    "lastName": "last name",
+    "phoneNumber": "Phone number",
+    "delivery": "Delivery"
   }
 }

@@ -7,6 +7,8 @@ import {IBagItem} from "@/utils/bag/IBagItem";
 import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroicons/react/24/outline";
 import {ReactElement} from "react";
 import {useFormatter, useTranslations} from "next-intl";
+import Link from "next-intl/link";
+import HorizontalLine from "@/components/horizontalLine";
 
 export default function BagView() {
     const t = useTranslations('BagPage');
@@ -91,7 +93,7 @@ export default function BagView() {
                 .map(([key, bagItem]) => drawItem(key, bagItem))
                 .reduce((prev, elem) => {
                     if (prev.length > 0) {
-                        prev.push(<hr className="border-gray-300 dark:border-gray-700" />);
+                        prev.push(<HorizontalLine></HorizontalLine>);
                     }
                     prev.push(elem);
                     return prev;
@@ -107,9 +109,9 @@ export default function BagView() {
                         {style: 'currency', currency: 'USD'})
                 }</div>
             </div>
-            <hr className="border-gray-300 dark:border-gray-700 m-4" />
-            <button
-                onClick={() => {}}
+            <HorizontalLine></HorizontalLine>
+            <Link
+                href="/checkout"
                 className="
                                 flex justify-center w-full h-12 uppercase font-medium tracking-wider
                                  dark:bg-slate-200 dark:text-black
@@ -118,7 +120,7 @@ export default function BagView() {
                 <span className="mt-3 ml-2">
                     {`${t("bCheckout")}`}
                 </span>
-            </button>
+            </Link>
         </div>
     </div>
 }
