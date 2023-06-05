@@ -8,6 +8,8 @@ import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroic
 import {ReactElement} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
+import AutoComplete from "@/components/autoComplete";
+import * as React from "react";
 
 export default function CheckoutView() {
     const t = useTranslations('CheckoutPage');
@@ -27,11 +29,13 @@ export default function CheckoutView() {
         );
     };
 
-    return <form className="flex flex-col lg:flex-row" action="/send-data-here" method="get">
+    const [cityName, setCityName] = React.useState('')
+
+    return <form className="flex flex-col lg:flex-row" action="/api/" method="post">
         <div className="pl-8 pr-8 flex-auto">
             {drawStepTitle(1, t("contactInfo"))}
             <div className="">
-                <div className="pb-1 pt-1">
+                <div className="py-1">
                     <label htmlFor="first_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {t("firstName")}
                     </label>
@@ -40,7 +44,7 @@ export default function CheckoutView() {
                            placeholder="" required minLength={3}>
                     </input>
                 </div>
-                <div className="pb-1 pt-1">
+                <div className="py-1">
                     <label htmlFor="last_name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {t("lastName")}
                     </label>
@@ -49,7 +53,7 @@ export default function CheckoutView() {
                            placeholder="" required minLength={3}>
                     </input>
                 </div>
-                <div className="pb-1 pt-1">
+                <div className="py-1">
                     <label htmlFor="phone_number" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                         {t("phoneNumber")}
                     </label>
@@ -68,7 +72,38 @@ export default function CheckoutView() {
             </div>
             <HorizontalLine></HorizontalLine>
             {drawStepTitle(2, t("delivery"))}
-            Ololo
+            <div>
+                <div className="flex gap-4">
+                    <Image
+                        className="w-5 h-5"
+                        src="/img/novaPoshta.png"
+                        alt="Nova Poshta"
+                        width="20"
+                        height="20"
+                    ></Image>
+                    {[
+                        { value: "office", title: "whereToDeliver:office" },
+                        { value: "subOffice", title: "whereToDeliver:subOffice" },
+                        { value: "courier", title: "whereToDeliver:courier" },
+                    ].map(item => (
+                        <label key={item.value} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            <input
+                                name="whereToDeliver"
+                                type="radio"
+                                value={item.value}
+                                required
+                            /> {t(item.title)}
+                        </label>
+                    ))}
+                </div>
+                <div className="py-1">
+                    <AutoComplete
+                        cityName={cityName}
+                        setCityName={setCityName}
+                    ></AutoComplete>
+                    <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>
+                </div>
+            </div>
         </div>
         <div className="m-2 p-2 bg-gray-100 dark:bg-gray-900 lg:w-1/3">
             <div className="text-lg flex">

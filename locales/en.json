@@ -26,6 +26,10 @@
     "firstName": "First name",
     "lastName": "last name",
     "phoneNumber": "Phone number",
-    "delivery": "Delivery"
+    "delivery": "Delivery",
+    "whereToDeliver:office": "Office",
+    "whereToDeliver:subOffice": "Sub-office",
+    "whereToDeliver:courier": "Courier",
+    "deliveryCity": "City"
   }
 }

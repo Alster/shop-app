@@ -26,6 +26,10 @@
     "firstName": "Ім'я",
     "lastName": "Фамілія",
     "phoneNumber": "Номер телефону",
-    "delivery": "Доставка"
+    "delivery": "Доставка",
+    "whereToDeliver:office": "Відділення",
+    "whereToDeliver:subOffice": "Поштомат",
+    "whereToDeliver:courier": "Кур'єр",
+    "deliveryCity": "Місто"
   }
 }
