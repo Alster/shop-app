@@ -279,7 +279,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                     alt={product.title}
                     width={1000}
                     height={1000}
-                    loading="lazy"
+                    priority
                 />
             </Link>
             <div className="p-3">
