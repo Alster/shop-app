@@ -5,6 +5,18 @@
   "ProductsPage": {
     "hello": "Welcome to Next.js!",
     "selectColor": "Please, choose Color",
-    "selectSize": "Please, select Size"
+    "selectSize": "Please, select Size",
+    "bAddToBag": "Add to bag",
+    "bBuyNow": "Buy now",
+    "bAdd": "Add",
+    "productAddedToBag": "Product added to bag",
+    "goToBag": "Go to bag",
+    "continueShopping": "Continue shopping"
+  },
+  "BagPage": {
+    "color": "Color",
+    "size": "Size",
+    "totalPrice": "Total price",
+    "bCheckout": "Checkout"
   }
 }

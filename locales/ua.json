@@ -5,6 +5,18 @@
   "ProductsPage": {
     "hello": "Привіт!",
     "selectColor": "Будь ласка, оберіть колір",
-    "selectSize": "Будь ласка, оберіть розмір"
+    "selectSize": "Будь ласка, оберіть розмір",
+    "bAddToBag": "Додати в кошик",
+    "bBuyNow": "Купити зараз",
+    "bAdd": "Додати",
+    "productAddedToBag": "Товар додано в кошик",
+    "goToBag": "Перейти до кошика",
+    "continueShopping": "Продовжити покупки"
+  },
+  "BagPage": {
+    "color": "Колір",
+    "size": "Розмір",
+    "totalPrice": "Загальна ціна",
+    "bCheckout": "Оформити замовлення"
   }
 }

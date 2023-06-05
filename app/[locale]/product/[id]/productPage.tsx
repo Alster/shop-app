@@ -12,6 +12,12 @@ import {useRouter} from "next/navigation";
 import {usePathname} from "next-intl/client";
 import * as qs from "qs";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
+import {IBagItem} from "@/utils/bag/IBagItem";
+import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
+import {bagSlice, useAppDispatch, useAppSelector} from "@/utils/store/store";
+import Modal from "@/components/modal";
+import {ShoppingBagIcon, CheckIcon} from "@heroicons/react/24/outline";
+
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -181,8 +187,92 @@ export default function ProductPage({product, attributes, categories, pageQuery 
         </div>
     };
 
+    const dispatch = useAppDispatch();
+
+    const addToBag = () => {
+        const attribute = attributes.find(attr => SIZE_ATTRS.includes(attr.key as ATTRIBUTES));
+        if (!attribute) {
+            throw new Error("No size attribute found");
+        }
+
+        if (!product.id) {
+            throw new Error("No product id");
+        }
+
+        if (!selectedSizeValue) {
+            throw new Error("No size selected");
+        }
+
+        const bagItem: IBagItem = {
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            image: "https://picsum.photos/200/200",
+            attributes: {
+                [ATTRIBUTES.COLOR.toString()]: [color],
+                [attribute.key]: [selectedSizeValue],
+            },
+            quantity: 1,
+        };
+
+        dispatch(bagSlice.actions.add(bagItem));
+    };
+
+    const buyNow = () => {
+        addToBag();
+    };
+
+    const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
+
     return <div className="flex items-center justify-center">
-        <form className="products-page grid grid-cols-1 lg:grid-cols-2">
+
+        {isAddProductModalOpen && (
+            <Modal>
+                <div className="flex items-center justify-between relative">
+                    <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                        {t("productAddedToBag")}
+                    </h3>
+                    <button type="button"
+                            className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            onClick={() => setIsAddProductModalOpen(false)}>
+                        <svg aria-hidden="true" className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path fillRule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clipRule="evenodd"></path>
+                        </svg>
+                        <span className="sr-only">Close modal</span>
+                    </button>
+                </div>
+                <div className="flex justify-center m-8">
+                    <div className="rounded-full bg-gray-100">
+                        <CheckIcon className="m-4 h-16 w-16 text-green-400" />
+                    </div>
+                </div>
+                <Link
+                    href="/bag"
+                    className="
+                                     flex items-center justify-center h-12 border border-slate-200\
+                                     uppercase font-medium tracking-wider
+                                     dark:bg-slate-200 dark:text-black
+                                     bg-slate-800 text-white
+                                 ">
+                    {t("goToBag")}
+                </Link>
+                <button
+                    onClick={() => setIsAddProductModalOpen(false)}
+                    className="flex items-center justify-center w-full
+                                    h-12 uppercase font-medium tracking-wider border
+                                    dark:border-slate-200 dark:text-white
+                                    border-slate-800 text-black
+                                "
+                    type="button">
+                    {t("continueShopping")}
+                </button>
+            </Modal>
+        )}
+
+        <div className="products-page grid grid-cols-1 lg:grid-cols-2">
             <Link href={`/product/${product.id}`}>
                 <Image
                     src="https://picsum.photos/200/200"
@@ -208,28 +298,28 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                 </div>
 
                 <div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
-                    <div className="flex-auto flex space-x-4 pr-4">
-                        <button
-                            onClick={() => setBuyButtonClicked(true)}
-                            className="
-                                flex-none w-1/2 h-12 uppercase font-medium tracking-wider
+                    <button
+                        onClick={() => {
+                            setBuyButtonClicked(true);
+                            if (!color || !selectedSizeValue) {
+                                return;
+                            }
+                            buyNow();
+                            setIsAddProductModalOpen(true);
+                        }}
+                        className="
+                                flex justify-center w-1/2 h-12 uppercase font-medium tracking-wider
                                  dark:bg-slate-200 dark:text-black
                                  bg-slate-800 text-white
-                             "
-                            type="submit">
-                            Buy now
-                        </button>
-                        <button
-                            onClick={() => setBuyButtonClicked(true)}
-                            className="
-                                flex-none w-1/2 h-12 uppercase font-medium tracking-wider border
-                                dark:border-slate-200 dark:text-white
-                                border-slate-800 text-black
-                            "
-                            type="button">
-                            Add to bag
-                        </button>
-                    </div>
+                             ">
+                        <span className="mt-2">
+                            <ShoppingBagIcon className="h-8 w-8" />
+                        </span>
+                        <span className="mt-4 ml-2">
+                            {t("bAdd")}
+                            <span className="ml-2">{format.number(product.price, {style: 'currency', currency: 'USD'})}</span>
+                        </span>
+                    </button>
                     <button
                         className="
                             flex-none flex items-center justify-center w-12 h-12 text-slate-300 border border-slate-200\
@@ -242,6 +332,6 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                     </button>
                 </div>
             </div>
-        </form >
+        </div >
     </div>
 }

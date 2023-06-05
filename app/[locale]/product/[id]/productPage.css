@@ -7,8 +7,8 @@
         width: 700px
     }
 }
-@media (min-width: 1024px) {
 
+@media (min-width: 1024px) {
     .products-page {
         width: 1300px;
     }
