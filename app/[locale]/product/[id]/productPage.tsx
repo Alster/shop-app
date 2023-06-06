@@ -308,7 +308,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                             setIsAddProductModalOpen(true);
                         }}
                         className="
-                                flex justify-center w-1/2 h-12 uppercase font-medium tracking-wider
+                                flex flex-auto justify-center w-1/2 h-12 uppercase font-medium tracking-wider
                                  dark:bg-slate-200 dark:text-black
                                  bg-slate-800 text-white
                              ">
