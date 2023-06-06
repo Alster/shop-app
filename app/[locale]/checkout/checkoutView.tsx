@@ -1,11 +1,7 @@
 "use client"
 
-import {bagSlice, useAppDispatch, useAppSelector} from "@/utils/store/store";
-import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
+import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import Image from "next/image";
-import {IBagItem} from "@/utils/bag/IBagItem";
-import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {ReactElement, useEffect} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
@@ -103,10 +99,15 @@ export default function CheckoutView() {
                     ))}
                 </div>
                 <div className="py-1">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        City
+                    </label>
                     <AutoComplete
+                        placeholder={t("cityPlaceholder")}
                         itemName={cityName}
                         setItemName={setCityName}
                         searchData={searchDataCity}
+                        minLength={3}
                         onUserInput={async (input) => {
                             console.log(input);
                             const result: {
@@ -132,33 +133,38 @@ export default function CheckoutView() {
                     <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>
                 </div>
                 <div className="py-1">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                        Office
+                    </label>
                     <AutoComplete
-                        itemName={cityName}
-                        setItemName={setCityName}
-                        searchData={searchDataCity}
+                        placeholder={t("officePlaceholder")}
+                        itemName={officeName}
+                        setItemName={setOfficeName}
+                        searchData={searchDataOffice}
+                        minLength={1}
                         onUserInput={async (input) => {
                             console.log(input);
                             const result: {
                                 data: {
                                     Description: string,
-                                    AreaDescription: string,
+                                    ShortAddress: string,
+                                    Number: string,
                                 }[]
                             } = await fetchNovaPoshta({
                                 modelName: "Address",
-                                calledMethod: "getSettlements",
+                                calledMethod: "getWarehouses",
                                 methodProperties: {
-                                    FindByString: cityName,
-                                    Warehouse: "1",
+                                    WarehouseId: officeName
                                 }
                             });
-                            setSearchDataCity(result.data.map(item => ({
-                                title: `${item.Description}, ${item.AreaDescription}`,
+                            setSearchDataOffice(result.data.map(item => ({
+                                title: `${item.Description}`,
                                 selected: false,
                             })));
                             console.log(result);
                         }}
                     ></AutoComplete>
-                    <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>
+                    <input required className="hidden" type="text" id="office_name" name="office_name" value={officeName}></input>
                 </div>
             </div>
         </div>

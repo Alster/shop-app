@@ -30,6 +30,8 @@
     "whereToDeliver:office": "Відділення",
     "whereToDeliver:subOffice": "Поштомат",
     "whereToDeliver:courier": "Кур'єр",
-    "deliveryCity": "Місто"
+    "deliveryCity": "Місто",
+    "cityPlaceholder": "Введіть назву міста",
+    "officePlaceholder": "Введіть номер відділення"
   }
 }

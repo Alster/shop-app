@@ -30,6 +30,8 @@
     "whereToDeliver:office": "Office",
     "whereToDeliver:subOffice": "Sub-office",
     "whereToDeliver:courier": "Courier",
-    "deliveryCity": "City"
+    "deliveryCity": "City",
+    "cityPlaceholder": "Enter city name",
+    "officePlaceholder": "Enter office number"
   }
 }
