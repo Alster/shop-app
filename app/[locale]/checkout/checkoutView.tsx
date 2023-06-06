@@ -5,7 +5,7 @@ import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
 import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {ReactElement} from "react";
+import {ReactElement, useEffect} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
@@ -115,7 +115,7 @@ export default function CheckoutView() {
                                 modelName: "Address",
                                 calledMethod: "getSettlements",
                                 methodProperties: {
-                                    FindByString: input,
+                                    FindByString: cityName,
                                     Warehouse: "1",
                                 }
                             });
@@ -123,7 +123,7 @@ export default function CheckoutView() {
                                 title: `${item.Description}, ${item.AreaDescription}`,
                                 selected: false,
                             })));
-                            console.log(result)
+                            console.log(result);
                         }}
                     ></AutoComplete>
                     <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>

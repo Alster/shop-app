@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { KeyboardEvent} from 'react'
+import {KeyboardEvent, useEffect} from 'react'
 import { TCityListItem, CityData } from './TCityListItem'
 
 export default function Autocomplete({
@@ -66,6 +66,18 @@ export default function Autocomplete({
         setCities([])
     }
 
+    useEffect(() => {
+        if (cityName === undefined || !cityName.trim() || cityName.length < 3) { // skip initial useEffect
+            return
+        }
+
+        const timeoutId = setTimeout(() => {
+            onUserInput(cityName);
+        }, 1000)
+
+        return () => clearTimeout(timeoutId)
+    }, [cityName])
+
     return (
         <div className="px-1">
             <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -84,7 +96,6 @@ export default function Autocomplete({
                     value={cityName}
                     onInput={e => {
                         setCityName(e.currentTarget.value);
-                        onUserInput(cityName);
                     }}
                     onKeyUp={onKeyUp}
                     onBlur={onBlur}
@@ -93,7 +104,7 @@ export default function Autocomplete({
 
                 {cities.length ? (
                     <div className="w-full absolute">
-                        <div style={{height: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+                        <div style={{maxHeight: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <div className="flow-root">
                                 <ul
                                     role="list"
