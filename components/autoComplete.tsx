@@ -1,55 +1,55 @@
 import * as React from 'react'
 import {KeyboardEvent, useEffect} from 'react'
-import { TCityListItem, CityData } from './TCityListItem'
+import { TListItem, ItemData } from './TListItem'
 
 export default function Autocomplete({
-    cityName,
-    setCityName,
+    itemName,
+    setItemName,
     searchData,
     onUserInput
 }: {
-    cityName: string,
-    setCityName: (name: string) => void,
-    searchData: CityData[],
+    itemName: string,
+    setItemName: (name: string) => void,
+    searchData: ItemData[],
     onUserInput: (name: string) => void
 }) {
-    const [cities, setCities] = React.useState<CityData[]>([])
+    const [items, setItems] = React.useState<ItemData[]>([])
 
     function filterOptions() {
-        if (cityName.length) {
+        if (itemName.length) {
             const filtered = searchData.filter(e =>
-                e.title.toLocaleLowerCase().startsWith(cityName.toLocaleLowerCase())
+                e.title.toLocaleLowerCase().startsWith(itemName.toLocaleLowerCase())
             )
-            setCities(filtered)
+            setItems(filtered)
         } else {
-            setCities([])
+            setItems([])
         }
     }
 
     function onKeyUp(e: KeyboardEvent<HTMLInputElement>) {
         const key = e.key
         if (key === 'Enter') {
-            const selected = cities.find(e => e.selected)
+            const selected = items.find(e => e.selected)
             if (selected) {
-                setCityName(selected.title)
+                setItemName(selected.title)
             }
-            setCities([])
+            setItems([])
             return
         }
 
         if (key === 'ArrowDown' || key === 'ArrowUp') {
             const isUp = key === 'ArrowUp'
-            const idx = cities.findIndex(e => e.selected)
+            const idx = items.findIndex(e => e.selected)
             const next = isUp ? idx - 1 : idx + 1
 
-            cities.map(e => (e.selected = false))
-            if (next >= 0 && next <= cities.length - 1) {
-                cities[next].selected = true
+            items.map(e => (e.selected = false))
+            if (next >= 0 && next <= items.length - 1) {
+                items[next].selected = true
             } else {
                 if (isUp) {
-                    cities[cities.length - 1].selected = true
+                    items[items.length - 1].selected = true
                 } else {
-                    cities[0].selected = true
+                    items[0].selected = true
                 }
             }
         }
@@ -58,25 +58,25 @@ export default function Autocomplete({
     }
 
     function onBlur() {
-        setCities([])
+        setItems([])
     }
 
     function onItemClick(name: string) {
-        setCityName(name)
-        setCities([])
+        setItemName(name)
+        setItems([])
     }
 
     useEffect(() => {
-        if (cityName === undefined || !cityName.trim() || cityName.length < 3) { // skip initial useEffect
+        if (itemName === undefined || !itemName.trim() || itemName.length < 3) { // skip initial useEffect
             return
         }
 
         const timeoutId = setTimeout(() => {
-            onUserInput(cityName);
+            onUserInput(itemName);
         }, 1000)
 
         return () => clearTimeout(timeoutId)
-    }, [cityName])
+    }, [itemName])
 
     return (
         <div className="px-1">
@@ -93,16 +93,16 @@ export default function Autocomplete({
                     type="text"
                     placeholder="City name"
                     autoComplete="off"
-                    value={cityName}
+                    value={itemName}
                     onInput={e => {
-                        setCityName(e.currentTarget.value);
+                        setItemName(e.currentTarget.value);
                     }}
                     onKeyUp={onKeyUp}
                     onBlur={onBlur}
                     onFocus={filterOptions}
                 />
 
-                {cities.length ? (
+                {items.length ? (
                     <div className="w-full absolute">
                         <div style={{maxHeight: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
                             <div className="flow-root">
@@ -110,8 +110,8 @@ export default function Autocomplete({
                                     role="list"
                                     className="divide-y divide-gray-200 dark:divide-gray-700"
                                 >
-                                    {cities.map(e => (
-                                        <TCityListItem
+                                    {items.map(e => (
+                                        <TListItem
                                             key={e.title}
                                             {...e}
                                             onItemClick={onItemClick}

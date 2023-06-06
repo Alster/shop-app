@@ -10,7 +10,7 @@ import {useFormatter, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
 import * as React from "react";
-import {CityData} from "@/components/TCityListItem";
+import {ItemData} from "@/components/TListItem";
 import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 
 export default function CheckoutView() {
@@ -32,7 +32,10 @@ export default function CheckoutView() {
     };
 
     const [cityName, setCityName] = React.useState('');
-    const [searchDataCity, setSearchDataCity] = React.useState<CityData[]>([]);
+    const [searchDataCity, setSearchDataCity] = React.useState<ItemData[]>([]);
+
+    const [officeName, setOfficeName] = React.useState('');
+    const [searchDataOffice, setSearchDataOffice] = React.useState<ItemData[]>([]);
 
     return <form className="flex flex-col lg:flex-row" action="/api/" method="post">
         <div className="px-2 lg:px-8 flex-auto">
@@ -101,8 +104,37 @@ export default function CheckoutView() {
                 </div>
                 <div className="py-1">
                     <AutoComplete
-                        cityName={cityName}
-                        setCityName={setCityName}
+                        itemName={cityName}
+                        setItemName={setCityName}
+                        searchData={searchDataCity}
+                        onUserInput={async (input) => {
+                            console.log(input);
+                            const result: {
+                                data: {
+                                    Description: string,
+                                    AreaDescription: string,
+                                }[]
+                            } = await fetchNovaPoshta({
+                                modelName: "Address",
+                                calledMethod: "getSettlements",
+                                methodProperties: {
+                                    FindByString: cityName,
+                                    Warehouse: "1",
+                                }
+                            });
+                            setSearchDataCity(result.data.map(item => ({
+                                title: `${item.Description}, ${item.AreaDescription}`,
+                                selected: false,
+                            })));
+                            console.log(result);
+                        }}
+                    ></AutoComplete>
+                    <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName}></input>
+                </div>
+                <div className="py-1">
+                    <AutoComplete
+                        itemName={cityName}
+                        setItemName={setCityName}
                         searchData={searchDataCity}
                         onUserInput={async (input) => {
                             console.log(input);
