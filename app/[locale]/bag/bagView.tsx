@@ -69,13 +69,13 @@ export default function BagView() {
                 <div className="flex flex-wrap">
                     <div className="flex-auto flex">
                         <button
-                            className="bg-slate-200 rounded-full"
+                            className="bg-slate-200 dark:bg-slate-400 rounded-full"
                         >
                             <MinusSmallIcon className="h-6 w-6 text-black" />
                         </button>
                         <div className="pl-4 pr-4 font-bold text-lg">{bagItem.quantity}</div>
                         <button
-                            className="bg-slate-200 rounded-full"
+                            className="bg-slate-200 dark:bg-slate-400 rounded-full"
                         >
                             <PlusSmallIcon className="h-6 w-6 text-black" />
                         </button>
