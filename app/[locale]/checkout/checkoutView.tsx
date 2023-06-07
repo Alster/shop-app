@@ -10,11 +10,7 @@ import * as React from "react";
 import {ItemData} from "@/components/TListItem";
 import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 import {Fragment} from "react";
-
-const NOVA_POSHTA_DELIVERY_TYPE = {
-    OFFICE: 'office',
-    COURIER: "courier"
-};
+import {NOVA_POSHTA_DELIVERY_TYPE} from "@/shop-shared/constants/checkout";
 
 export default function CheckoutView() {
     const t = useTranslations('CheckoutPage');
@@ -84,7 +80,7 @@ export default function CheckoutView() {
         )
     };
 
-    return <form className="flex flex-col lg:flex-row" action="/api/" method="post">
+    return <form className="flex flex-col lg:flex-row" action="/api/order/create" method="post">
         <div className="px-2 lg:px-8 flex-auto">
             {drawStepTitle(1, t("contactInfo"))}
             <div className="">
@@ -109,7 +105,7 @@ export default function CheckoutView() {
                            placeholder="0937562957" pattern="[0-9]{10}" required>
                     </input>
                 </div>
-                <input className="hidden" type="text" id="hidden" name="hidden" value={
+                <input className="hidden" type="text" id="items_data" name="items_data" value={
                     JSON.stringify(Object.entries(bagItems).map(([key, value]) => ({
                         id: value.id,
                         attrs: value.attributes,
@@ -134,7 +130,7 @@ export default function CheckoutView() {
                     ].map(item => (
                         <label key={item.value} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                             <input
-                                name="whereToDeliver"
+                                name="where_to_deliver"
                                 type="radio"
                                 value={item.value}
                                 onChange={() => setSelectedNovaPoshtaDeliveryType(item.value)}
