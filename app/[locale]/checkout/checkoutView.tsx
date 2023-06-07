@@ -1,5 +1,6 @@
 "use client"
 
+import "./checkoutView.css";
 import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import Image from "next/image";
 import {useFormatter, useTranslations} from "next-intl";
@@ -11,11 +12,9 @@ import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 import {Fragment} from "react";
 
 const NOVA_POSHTA_DELIVERY_TYPE = {
-    WAREHOUSE: 'warehouse',
+    OFFICE: 'office',
     COURIER: "courier"
 };
-
-const INPUT_STYLE = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white";
 
 export default function CheckoutView() {
     const t = useTranslations('CheckoutPage');
@@ -54,12 +53,13 @@ export default function CheckoutView() {
             <div className="py-1">
                 {drawLabel(t("deliveryCity"))}
                 <AutoComplete
+                    id="city_name"
                     placeholder={t("cityPlaceholder")}
                     itemName={cityName}
                     setItemName={setCityName}
                     searchData={searchDataCity}
                     minLength={3}
-                    className={INPUT_STYLE}
+                    className="inputField"
                     onUserInput={async (input) => {
                         const result: {
                             data: {
@@ -70,7 +70,7 @@ export default function CheckoutView() {
                             modelName: "Address",
                             calledMethod: "getSettlements",
                             methodProperties: {
-                                FindByString: cityName,
+                                FindByString: input,
                                 Warehouse: "1",
                             }
                         });
@@ -80,7 +80,6 @@ export default function CheckoutView() {
                         })));
                     }}
                 ></AutoComplete>
-                <input required className="hidden" type="text" id="city_name" name="city_name" value={cityName} onChange={() => {}}></input>
             </div>
         )
     };
@@ -92,21 +91,21 @@ export default function CheckoutView() {
                 <div className="py-1">
                     {drawLabel(t("firstName"))}
                     <input type="text" id="first_name" name="first_name"
-                           className={INPUT_STYLE}
+                           className="inputField"
                            placeholder="" required minLength={3}>
                     </input>
                 </div>
                 <div className="py-1">
                     {drawLabel(t("lastName"))}
                     <input type="text" id="last_name" name="last_name"
-                           className={INPUT_STYLE}
+                           className="inputField"
                            placeholder="" required minLength={3}>
                     </input>
                 </div>
                 <div className="py-1">
                     {drawLabel(t("phoneNumber"))}
                     <input type="tel" id="phone_number" name="phone_number"
-                           className={INPUT_STYLE}
+                           className="inputField"
                            placeholder="0937562957" pattern="[0-9]{10}" required>
                     </input>
                 </div>
@@ -130,7 +129,7 @@ export default function CheckoutView() {
                         height="20"
                     ></Image>
                     {[
-                        { value: NOVA_POSHTA_DELIVERY_TYPE.WAREHOUSE, title: "whereToDeliver:office" },
+                        { value: NOVA_POSHTA_DELIVERY_TYPE.OFFICE, title: "whereToDeliver:office" },
                         { value: NOVA_POSHTA_DELIVERY_TYPE.COURIER, title: "whereToDeliver:courier" },
                     ].map(item => (
                         <label key={item.value} className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
@@ -144,17 +143,18 @@ export default function CheckoutView() {
                         </label>
                     ))}
                 </div>
-                {selectedNovaPoshtaDeliveryType === NOVA_POSHTA_DELIVERY_TYPE.WAREHOUSE && (<Fragment>
+                {selectedNovaPoshtaDeliveryType === NOVA_POSHTA_DELIVERY_TYPE.OFFICE && (<Fragment>
                     {drawCityInput()}
                     <div className="py-1">
                         {drawLabel(t("deliveryOffice"))}
                         <AutoComplete
+                            id="office_name"
                             placeholder={t("officePlaceholder")}
                             itemName={officeName}
                             setItemName={setOfficeName}
                             searchData={searchDataOffice}
                             minLength={1}
-                            className={INPUT_STYLE}
+                            className="inputField"
                             onUserInput={async (input) => {
                                 const result: {
                                     data: {
@@ -166,7 +166,7 @@ export default function CheckoutView() {
                                     modelName: "Address",
                                     calledMethod: "getWarehouses",
                                     methodProperties: {
-                                        WarehouseId: officeName
+                                        WarehouseId: input
                                     }
                                 });
                                 setSearchDataOffice(result.data.map(item => ({
@@ -175,7 +175,6 @@ export default function CheckoutView() {
                                 })));
                             }}
                         ></AutoComplete>
-                        <input required className="hidden" type="text" id="office_name" name="office_name" value={officeName} onChange={() => {}}></input>
                     </div>
                 </Fragment>)}
                 {selectedNovaPoshtaDeliveryType === NOVA_POSHTA_DELIVERY_TYPE.COURIER &&(<Fragment>
@@ -183,7 +182,7 @@ export default function CheckoutView() {
                     <div className="py-1">
                         {drawLabel(t("street"))}
                         <input type="text" id="street" name="street"
-                               className={INPUT_STYLE}
+                               className="inputField"
                                placeholder={t("streetPlaceholder")} required minLength={3}>
                         </input>
                     </div>
@@ -191,14 +190,14 @@ export default function CheckoutView() {
                         <div className="w-1/2">
                             {drawLabel(t("building"))}
                             <input type="text" id="building" name="building"
-                                   className={INPUT_STYLE}
+                                   className="inputField"
                                    placeholder={t("buildingPlaceholder")} required minLength={3}>
                             </input>
                         </div>
                         <div className="w-1/2">
                             {drawLabel(t("room"))}
                             <input type="text" id="room" name="room"
-                                   className={INPUT_STYLE}
+                                   className="inputField"
                                    placeholder={t("roomPlaceholder")} required minLength={1}>
                             </input>
                         </div>

@@ -10,6 +10,7 @@ export default function Autocomplete({
     placeholder,
     minLength,
     className,
+    id,
 }: {
     itemName: string,
     setItemName: (name: string) => void,
@@ -18,6 +19,7 @@ export default function Autocomplete({
     placeholder: string,
     minLength: number,
     className: string,
+    id: string,
 }) {
     const [isListVisible, setIsListVisible] = React.useState<boolean>(true)
 
@@ -69,6 +71,9 @@ export default function Autocomplete({
 
     return (<Fragment>
         <input
+            id={id}
+            required
+            name={id}
             className={className}
             type="text"
             placeholder={placeholder}
