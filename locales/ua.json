@@ -32,6 +32,13 @@
     "whereToDeliver:courier": "Кур'єр",
     "deliveryCity": "Місто",
     "cityPlaceholder": "Введіть назву міста",
-    "officePlaceholder": "Введіть номер відділення"
+    "deliveryOffice": "Відділення",
+    "officePlaceholder": "Введіть номер відділення",
+    "street": "Вулиця",
+    "streetPlaceholder": "Введіть назву вулиці",
+    "building": "Будинок",
+    "buildingPlaceholder": "Введіть номер будинку",
+    "room": "Квартира",
+    "roomPlaceholder": "Введіть номер квартири"
   }
 }

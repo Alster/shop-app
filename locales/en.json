@@ -32,6 +32,13 @@
     "whereToDeliver:courier": "Courier",
     "deliveryCity": "City",
     "cityPlaceholder": "Enter city name",
-    "officePlaceholder": "Enter office number"
+    "deliveryOffice": "Office",
+    "officePlaceholder": "Enter office number",
+    "street": "Street",
+    "streetPlaceholder": "Enter street name",
+    "building": "Building",
+    "buildingPlaceholder": "Enter building number",
+    "room": "Room",
+    "roomPlaceholder": "Enter room number"
   }
 }

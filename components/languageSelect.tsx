@@ -47,7 +47,7 @@ export default function LanguageSelect() {
     const pathname = usePathname();
     const query = useSearchParams();
     const router = useRouter();
-    console.log(pathname, query.toString(), router)
+    // console.log(pathname, query.toString(), router)
     const url = `${pathname}?${query.toString()}`;
 
     const locale = useLocale();

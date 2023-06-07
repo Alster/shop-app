@@ -1,5 +1,5 @@
 import * as React from 'react'
-import {KeyboardEvent, useEffect} from 'react'
+import {Fragment, KeyboardEvent, useEffect} from 'react'
 import { TListItem, ItemData } from './TListItem'
 
 export default function Autocomplete({
@@ -9,6 +9,7 @@ export default function Autocomplete({
     onUserInput,
     placeholder,
     minLength,
+    className,
 }: {
     itemName: string,
     setItemName: (name: string) => void,
@@ -16,6 +17,7 @@ export default function Autocomplete({
     onUserInput: (name: string) => void,
     placeholder: string,
     minLength: number,
+    className: string,
 }) {
     const [isListVisible, setIsListVisible] = React.useState<boolean>(true)
 
@@ -65,44 +67,40 @@ export default function Autocomplete({
         return () => clearTimeout(timeoutId)
     }, [itemName])
 
-    return (
-        <div className="">
-            <input
-                className="
-                    bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white
-                                        "
-                type="text"
-                placeholder={placeholder}
-                autoComplete="off"
-                value={itemName}
-                onInput={e => {
-                    setItemName(e.currentTarget.value);
-                }}
-                onKeyUp={onKeyUp}
-                onBlur={() => setIsListVisible(false)}
-                onFocus={() => setIsListVisible(true)}
-            />
+    return (<Fragment>
+        <input
+            className={className}
+            type="text"
+            placeholder={placeholder}
+            autoComplete="off"
+            value={itemName}
+            onChange={e => {
+                setItemName(e.currentTarget.value);
+            }}
+            onKeyUp={onKeyUp}
+            onBlur={() => setIsListVisible(false)}
+            onFocus={() => setIsListVisible(true)}
+        />
 
-            {(searchData.length && isListVisible) ? (
-                <div className="w-full absolute">
-                    <div style={{maxHeight: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
-                        <div className="flow-root">
-                            <ul
-                                role="list"
-                                className="divide-y divide-gray-200 dark:divide-gray-700"
-                            >
-                                {searchData.map(e => (
-                                    <TListItem
-                                        key={e.title}
-                                        {...e}
-                                        onItemClick={onItemClick}
-                                    />
-                                ))}
-                            </ul>
-                        </div>
+        {(searchData.length && isListVisible) ? (
+            <div className="w-full absolute">
+                <div style={{maxHeight: "185px", overflowY: "scroll"}} className="max-w-md bg-white rounded-lg border shadow-md dark:bg-gray-800 dark:border-gray-700">
+                    <div className="flow-root">
+                        <ul
+                            role="list"
+                            className="divide-y divide-gray-200 dark:divide-gray-700"
+                        >
+                            {searchData.map(e => (
+                                <TListItem
+                                    key={e.title}
+                                    {...e}
+                                    onItemClick={onItemClick}
+                                />
+                            ))}
+                        </ul>
                     </div>
                 </div>
-            ) : null}
-        </div>
-    )
+            </div>
+        ) : null}
+    </Fragment>)
 }
