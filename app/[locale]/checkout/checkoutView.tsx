@@ -3,7 +3,7 @@
 import "./checkoutView.css";
 import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import Image from "next/image";
-import {useFormatter, useTranslations} from "next-intl";
+import {useFormatter, useLocale, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
 import * as React from "react";
@@ -11,9 +11,11 @@ import {ItemData} from "@/components/TListItem";
 import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 import {Fragment} from "react";
 import {NOVA_POSHTA_DELIVERY_TYPE} from "@/shop-shared/constants/checkout";
+import {CreateOrderItemDataDto} from "@/shop-shared/dto/order/create-order.dto";
 
 export default function CheckoutView() {
     const t = useTranslations('CheckoutPage');
+    const locale = useLocale();
     const format = useFormatter();
     const dispatch = useAppDispatch();
     const reducers = useAppSelector(state => state);
@@ -80,7 +82,7 @@ export default function CheckoutView() {
         )
     };
 
-    return <form className="flex flex-col lg:flex-row" action="/api/order/create" method="post">
+    return <form className="flex flex-col lg:flex-row" action={`${process.env.NEXT_PUBLIC_APP_API_URL}order/create`} method="get">
         <div className="px-2 lg:px-8 flex-auto">
             {drawStepTitle(1, t("contactInfo"))}
             <div className="">
@@ -107,11 +109,12 @@ export default function CheckoutView() {
                 </div>
                 <input className="hidden" type="text" id="items_data" name="items_data" value={
                     JSON.stringify(Object.entries(bagItems).map(([key, value]) => ({
-                        id: value.id,
+                        productId: value.id,
                         attrs: value.attributes,
                         qty: value.quantity,
-                    })))
+                    }) as CreateOrderItemDataDto))
                 } onChange={() => {}}></input>
+                <input className="hidden" type="text" id="lang" name="lang" value={locale} onChange={() => {}}></input>
             </div>
             <HorizontalLine></HorizontalLine>
             {drawStepTitle(2, t("delivery"))}
