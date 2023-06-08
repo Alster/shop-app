@@ -115,6 +115,7 @@ export default function CheckoutView() {
                     }) as CreateOrderItemDataDto))
                 } onChange={() => {}}></input>
                 <input className="hidden" type="text" id="lang" name="lang" value={locale} onChange={() => {}}></input>
+                <input className="hidden" type="text" id="currency" name="currency" value="USD" onChange={() => {}}></input>
             </div>
             <HorizontalLine></HorizontalLine>
             {drawStepTitle(2, t("delivery"))}
