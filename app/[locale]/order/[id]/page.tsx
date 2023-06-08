@@ -18,6 +18,7 @@ export default async function OrderPage({ params, searchParams }: { params: Para
         <p>Phone number {order.phoneNumber}</p>
         <p>Items data {JSON.stringify(order.itemsData, null, 2)}</p>
         <p>Delivery {JSON.stringify(order.delivery, null, 2)}</p>
+        <p>Total price {order.totalPrice}</p>
         <p>Status {order.status}</p>
         <p>Created at {order.createDate}</p>
     </div>

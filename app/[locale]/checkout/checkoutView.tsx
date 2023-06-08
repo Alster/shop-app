@@ -137,6 +137,7 @@ export default function CheckoutView() {
                                 type="radio"
                                 value={item.value}
                                 onChange={() => setSelectedNovaPoshtaDeliveryType(item.value)}
+                                checked={item.value === selectedNovaPoshtaDeliveryType}
                                 required
                             /> {t(item.title)}
                         </label>
