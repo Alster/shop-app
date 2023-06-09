@@ -4,18 +4,15 @@ import {IBagItem} from "@/utils/bag/IBagItem";
 import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
 import Link from "next-intl/link";
 import {useEffect} from "react";
-import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import {ShoppingBagIcon} from "@heroicons/react/24/outline";
-import {bagSlice} from "@/utils/store/bagSlice";
+import {useBagStore, mergeBagStore} from "@/utils/bag/staticStore";
 
 export default function HeaderBagButton() {
-    const dispatch = useAppDispatch();
-    const reducers = useAppSelector(state => state);
-    const bagItems = reducers.bag;
+    const bagItems = useBagStore();
 
     useEffect(() => {
         const newBagItems: Record<string, IBagItem> = JSON.parse(localStorage.getItem(LOCAL_STORAGE_BAG_KEY) || "{}");
-        dispatch(bagSlice.actions.merge(newBagItems));
+        mergeBagStore(newBagItems);
     },[]);
 
     return <Link href="/bag"

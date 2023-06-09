@@ -13,14 +13,13 @@ import {usePathname} from "next-intl/client";
 import * as qs from "qs";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import {IBagItem} from "@/utils/bag/IBagItem";
-import {useAppDispatch} from "@/utils/store/store";
 import Modal from "@/components/modal";
 import {ShoppingBagIcon, CheckIcon} from "@heroicons/react/24/outline";
-import {bagSlice} from "@/utils/store/bagSlice";
 import {ExchangeState} from "@/utils/exchange/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/utils/exchange/formatPrice";
 import {doExchange} from "@/utils/exchange/doExchange";
+import {addToBagStore} from "@/utils/bag/staticStore";
 
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
@@ -193,8 +192,6 @@ export default function ProductPage({product, attributes, categories, pageQuery,
         </div>
     };
 
-    const dispatch = useAppDispatch();
-
     const addToBag = () => {
         const attribute = attributes.find(attr => SIZE_ATTRS.includes(attr.key as ATTRIBUTES));
         if (!attribute) {
@@ -221,7 +218,7 @@ export default function ProductPage({product, attributes, categories, pageQuery,
             quantity: 1,
         };
 
-        dispatch(bagSlice.actions.add(bagItem));
+        addToBagStore(bagItem);
     };
 
     const buyNow = () => {

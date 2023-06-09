@@ -1,7 +1,6 @@
 "use client"
 
 import "./checkoutView.css";
-import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import Image from "next/image";
 import {useFormatter, useLocale, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
@@ -16,6 +15,7 @@ import {ExchangeState} from "@/utils/exchange/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/utils/exchange/formatPrice";
 import {doExchange} from "@/utils/exchange/doExchange";
+import {useBagStore} from "@/utils/bag/staticStore";
 
 export default function CheckoutView({ exchangeState, currency }: {
     exchangeState: ExchangeState,
@@ -24,9 +24,7 @@ export default function CheckoutView({ exchangeState, currency }: {
     const t = useTranslations('CheckoutPage');
     const locale = useLocale();
     const format = useFormatter();
-    const dispatch = useAppDispatch();
-    const reducers = useAppSelector(state => state);
-    const bagItems = reducers.bag;
+    const bagItems = useBagStore();
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 

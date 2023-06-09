@@ -1,19 +1,18 @@
 "use client"
 
-import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
 import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {ReactElement} from "react";
+import {ReactElement, useReducer} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import Link from "next-intl/link";
 import HorizontalLine from "@/components/horizontalLine";
-import {bagSlice} from "@/utils/store/bagSlice";
 import {ExchangeState} from "@/utils/exchange/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/utils/exchange/formatPrice";
 import {doExchange} from "@/utils/exchange/doExchange";
+import {useBagStore, removeFromBagStore} from "@/utils/bag/staticStore";
 
 export default function BagView({ exchangeState, currency }: {
     exchangeState: ExchangeState,
@@ -21,9 +20,7 @@ export default function BagView({ exchangeState, currency }: {
 }) {
     const t = useTranslations('BagPage');
     const format = useFormatter();
-    const dispatch = useAppDispatch();
-    const reducers = useAppSelector(state => state);
-    const bagItems = reducers.bag;
+    const bagItems = useBagStore();
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 
@@ -68,7 +65,7 @@ export default function BagView({ exchangeState, currency }: {
                         <button
                             className=""
                             onClick={() => {
-                                dispatch(bagSlice.actions.remove(key))
+                                removeFromBagStore(key)
                             }}
                         ><TrashIcon className="h-6 w-6 text-gray-500" />
                         </button>
