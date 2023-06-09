@@ -101,7 +101,7 @@ export default function BagView({ exchangeState, currency }: {
                 .map(([key, bagItem]) => drawItem(key, bagItem))
                 .reduce((prev, elem) => {
                     if (prev.length > 0) {
-                        prev.push(<HorizontalLine></HorizontalLine>);
+                        prev.push(<HorizontalLine key={Math.random()}></HorizontalLine>);
                     }
                     prev.push(elem);
                     return prev;
