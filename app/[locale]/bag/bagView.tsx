@@ -3,8 +3,8 @@
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
-import {MinusSmallIcon, PlusSmallIcon, ShoppingBagIcon, TrashIcon} from "@heroicons/react/24/outline";
-import {ReactElement, useReducer} from "react";
+import {TrashIcon} from "@heroicons/react/24/outline";
+import {ReactElement} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import Link from "next-intl/link";
 import HorizontalLine from "@/components/horizontalLine";
