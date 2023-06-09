@@ -49,17 +49,6 @@ export default function BagView({ exchangeState, currency }: {
                 <div className="flex-auto flex flex-wrap">
                     <div className="flex-auto">
                         <div className="font-semibold text-lg">{bagItem.title}</div>
-                        <div className="text-md flex text-slate-500">
-                            <div className="text-sm">{t("color")}:</div>
-                            <div
-                                style={{backgroundColor: bagItem.attributes[ATTRIBUTES.COLOR][0]}}
-                                className="ml-2 w-6 h-6 border-2 border-gray-300 dark:border-gray-700"
-                            ></div>
-                        </div>
-                        <div>
-                            <span className="text-slate-500 text-sm">{t("size")}</span>:
-                            <span className="font-bold pl-2">{drawSize(bagItem)}</span>
-                        </div>
                     </div>
                     <div>
                         <button
@@ -72,20 +61,25 @@ export default function BagView({ exchangeState, currency }: {
                     </div>
                 </div>
                 <div className="flex flex-wrap">
-                    <div className="flex-auto flex">
-                        <button
-                            className="bg-slate-200 dark:bg-slate-400 rounded-full"
-                        >
-                            <MinusSmallIcon className="h-6 w-6 text-black" />
-                        </button>
-                        <div className="pl-4 pr-4 font-bold text-lg">{bagItem.quantity}</div>
-                        <button
-                            className="bg-slate-200 dark:bg-slate-400 rounded-full"
-                        >
-                            <PlusSmallIcon className="h-6 w-6 text-black" />
-                        </button>
+                    <div className="flex-auto">
+                        <div className="text-md flex text-slate-500">
+                            <div className="w-20 text-sm">{t("color")}:</div>
+                            <div
+                                style={{backgroundColor: bagItem.attributes[ATTRIBUTES.COLOR][0]}}
+                                className="ml-2 w-6 h-6 border-2 border-gray-300 dark:border-gray-700"
+                            ></div>
+                        </div>
+                        <div className="flex">
+                            <span className="w-20 text-slate-500 text-sm">{t("size")}</span>
+                            <span className="font-bold pl-2">{drawSize(bagItem)}</span>
+                        </div>
                     </div>
-                    <div className="font-bold text-lg">{formatPrice(doExchange(CURRENCY.UAH, currency, bagItem.price, exchangeState), currency)}</div>
+                    <div className="font-bold text-lg flex flex-wrap flex-col">
+                        <div className="flex-auto"></div>
+                        <div className="flex">
+                            {formatPrice(doExchange(CURRENCY.UAH, currency, bagItem.price, exchangeState), currency)}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>;
