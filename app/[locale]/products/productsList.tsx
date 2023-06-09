@@ -1,7 +1,7 @@
 "use client"
 
-import {useEffect, useState} from "react";
-import {useTranslations, useFormatter, useLocale} from 'next-intl';
+import {useState} from "react";
+import {useFormatter, useLocale, useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {fetchProducts, ProductsListType} from "@/utils/fetchProducts";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
@@ -9,15 +9,24 @@ import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 import Image from "next/image";
 import {ProductDto} from "@/shop-shared/dto/product/product.dto";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
+import {ExchangeState} from "@/utils/exchange/helpers";
+import {doExchange} from "@/utils/exchange/doExchange";
+import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {getCurrencyClient} from "@/utils/exchange/getCurrencyClient";
+import {formatPrice} from "@/utils/exchange/formatPrice";
 
-export default function ProductsList({defaultList, attributes, categories}: {
+export default function ProductsList({ defaultList, attributes, categories, exchangeState, currency }: {
     defaultList: ProductsListType,
     attributes: AttributeDto[],
     categories: CategoryDto[],
+    exchangeState: ExchangeState,
+    currency: CURRENCY,
 }) {
     const t = useTranslations('ProductsList');
     const format = useFormatter();
     const locale = useLocale();
+    // const currency = getCurrencyClient();
+    // console.log(`ProductsList: currency=${currency}`);
 
     const [products, setProducts] = useState<ProductsListType>(defaultList);
 
@@ -87,7 +96,7 @@ export default function ProductsList({defaultList, attributes, categories}: {
                                 {product.title}
                             </h1>
                             <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                                ${product.price}
+                                {formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}
                             </div>
                         </div>
                     </div>

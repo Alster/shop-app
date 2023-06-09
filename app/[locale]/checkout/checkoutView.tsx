@@ -12,8 +12,15 @@ import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 import {Fragment} from "react";
 import {NOVA_POSHTA_DELIVERY_TYPE} from "@/shop-shared/constants/checkout";
 import {CreateOrderItemDataDto} from "@/shop-shared/dto/order/create-order.dto";
+import {ExchangeState} from "@/utils/exchange/helpers";
+import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {formatPrice} from "@/utils/exchange/formatPrice";
+import {doExchange} from "@/utils/exchange/doExchange";
 
-export default function CheckoutView() {
+export default function CheckoutView({ exchangeState, currency }: {
+    exchangeState: ExchangeState,
+    currency: CURRENCY,
+}) {
     const t = useTranslations('CheckoutPage');
     const locale = useLocale();
     const format = useFormatter();
@@ -210,9 +217,15 @@ export default function CheckoutView() {
             <div className="text-lg flex">
                 <div className="flex-auto">{t("totalPrice")}:</div>
                 <div className="font-bold">{
-                    format.number(
-                        sum(Object.values(bagItems).map(item => item.price)),
-                        {style: 'currency', currency: 'USD'})
+                    formatPrice(
+                        doExchange(
+                            CURRENCY.UAH,
+                            currency,
+                            sum(Object.values(bagItems).map(item => item.price)),
+                            exchangeState
+                        ),
+                        currency
+                    )
                 }</div>
             </div>
             <hr className="border-gray-300 dark:border-gray-700 m-4" />

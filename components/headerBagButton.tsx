@@ -4,8 +4,9 @@ import {IBagItem} from "@/utils/bag/IBagItem";
 import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
 import Link from "next-intl/link";
 import {useEffect} from "react";
-import {bagSlice, useAppDispatch, useAppSelector} from "@/utils/store/store";
+import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import {ShoppingBagIcon} from "@heroicons/react/24/outline";
+import {bagSlice} from "@/utils/store/bagSlice";
 
 export default function HeaderBagButton() {
     const dispatch = useAppDispatch();

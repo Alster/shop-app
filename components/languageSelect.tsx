@@ -5,6 +5,7 @@ import {usePathname, useRouter} from "next-intl/client";
 import {useSearchParams} from "next/navigation";
 import {Fragment, ReactElement, useState} from "react";
 import {useLocale} from "next-intl";
+import {ChevronDownIcon} from "@heroicons/react/20/solid";
 
 interface DropdownListItemInterface {
     key: string,
@@ -43,7 +44,7 @@ const LANGUAGES_LIST: DropdownListItemInterface[] = [
     }
 ];
 
-export default function LanguageSelect() {
+export default function LanguageSelect({ className }: { className?: string }) {
     const pathname = usePathname();
     const query = useSearchParams();
     const router = useRouter();
@@ -86,14 +87,15 @@ export default function LanguageSelect() {
         </Fragment>
     };
 
-    return <div className="pt-4">
+    return <div className={className}>
         {!isListOpen && (
             <button
+                className="border border-white"
                 type="button"
                 onClick={toggleList}
             >
                 <div className="flex flex-wrap text-white">
-                    {drawItem(selectedLanguage)}
+                    <ChevronDownIcon className="pt-1 h-7 w-7 text-white inline-block" /> {drawItem(selectedLanguage)}
                 </div>
             </button>
         )}

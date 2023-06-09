@@ -13,21 +13,27 @@ import {usePathname} from "next-intl/client";
 import * as qs from "qs";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import {IBagItem} from "@/utils/bag/IBagItem";
-import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
-import {bagSlice, useAppDispatch, useAppSelector} from "@/utils/store/store";
+import {useAppDispatch} from "@/utils/store/store";
 import Modal from "@/components/modal";
 import {ShoppingBagIcon, CheckIcon} from "@heroicons/react/24/outline";
+import {bagSlice} from "@/utils/store/bagSlice";
+import {ExchangeState} from "@/utils/exchange/helpers";
+import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {formatPrice} from "@/utils/exchange/formatPrice";
+import {doExchange} from "@/utils/exchange/doExchange";
 
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
-export default function ProductPage({product, attributes, categories, pageQuery }: {
+export default function ProductPage({product, attributes, categories, pageQuery, exchangeState, currency }: {
     product: ProductDto,
     attributes: AttributeDto[],
     categories: CategoryDto[],
     pageQuery: {
-        [ATTRIBUTES.COLOR]: string
+        [ATTRIBUTES.COLOR]: string,
     },
+    exchangeState: ExchangeState,
+    currency: CURRENCY,
 }) {
     const t = useTranslations('ProductsPage');
     const format = useFormatter();
@@ -288,7 +294,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                     {product.title}
                 </h1>
                 <div className="mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">
-                    ${product.price}
+                    {formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}
                 </div>
 
                 <div className="mt-4">
@@ -317,7 +323,7 @@ export default function ProductPage({product, attributes, categories, pageQuery 
                         </span>
                         <span className="mt-4 ml-2">
                             {t("bAdd")}
-                            <span className="ml-2">{format.number(product.price, {style: 'currency', currency: 'USD'})}</span>
+                            <span className="ml-2">{formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}</span>
                         </span>
                     </button>
                     <button

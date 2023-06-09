@@ -1,6 +1,6 @@
 "use client"
 
-import {bagSlice, useAppDispatch, useAppSelector} from "@/utils/store/store";
+import {useAppDispatch, useAppSelector} from "@/utils/store/store";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
@@ -9,8 +9,16 @@ import {ReactElement} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import Link from "next-intl/link";
 import HorizontalLine from "@/components/horizontalLine";
+import {bagSlice} from "@/utils/store/bagSlice";
+import {ExchangeState} from "@/utils/exchange/helpers";
+import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {formatPrice} from "@/utils/exchange/formatPrice";
+import {doExchange} from "@/utils/exchange/doExchange";
 
-export default function BagView() {
+export default function BagView({ exchangeState, currency }: {
+    exchangeState: ExchangeState,
+    currency: CURRENCY,
+}) {
     const t = useTranslations('BagPage');
     const format = useFormatter();
     const dispatch = useAppDispatch();
@@ -80,7 +88,7 @@ export default function BagView() {
                             <PlusSmallIcon className="h-6 w-6 text-black" />
                         </button>
                     </div>
-                    <div className="font-bold text-lg">{format.number(bagItem.price, {style: 'currency', currency: 'USD'})}</div>
+                    <div className="font-bold text-lg">{formatPrice(doExchange(CURRENCY.UAH, currency, bagItem.price, exchangeState), currency)}</div>
                 </div>
             </div>
         </div>;
@@ -104,9 +112,15 @@ export default function BagView() {
             <div className="text-lg flex">
                 <div className="flex-auto">{t("totalPrice")}:</div>
                 <div className="font-bold">{
-                    format.number(
-                        sum(Object.values(bagItems).map(item => item.price)),
-                        {style: 'currency', currency: 'USD'})
+                    formatPrice(
+                        doExchange(
+                            CURRENCY.UAH,
+                            currency,
+                            sum(Object.values(bagItems).map(item => item.price)),
+                            exchangeState
+                        ),
+                        currency
+                    )
                 }</div>
             </div>
             <HorizontalLine></HorizontalLine>

@@ -2,10 +2,13 @@ import LanguageSelect from "@/components/languageSelect";
 import Link from "next-intl/link";
 import HeaderBagButton from "@/components/headerBagButton";
 import {HeartIcon} from "@heroicons/react/24/outline";
+import {CurrencyExchangeLoader} from "@/components/currencyExchangeLoader";
+import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
 
-export default function Header() {
+export default async function Header() {
     return <header className="flex bg-purple-500">
-        <LanguageSelect></LanguageSelect>
+        <LanguageSelect className="pt-4"></LanguageSelect>
+        <CurrencyExchangeLoader className="pt-4 pl-2"></CurrencyExchangeLoader>
         <div className="flex gap-2 ml-auto">
             <Link href="/likes"
                 className="
