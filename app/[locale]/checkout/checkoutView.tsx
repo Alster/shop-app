@@ -62,6 +62,7 @@ export default function CheckoutView({ exchangeState, currency }: {
                     setItemName={setCityName}
                     searchData={searchDataCity}
                     minLength={3}
+                    maxLength={30}
                     className="inputField"
                     onUserInput={async (input) => {
                         const result: {
@@ -160,6 +161,7 @@ export default function CheckoutView({ exchangeState, currency }: {
                             setItemName={setOfficeName}
                             searchData={searchDataOffice}
                             minLength={1}
+                            maxLength={30}
                             className="inputField"
                             onUserInput={async (input) => {
                                 const result: {
@@ -189,7 +191,11 @@ export default function CheckoutView({ exchangeState, currency }: {
                         {drawLabel(t("street"))}
                         <input type="text" id="street" name="street"
                                className="inputField"
-                               placeholder={t("streetPlaceholder")} required minLength={3}>
+                               placeholder={t("streetPlaceholder")}
+                               required
+                               minLength={3}
+                               maxLength={30}
+                        >
                         </input>
                     </div>
                     <div className="py-1 flex gap-2">
@@ -197,14 +203,22 @@ export default function CheckoutView({ exchangeState, currency }: {
                             {drawLabel(t("building"))}
                             <input type="text" id="building" name="building"
                                    className="inputField"
-                                   placeholder={t("buildingPlaceholder")} required minLength={3}>
+                                   placeholder={t("buildingPlaceholder")}
+                                   required
+                                   minLength={1}
+                                   maxLength={10}
+                            >
                             </input>
                         </div>
                         <div className="w-1/2">
                             {drawLabel(t("room"))}
                             <input type="text" id="room" name="room"
                                    className="inputField"
-                                   placeholder={t("roomPlaceholder")} required minLength={1}>
+                                   placeholder={t("roomPlaceholder")}
+                                   required
+                                   minLength={1}
+                                   maxLength={10}
+                            >
                             </input>
                         </div>
                     </div>

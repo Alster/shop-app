@@ -9,6 +9,7 @@ export default function Autocomplete({
     onUserInput,
     placeholder,
     minLength,
+    maxLength,
     className,
     id,
 }: {
@@ -18,6 +19,7 @@ export default function Autocomplete({
     onUserInput: (name: string) => void,
     placeholder: string,
     minLength: number,
+    maxLength: number,
     className: string,
     id: string,
 }) {
@@ -58,7 +60,7 @@ export default function Autocomplete({
     }
 
     useEffect(() => {
-        if (itemName === undefined || !itemName.trim() || itemName.length < minLength) { // skip initial useEffect
+        if (itemName === undefined || !itemName.trim() || itemName.length < minLength || itemName.length > maxLength) { // skip initial useEffect
             return
         }
 
@@ -85,6 +87,8 @@ export default function Autocomplete({
             onKeyUp={onKeyUp}
             onBlur={() => setIsListVisible(false)}
             onFocus={() => setIsListVisible(true)}
+            minLength={minLength}
+            maxLength={maxLength}
         />
 
         {(searchData.length && isListVisible) ? (
