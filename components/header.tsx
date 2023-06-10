@@ -3,7 +3,7 @@ import Link from "next-intl/link";
 import HeaderBagButton from "@/components/headerBagButton";
 import {HeartIcon} from "@heroicons/react/24/outline";
 import {CurrencyExchangeLoader} from "@/components/currencyExchangeLoader";
-import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
+import {getCookieStatic} from "@/utils/exchange/getCookieStatic";
 
 export default async function Header() {
     return <header className="flex bg-purple-500">

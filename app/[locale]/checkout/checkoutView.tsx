@@ -11,10 +11,10 @@ import {fetchNovaPoshta} from "@/utils/fetchNovaPoshta";
 import {Fragment} from "react";
 import {NOVA_POSHTA_DELIVERY_TYPE} from "@/shop-shared/constants/checkout";
 import {CreateOrderItemDataDto} from "@/shop-shared/dto/order/create-order.dto";
-import {ExchangeState} from "@/utils/exchange/helpers";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {formatPrice} from "@/utils/exchange/formatPrice";
-import {doExchange} from "@/utils/exchange/doExchange";
+import {formatPrice} from "@/shop-exchange-shared/formatPrice";
+import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {useBagStore} from "@/utils/bag/staticStore";
 
 export default function CheckoutView({ exchangeState, currency }: {

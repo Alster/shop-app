@@ -2,10 +2,10 @@
 
 import {Fragment, useState} from "react";
 import {CURRENCIES, CURRENCY, CURRENCY_TO_SYMBOL} from "@/shop-shared/constants/exchange";
-import {ExchangeState} from "@/utils/exchange/helpers";
-import {getCookie, setCookie} from "@/utils/exchange/cookieClientHelper";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
+import {getCookie, setCookie} from "@/shop-exchange-shared/cookieClientHelper";
 import {useRouter} from "next-intl/client";
-import {getCurrencyClient} from "@/utils/exchange/getCurrencyClient";
+import {getCurrencyClient} from "@/shop-exchange-shared/getCurrencyClient";
 import {ChevronDownIcon} from "@heroicons/react/20/solid";
 
 interface DropdownListItemInterface {

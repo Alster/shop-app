@@ -1,11 +1,11 @@
 import CheckoutView from "@/app/[locale]/checkout/checkoutView";
-import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
+import {getCookieStatic} from "@/utils/exchange/getCookieStatic";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {getStaticExchange} from "@/utils/exchange/staticStore";
+import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
+import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
 
 export default async function CheckoutPage() {
-    const currencyStatic = getCookieStatic("currency");
-    const currency = currencyStatic?.value as CURRENCY || CURRENCY.UAH;
+    const currency = getCurrencyStatic();
 
     const [exchangeState ] = await Promise.all([
         getStaticExchange(),

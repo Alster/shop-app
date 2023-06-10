@@ -1,14 +1,9 @@
 import BagView from "@/app/[locale]/bag/bagView";
-import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
-import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {fetchProduct} from "@/utils/fetchProduct";
-import {fetchAttributes} from "@/utils/fetchAttributes";
-import {fetchCategoryList} from "@/utils/fetchCategoryList";
-import {getStaticExchange} from "@/utils/exchange/staticStore";
+import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
+import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
 
 export default async function BagPage() {
-    const currencyStatic = getCookieStatic("currency");
-    const currency = currencyStatic?.value as CURRENCY || CURRENCY.UAH;
+    const currency = getCurrencyStatic();
 
     const [exchangeState ] = await Promise.all([
         getStaticExchange(),

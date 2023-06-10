@@ -15,10 +15,10 @@ import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import {IBagItem} from "@/utils/bag/IBagItem";
 import Modal from "@/components/modal";
 import {ShoppingBagIcon, CheckIcon} from "@heroicons/react/24/outline";
-import {ExchangeState} from "@/utils/exchange/helpers";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {formatPrice} from "@/utils/exchange/formatPrice";
-import {doExchange} from "@/utils/exchange/doExchange";
+import {formatPrice} from "@/shop-exchange-shared/formatPrice";
+import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {addToBagStore} from "@/utils/bag/staticStore";
 
 

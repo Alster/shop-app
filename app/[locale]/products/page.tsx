@@ -5,10 +5,9 @@ import {fetchAttributes} from "@/utils/fetchAttributes";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {fetchCategoryList} from "@/utils/fetchCategoryList";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
-import {getStaticExchange} from "@/utils/exchange/staticStore";
-import {ExchangeState} from "@/utils/exchange/helpers";
-import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
-import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
+import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
 
 export default async function ProductsPage() {
     const locale = useLocale();
@@ -36,8 +35,7 @@ function ProductsContent ({ products, attributes, categories, exchangeState }: {
     exchangeState: ExchangeState,
 }) {
     const t = useTranslations('ProductsList');
-    const currencyStatic = getCookieStatic("currency");
-    const currency = currencyStatic?.value as CURRENCY || CURRENCY.UAH;
+    const currency = getCurrencyStatic();
 
     return <div>
         <ProductsList

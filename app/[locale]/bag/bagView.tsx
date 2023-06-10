@@ -8,10 +8,10 @@ import {ReactElement} from "react";
 import {useFormatter, useTranslations} from "next-intl";
 import Link from "next-intl/link";
 import HorizontalLine from "@/components/horizontalLine";
-import {ExchangeState} from "@/utils/exchange/helpers";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {formatPrice} from "@/utils/exchange/formatPrice";
-import {doExchange} from "@/utils/exchange/doExchange";
+import {formatPrice} from "@/shop-exchange-shared/formatPrice";
+import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {useBagStore, removeFromBagStore} from "@/utils/bag/staticStore";
 
 export default function BagView({ exchangeState, currency }: {

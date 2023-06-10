@@ -9,11 +9,11 @@ import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 import Image from "next/image";
 import {ProductDto} from "@/shop-shared/dto/product/product.dto";
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
-import {ExchangeState} from "@/utils/exchange/helpers";
-import {doExchange} from "@/utils/exchange/doExchange";
+import {ExchangeState} from "@/shop-exchange-shared/helpers";
+import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {getCurrencyClient} from "@/utils/exchange/getCurrencyClient";
-import {formatPrice} from "@/utils/exchange/formatPrice";
+import {getCurrencyClient} from "@/shop-exchange-shared/getCurrencyClient";
+import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 
 export default function ProductsList({ defaultList, attributes, categories, exchangeState, currency }: {
     defaultList: ProductsListType,

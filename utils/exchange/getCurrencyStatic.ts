@@ -1,6 +1,7 @@
-import {cookies} from "next/headers";
+import {CURRENCY} from "@/shop-shared/constants/exchange";
+import {getCookieStatic} from "@/utils/exchange/getCookieStatic";
 
-export function getCookieStatic(key: string) {
-    const cookieStore = cookies()
-    return cookieStore.get(key);
+export function getCurrencyStatic() {
+    const currencyStatic = getCookieStatic("currency");
+    return currencyStatic?.value as CURRENCY || CURRENCY.UAH;
 }

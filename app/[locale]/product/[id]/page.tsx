@@ -1,12 +1,10 @@
 import {useLocale} from "next-intl";
-import {fetchProducts} from "@/utils/fetchProducts";
 import {fetchAttributes} from "@/utils/fetchAttributes";
 import {fetchCategoryList} from "@/utils/fetchCategoryList";
 import {fetchProduct} from "@/utils/fetchProduct";
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
-import {getCookieStatic} from "@/utils/exchange/getCurrencyStatic";
-import {CURRENCY} from "@/shop-shared/constants/exchange";
-import {getStaticExchange} from "@/utils/exchange/staticStore";
+import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
+import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
 
 export interface Params_ProductId {
     id: string
@@ -14,8 +12,7 @@ export interface Params_ProductId {
 
 export default async function Product({ params, searchParams }: { params: Params_ProductId, searchParams: any }) {
     const locale = useLocale();
-    const currencyStatic = getCookieStatic("currency");
-    const currency = currencyStatic?.value as CURRENCY || CURRENCY.UAH;
+    const currency = getCurrencyStatic();
 
     const [product, attributes, categories, exchangeState ] = await Promise.all([
         fetchProduct(params.id, locale),
