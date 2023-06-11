@@ -13,6 +13,7 @@ import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {useBagStore, removeFromBagStore} from "@/utils/bag/staticStore";
+import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 
 export default function BagView({ exchangeState, currency }: {
     exchangeState: ExchangeState,
@@ -77,7 +78,7 @@ export default function BagView({ exchangeState, currency }: {
                     <div className="font-bold text-lg flex flex-wrap flex-col">
                         <div className="flex-auto"></div>
                         <div className="flex">
-                            {formatPrice(doExchange(CURRENCY.UAH, currency, bagItem.price, exchangeState), currency)}
+                            {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, bagItem.price, exchangeState)), currency)}
                         </div>
                     </div>
                 </div>
@@ -104,11 +105,13 @@ export default function BagView({ exchangeState, currency }: {
                 <div className="flex-auto">{t("totalPrice")}:</div>
                 <div className="font-bold">{
                     formatPrice(
-                        doExchange(
-                            CURRENCY.UAH,
-                            currency,
-                            sum(Object.values(bagItems).map(item => item.price)),
-                            exchangeState
+                        moneySmallToBig(
+                            doExchange(
+                                CURRENCY.UAH,
+                                currency,
+                                sum(Object.values(bagItems).map(item => item.price as number)),
+                                exchangeState
+                            )
                         ),
                         currency
                     )

@@ -14,6 +14,7 @@ import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {getCurrencyClient} from "@/shop-exchange-shared/getCurrencyClient";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
+import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 
 export default function ProductsList({ defaultList, attributes, categories, exchangeState, currency }: {
     defaultList: ProductsListType,
@@ -96,7 +97,7 @@ export default function ProductsList({ defaultList, attributes, categories, exch
                                 {product.title}
                             </h1>
                             <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                                {formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}
+                                {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
                             </div>
                         </div>
                     </div>

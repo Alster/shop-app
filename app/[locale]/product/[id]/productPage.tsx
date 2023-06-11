@@ -20,6 +20,7 @@ import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {addToBagStore} from "@/utils/bag/staticStore";
+import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
@@ -291,7 +292,7 @@ export default function ProductPage({product, attributes, categories, pageQuery,
                     {product.title}
                 </h1>
                 <div className="mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">
-                    {formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}
+                    {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
                 </div>
 
                 <div className="mt-4">
@@ -320,7 +321,7 @@ export default function ProductPage({product, attributes, categories, pageQuery,
                         </span>
                         <span className="mt-4 ml-2">
                             {t("bAdd")}
-                            <span className="ml-2">{formatPrice(doExchange(CURRENCY.UAH, currency, product.price, exchangeState), currency)}</span>
+                            <span className="ml-2">{formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}</span>
                         </span>
                     </button>
                     <button
