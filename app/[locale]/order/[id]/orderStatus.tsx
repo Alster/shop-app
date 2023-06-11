@@ -16,16 +16,18 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }){
         const timeoutId = setTimeout(async () => {
             const status = await fetchOrderStatus(order.id, locale);
             setStatus(status);
-            if (([
-                ORDER_STATUS.PAID,
-                ORDER_STATUS.FINISHED,
-                ORDER_STATUS.FAILED,
-            ] as OrderStatus[]).includes(status)){
-                const itemsToRemove = order.itemsData.map(item => createBagItemKey(item));
-                removeFromBagStore(...itemsToRemove);
-                return;
+
+            if (status === ORDER_STATUS.PAID) {
+                const alreadyBuyItems = order.itemsData.map(item => createBagItemKey(item));
+                removeFromBagStore(...alreadyBuyItems);
             }
-            queueFetch();
+
+            if (([
+                ORDER_STATUS.CREATED,
+                ORDER_STATUS.PENDING,
+            ] as OrderStatus[]).includes(status)){
+                queueFetch();
+            }
         }, 1000);
         setTimeoutId(timeoutId);
     }
