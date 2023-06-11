@@ -14,7 +14,7 @@ export default async function Product({ params, searchParams }: { params: Params
     const locale = useLocale();
     const currency = getCurrencyStatic();
 
-    const [product, attributes, categories, exchangeState ] = await Promise.all([
+    const [maybeProduct, attributes, categories, exchangeState ] = await Promise.all([
         fetchProduct(params.id, locale),
         fetchAttributes(locale),
         fetchCategoryList(locale),
@@ -22,7 +22,7 @@ export default async function Product({ params, searchParams }: { params: Params
     ]);
 
     return <ProductPage
-        product={product}
+        maybeProduct={maybeProduct}
         attributes={attributes}
         categories={categories}
         pageQuery={searchParams}

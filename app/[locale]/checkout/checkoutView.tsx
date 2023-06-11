@@ -116,7 +116,7 @@ export default function CheckoutView({ exchangeState, currency }: {
                 </div>
                 <input className="hidden" type="text" id="items_data" name="items_data" value={
                     JSON.stringify(Object.entries(bagItems).map(([key, value]) => ({
-                        productId: value.id,
+                        productId: value.productId,
                         attrs: value.attributes,
                         qty: value.quantity,
                     }) as CreateOrderItemDataDto))

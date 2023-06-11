@@ -19,6 +19,10 @@ export async function fetchApi<T>(path: string, query: any, options: IFetchOptio
         next: { revalidate: +(process.env.NEXT_PUBLIC_FETCH_REVALIDATE_SEC || "") },
     })
 
+    if (!response.ok) {
+        throw new Error(`Fetch error: ${response.status} ${response.statusText}`);
+    }
+
     if (options.parseMethod === ParseMethod.JSON) {
         return await response.json();
     } else {

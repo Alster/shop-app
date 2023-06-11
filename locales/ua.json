@@ -11,7 +11,8 @@
     "bAdd": "Додати",
     "productAddedToBag": "Товар додано в кошик",
     "goToBag": "Перейти до кошика",
-    "continueShopping": "Продовжити покупки"
+    "continueShopping": "Продовжити покупки",
+    "productNotAvailable": "Товар відсутній"
   },
   "BagPage": {
     "color": "Колір",

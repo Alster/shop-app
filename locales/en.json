@@ -11,7 +11,8 @@
     "bAdd": "Add",
     "productAddedToBag": "Product added to bag",
     "goToBag": "Go to bag",
-    "continueShopping": "Continue shopping"
+    "continueShopping": "Continue shopping",
+    "productNotAvailable": "Product not available"
   },
   "BagPage": {
     "color": "Color",

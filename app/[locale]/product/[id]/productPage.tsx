@@ -2,7 +2,7 @@
 
 import './productPage.css'
 import {ChangeEvent, useState} from "react";
-import {useFormatter, useLocale, useTranslations} from 'next-intl';
+import {useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
@@ -25,8 +25,8 @@ import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
-export default function ProductPage({product, attributes, categories, pageQuery, exchangeState, currency }: {
-    product: ProductDto,
+export default function ProductPage({maybeProduct, attributes, categories, pageQuery, exchangeState, currency }: {
+    maybeProduct: ProductDto | null,
     attributes: AttributeDto[],
     categories: CategoryDto[],
     pageQuery: {
@@ -36,8 +36,6 @@ export default function ProductPage({product, attributes, categories, pageQuery,
     currency: CURRENCY,
 }) {
     const t = useTranslations('ProductsPage');
-    const format = useFormatter();
-    const locale = useLocale();
 
     const [buyButtonClicked, setBuyButtonClicked] = useState(false);
     const [color, setColor] = useState(pageQuery[ATTRIBUTES.COLOR]);
@@ -46,23 +44,14 @@ export default function ProductPage({product, attributes, categories, pageQuery,
     const router = useRouter()
     const pathName = usePathname();
 
-    const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newColor = e.target.value;
-        setColor(newColor);
-        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, [ATTRIBUTES.COLOR]: newColor })}`);
-        refreshSelectableSizeValues();
-    };
+    const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
-    const onSizeChange = (key: string, value: string) => {
-
-    };
-
-    const sizeSelect = (value: string) => {
-        setSelectedSizeValue(value);
-    };
-    const sizeReset = () => {
-        setSelectedSizeValue(null);
-    };
+    if (!maybeProduct || maybeProduct.quantity === 0) {
+        return <div className="text-center">
+            <h1 className="text-4xl">{t('productNotAvailable')}</h1>
+        </div>
+    }
+    const product = maybeProduct;
 
     const selectableSizeValues: Set<string> = new Set();
     const refreshSelectableSizeValues = () => {
@@ -81,6 +70,24 @@ export default function ProductPage({product, attributes, categories, pageQuery,
         }
     };
     refreshSelectableSizeValues();
+
+    const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const newColor = e.target.value;
+        setColor(newColor);
+        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, [ATTRIBUTES.COLOR]: newColor })}`);
+        refreshSelectableSizeValues();
+    };
+
+    const onSizeChange = (key: string, value: string) => {
+
+    };
+
+    const sizeSelect = (value: string) => {
+        setSelectedSizeValue(value);
+    };
+    const sizeReset = () => {
+        setSelectedSizeValue(null);
+    };
 
     const drawAttributeTitle = (title: string, highlightMustSelect: boolean, highlightText: string) => {
         return <div className="text-slate-600 dark:text-slate-300">
@@ -208,7 +215,7 @@ export default function ProductPage({product, attributes, categories, pageQuery,
         }
 
         const bagItem: IBagItem = {
-            id: product.id,
+            productId: product.id,
             title: product.title,
             price: product.price,
             image: "https://picsum.photos/200/200",
@@ -226,10 +233,7 @@ export default function ProductPage({product, attributes, categories, pageQuery,
         addToBag();
     };
 
-    const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
-
     return <div className="flex items-center justify-center">
-
         {isAddProductModalOpen && (
             <Modal>
                 <div className="flex items-center justify-between relative">

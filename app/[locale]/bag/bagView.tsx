@@ -37,19 +37,27 @@ export default function BagView({ exchangeState, currency }: {
     };
 
     const drawItem = (key: string, bagItem: IBagItem) => {
+        const productHref = `/product/${bagItem.productId}`;
         return <div key={key} className="p-1 m-3 flex">
-            <Image
-                className="rounded-2xl"
-                src="https://picsum.photos/200/200"
-                alt={bagItem.title}
-                width={200}
-                height={200}
-                loading="lazy"
-            />
+            <Link
+                href={productHref}
+            >
+                <Image
+                    className="rounded-2xl"
+                    src="https://picsum.photos/200/200"
+                    alt={bagItem.title}
+                    width={300}
+                    height={300}
+                    loading="lazy"
+                />
+            </Link>
             <div className="pl-4 w-full flex flex-wrap flex-col">
                 <div className="flex-auto flex flex-wrap">
                     <div className="flex-auto">
-                        <div className="font-semibold text-lg">{bagItem.title}</div>
+                        <Link
+                            className="font-semibold text-lg"
+                            href={productHref}
+                        >{bagItem.title}</Link>
                     </div>
                     <div>
                         <button

@@ -49,5 +49,5 @@ export const createBagItemKey = (item: IBagItem) => {
     const sortedAttributes = Object.entries(item.attributes);
     sortedAttributes.sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
     const hash = sortedAttributes.map(([key, values]) => `${key}:${values.join(',')}`);
-    return `${item.id}::${hash.join(';')}`;
+    return `${item.productId}::${hash.join(';')}`;
 };
