@@ -63,7 +63,7 @@ export default function CheckoutView({ exchangeState, currency }: {
                     setItemName={setCityName}
                     searchData={searchDataCity}
                     minLength={3}
-                    maxLength={30}
+                    maxLength={300}
                     className="inputField"
                     onUserInput={async (input) => {
                         const result: {
@@ -162,7 +162,7 @@ export default function CheckoutView({ exchangeState, currency }: {
                             setItemName={setOfficeName}
                             searchData={searchDataOffice}
                             minLength={1}
-                            maxLength={30}
+                            maxLength={300}
                             className="inputField"
                             onUserInput={async (input) => {
                                 const result: {

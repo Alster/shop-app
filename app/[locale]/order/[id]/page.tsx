@@ -2,10 +2,9 @@ import {useLocale} from "next-intl";
 import {fetchOrder} from "@/utils/fetchOrder";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
-import {doExchange} from "@/shop-exchange-shared/doExchange";
-import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
 import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
+import OrderStatusIndicator from "@/app/[locale]/order/[id]/orderStatus";
 
 export interface Params_OrderId {
     id: string
@@ -36,7 +35,9 @@ export default async function OrderPage({ params, searchParams }: { params: Para
                 currency
             )
         }</p>
-        <p>Status {order.status}</p>
+        <OrderStatusIndicator
+            order={order}
+        ></OrderStatusIndicator>
         <p>Created at {order.createDate}</p>
     </div>
 }
