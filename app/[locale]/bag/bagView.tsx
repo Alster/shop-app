@@ -5,7 +5,7 @@ import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
 import {TrashIcon} from "@heroicons/react/24/outline";
 import {ReactElement} from "react";
-import {useFormatter, useTranslations} from "next-intl";
+import {useTranslations} from "next-intl";
 import Link from "next-intl/link";
 import HorizontalLine from "@/components/horizontalLine";
 import {ExchangeState} from "@/shop-exchange-shared/helpers";
@@ -20,8 +20,7 @@ export default function BagView({ exchangeState, currency }: {
     currency: CURRENCY,
 }) {
     const t = useTranslations('BagPage');
-    const format = useFormatter();
-    const bagItems = useBagStore();
+    const bagItems = useBagStore("BAG");
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 
@@ -46,8 +45,8 @@ export default function BagView({ exchangeState, currency }: {
                     className="rounded-2xl"
                     src="https://picsum.photos/200/200"
                     alt={bagItem.title}
-                    width={300}
-                    height={300}
+                    width={200}
+                    height={200}
                     loading="lazy"
                 />
             </Link>

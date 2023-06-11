@@ -2,7 +2,7 @@
 
 import "./checkoutView.css";
 import Image from "next/image";
-import {useFormatter, useLocale, useTranslations} from "next-intl";
+import {useLocale, useTranslations} from "next-intl";
 import HorizontalLine from "@/components/horizontalLine";
 import AutoComplete from "@/components/autoComplete";
 import * as React from "react";
@@ -24,8 +24,7 @@ export default function CheckoutView({ exchangeState, currency }: {
 }) {
     const t = useTranslations('CheckoutPage');
     const locale = useLocale();
-    const format = useFormatter();
-    const bagItems = useBagStore();
+    const bagItems = useBagStore('CHECKOUT');
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 

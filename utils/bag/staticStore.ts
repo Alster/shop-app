@@ -1,48 +1,59 @@
 import {IBagItem} from "@/utils/bag/IBagItem";
 import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import EventEmitter from "events";
 
 export type BagState = Record<string, IBagItem>;
 
-let state: BagState = {};
+let _state: BagState = {};
 
 const events: EventEmitter = new EventEmitter();
+const CHANGE_KEY = 'change';
 
 export function addToBagStore(...items: IBagItem[]) {
     items.forEach((item) => {
         const key = createBagItemKey(item);
-        if (state[key]) {
-            state[key].quantity += item.quantity;
+        if (_state[key]) {
+            throw new Error(`Item with key ${key} already exists in bag`);
         }
-        else {
-            state[key] = item;
-        }
+        _state[key] = item;
     });
-    storeState(state);
+    storeState();
 }
 
 export function mergeBagStore(anotherStore: BagState) {
-    state = {...state, ...anotherStore};
-    storeState(state);
+    _state = {..._state, ...anotherStore};
+    storeState();
 }
 
 export function removeFromBagStore(...keys: string[]) {
     keys.forEach((key) => {
-        delete state[key];
+        delete _state[key];
     });
-    storeState(state);
+    storeState();
 }
 
-export function useBagStore(): BagState {
-    const [data, setData] = useState(state);
-    events.on('change', setData);
+export function useBagStore(callee: string): BagState {
+    const [data, setData] = useState({..._state});
+    useEffect(() => {
+        setData({..._state});
+
+        function listener(newState: BagState) {
+            setData(newState);
+        }
+
+        events.on(CHANGE_KEY, listener);
+
+        return () => {
+            events.off(CHANGE_KEY, listener);
+        }
+    }, []);
     return data;
 }
 
-const storeState = (state: BagState) => {
-    localStorage.setItem(LOCAL_STORAGE_BAG_KEY, JSON.stringify(state));
-    events.emit('change', state);
+const storeState = () => {
+    localStorage.setItem(LOCAL_STORAGE_BAG_KEY, JSON.stringify(_state));
+    events.emit(CHANGE_KEY, {..._state});
 }
 
 export const createBagItemKey = (item: IBagItem) => {

@@ -8,7 +8,7 @@ import {ShoppingBagIcon} from "@heroicons/react/24/outline";
 import {useBagStore, mergeBagStore} from "@/utils/bag/staticStore";
 
 export default function HeaderBagButton() {
-    const bagItems = useBagStore();
+    const bagItems = useBagStore('HEADER');
 
     useEffect(() => {
         const newBagItems: Record<string, IBagItem> = JSON.parse(localStorage.getItem(LOCAL_STORAGE_BAG_KEY) || "{}");
