@@ -5,11 +5,13 @@ import {useEffect, useState} from "react";
 import {fetchOrderStatus} from "@/utils/fetchOrderStatus";
 import {useLocale} from "next-intl";
 import {ORDER_STATUS, OrderStatus} from "@/shop-shared/constants/order";
+import {createBagItemKey, removeFromBagStore} from "@/utils/bag/staticStore";
 
 export default function OrderStatusIndicator({ order }: { order: OrderDto }){
     const locale = useLocale();
     const [status, setStatus] = useState(order.status);
     const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+
     const queueFetch = () => {
         const timeoutId = setTimeout(async () => {
             const status = await fetchOrderStatus(order.id, locale);
@@ -19,6 +21,8 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }){
                 ORDER_STATUS.FINISHED,
                 ORDER_STATUS.FAILED,
             ] as OrderStatus[]).includes(status)){
+                const itemsToRemove = order.itemsData.map(item => createBagItemKey(item));
+                removeFromBagStore(...itemsToRemove);
                 return;
             }
             queueFetch();

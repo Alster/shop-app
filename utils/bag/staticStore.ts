@@ -2,6 +2,7 @@ import {IBagItem} from "@/utils/bag/IBagItem";
 import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
 import {useEffect, useState} from "react";
 import EventEmitter from "events";
+import {ProductAttributesDto} from "@/shop-shared/dto/product/product.dto";
 
 export type BagState = Record<string, IBagItem>;
 
@@ -56,7 +57,12 @@ const storeState = () => {
     events.emit(CHANGE_KEY, {..._state});
 }
 
-export const createBagItemKey = (item: IBagItem) => {
+interface IWithProductAttributes {
+    productId: string;
+    attributes: ProductAttributesDto;
+}
+
+export const createBagItemKey = (item: IWithProductAttributes) => {
     const sortedAttributes = Object.entries(item.attributes);
     sortedAttributes.sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
     const hash = sortedAttributes.map(([key, values]) => `${key}:${values.join(',')}`);
