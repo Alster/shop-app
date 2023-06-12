@@ -23,7 +23,8 @@ import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import StatusInfo from "@/components/statusInfo";
 import * as React from "react";
 import {bagStore} from "@/utils/bag/bagItemsStorage";
-
+import {createLikeItemKey, likeStore, useLikesStore} from "@/utils/likes/likeItemsStorage";
+import {HeartIcon} from "@heroicons/react/24/solid";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -38,6 +39,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     currency: CURRENCY,
 }) {
     const t = useTranslations('ProductsPage');
+    const likeItems = useLikesStore();
 
     const [buyButtonClicked, setBuyButtonClicked] = useState(false);
     const [color, setColor] = useState(pageQuery[ATTRIBUTES.COLOR]);
@@ -337,14 +339,36 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
                         </span>
                     </button>
                     <button
+                        onClick={() => {
+                            likeStore.addToStore({
+                                productId: product.id,
+                                title: product.title,
+                                price: product.price,
+                                image: "https://picsum.photos/200/200",
+                                attributes: {
+                                    ...color ? {
+                                        [ATTRIBUTES.COLOR.toString()]: [color],
+                                    } : {}
+                                },
+                                quantity: 1,
+                            })
+                        }}
                         className="
                             flex-none flex items-center justify-center w-12 h-12 text-slate-300 border border-slate-200\
                         "
-                        type="button" aria-label="Like">
-                        <svg width="20" height="20" fill="currentColor" aria-hidden="true">
-                            <path fillRule="evenodd" clipRule="evenodd"
-                                  d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"/>
-                        </svg>
+                        type="button"
+                        aria-label="Like"
+                    >
+                        <HeartIcon className={`w-8 h-8 ${
+                            likeItems.hasOwnProperty(createLikeItemKey({
+                                productId: product.id,
+                                attributes: {
+                                    ...color ? {
+                                        [ATTRIBUTES.COLOR.toString()]: [color],
+                                    } : {}
+                                },
+                            })) ? "text-red-500" : "text-gray-400"
+                        }`}></HeartIcon>
                     </button>
                 </div>
             </div>

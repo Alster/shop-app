@@ -8,6 +8,7 @@ export default async function BagPage() {
     const [exchangeState ] = await Promise.all([
         getStaticExchange(),
     ]);
+
     return <BagView
         exchangeState={exchangeState}
         currency={currency}

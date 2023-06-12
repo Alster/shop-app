@@ -5,15 +5,14 @@ import {useEffect, useState} from "react";
 import {fetchOrderStatus} from "@/utils/fetchOrderStatus";
 import {useLocale, useTranslations} from "next-intl";
 import {ORDER_STATUS, OrderStatus} from "@/shop-shared/constants/order";
-import {createBagItemKey, removeFromBagStore} from "@/utils/bag/bagItemsStorage";
 import {CheckIcon, ClockIcon, XMarkIcon} from "@heroicons/react/24/outline";
-import {NOVA_POSHTA_DELIVERY_TYPE, NovaPoshtaDeliveryType} from "@/shop-shared/constants/checkout";
+import {NOVA_POSHTA_DELIVERY_TYPE} from "@/shop-shared/constants/checkout";
 import {DeliveryNVCourierDto, DeliveryNVOfficeDto} from "@/shop-shared/dto/order/create-order.dto";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import {LanguageEnum} from "@/shop-shared/constants/localization";
-import StatusIcon from "@/components/statusIcon";
 import StatusInfo from "@/components/statusInfo";
+import {bagStore, createBagItemKey} from "@/utils/bag/bagItemsStorage";
 
 
 interface IStatusConfig {
@@ -71,7 +70,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }){
 
             if (status === ORDER_STATUS.PAID) {
                 const alreadyBuyItems = order.itemsData.map(item => createBagItemKey(item));
-                removeFromBagStore(...alreadyBuyItems);
+                bagStore.removeFromStore(...alreadyBuyItems);
             }
 
             if (([

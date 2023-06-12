@@ -37,6 +37,11 @@ export class LocalListStorage<T> {
         this.storeState();
     }
 
+    clearStore() {
+        this._state = {};
+        this.storeState();
+    }
+
     storeState() {
         localStorage.setItem(this._key, JSON.stringify(this._state));
         this.events.emit(CHANGE_KEY, {...this._state});

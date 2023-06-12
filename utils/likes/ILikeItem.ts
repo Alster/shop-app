@@ -1,8 +1,8 @@
 import {IProductShortDto} from "@/utils/IProductShort.dto";
 
-export interface IBagItem extends IProductShortDto {}
+export interface ILikeItem extends IProductShortDto {}
 
-export interface IBagItemKeySource {
+export interface ILikeItemKeySource {
     productId: string;
     attributes: Record<string, string[]>;
 }
