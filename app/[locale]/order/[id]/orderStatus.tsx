@@ -13,6 +13,9 @@ import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import {LanguageEnum} from "@/shop-shared/constants/localization";
 import StatusInfo from "@/components/statusInfo";
 import {bagStore, createBagItemKey} from "@/utils/bag/bagItemsStorage";
+import Link from "next-intl/dist/src/link/react-server";
+import * as React from "react";
+import {fetchOrderCancel} from "@/utils/fetchOrderCancel";
 
 
 interface IStatusConfig {
@@ -161,6 +164,24 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }){
                     }></InfoRow>
                     <InfoRow title={t('orderInfo:dateCreated')} value={new Date(order.createDate).toLocaleString(LANG_TO_LOCALE[locale as LanguageEnum])}></InfoRow>
                 </InfoBlock>
+
+                {/*Cancel*/}
+                {status === ORDER_STATUS.PENDING && (
+                    <button
+                        onClick={async () => {
+                            await fetchOrderCancel(order.id, locale);
+                            queueFetch();
+                        }}
+                        className="
+                        flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                         dark:bg-slate-200 dark:text-black
+                         bg-slate-800 text-white
+                     ">
+                        <span className="mt-3 ml-2">
+                            {`${t("bCancelOrder")}`}
+                        </span>
+                    </button>
+                )}
             </div>
         </div>
     )

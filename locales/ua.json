@@ -46,15 +46,16 @@
     "roomPlaceholder": "Введіть номер квартири"
   },
   "OrderStatusPage": {
-    "orderStatusWaiting": "Замовлення очікує підтвердження",
-    "orderStatusWaitingDescription": "Ваше замовлення очікує підтвердження. Будь ласка, зачекайте.",
+    "orderStatusWaiting": "Очікується оплата",
+    "orderStatusWaitingDescription": "Ваше замовлення очікує оплати. Будь ласка, оплатіть його найближчим часом.",
     "orderStatusSuccess": "Замовлення успішно оформлено",
     "orderStatusSuccessDescription": "Ваше замовлення успішно оформлено. Очікуйте вашу покупочку найближчим часом!",
     "orderStatusFailed": "Помилка оформлення замовлення",
     "orderStatusFailedDescription": "Під час оформлення замовлення виникла помилка. Будь ласка, спробуйте пізніше.",
     "orderInfo": "Інформація про замовлення",
     "orderInfo:totalPrice": "Загальна ціна",
-    "orderInfo:dateCreated": "Дата створення"
+    "orderInfo:dateCreated": "Дата створення",
+    "bCancelOrder": "Скасувати замовлення"
   },
   "FailedToCreateOrderPage": {
     "failedToCreateOrder": "Помилка оформлення замовлення",
