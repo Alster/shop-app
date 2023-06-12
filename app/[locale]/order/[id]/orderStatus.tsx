@@ -12,34 +12,36 @@ import {DeliveryNVCourierDto, DeliveryNVOfficeDto} from "@/shop-shared/dto/order
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import {LanguageEnum} from "@/shop-shared/constants/localization";
+import StatusIcon from "@/components/statusIcon";
+import StatusInfo from "@/components/statusInfo";
 
 
 interface IStatusConfig {
     icon: JSX.Element;
     translateKey: string;
     translateKeyDescription: string;
-    color: string
+    textColor: string
 }
 
 const CONFIG_WAITING: IStatusConfig = {
     icon: <ClockIcon></ClockIcon>,
     translateKey: "orderStatusWaiting",
     translateKeyDescription: "orderStatusWaitingDescription",
-    color: "yellow"
+    textColor: "text-blue-400"
 }
 
 const CONFIG_SUCCESS: IStatusConfig = {
     icon: <CheckIcon></CheckIcon>,
     translateKey: "orderStatusSuccess",
     translateKeyDescription: "orderStatusSuccessDescription",
-    color: "green"
+    textColor: "text-green-400"
 }
 
 const CONFIG_FAILED: IStatusConfig = {
     icon: <XMarkIcon></XMarkIcon>,
     translateKey: "orderStatusFailed",
     translateKeyDescription: "orderStatusFailedDescription",
-    color: "red"
+    textColor: "text-red-400"
 }
 
 const StatusesConfig: {[key in OrderStatus]: IStatusConfig} = {
@@ -115,20 +117,14 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }){
 
                 {/*Status*/}
                 <div className="flex flex-col text-center">
-                    <div className="flex justify-center m-8">
-                        <div className="rounded-full bg-gray-100">
-                            <div className="m-4 h-16 w-16 text-green-400">
-                                {config.icon}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="py-6 flex flex-col">
-                        <div className="flex-auto"></div>
-                        <div>
-                            <div className="font-extrabold">{t(config.translateKey)}</div>
-                            <div>{t(config.translateKeyDescription)}</div>
-                        </div>
-                    </div>
+                    <StatusInfo
+                        iconConfig={{
+                            icon: config.icon,
+                            textColor: config.textColor,
+                        }}
+                        title={t(config.translateKey)}
+                        description={t(config.translateKeyDescription)}
+                    ></StatusInfo>
                 </div>
 
                 {/*Contact information*/}

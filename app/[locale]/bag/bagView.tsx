@@ -3,7 +3,7 @@
 import {ATTRIBUTES, SIZE_ATTRS} from "@/app/constants";
 import Image from "next/image";
 import {IBagItem} from "@/utils/bag/IBagItem";
-import {TrashIcon} from "@heroicons/react/24/outline";
+import {TrashIcon, ShoppingBagIcon} from "@heroicons/react/24/outline";
 import {ReactElement} from "react";
 import {useTranslations} from "next-intl";
 import Link from "next-intl/link";
@@ -14,6 +14,8 @@ import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {useBagStore, removeFromBagStore} from "@/utils/bag/staticStore";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
+import StatusInfo from "@/components/statusInfo";
+import * as React from "react";
 
 export default function BagView({ exchangeState, currency }: {
     exchangeState: ExchangeState,
@@ -21,6 +23,18 @@ export default function BagView({ exchangeState, currency }: {
 }) {
     const t = useTranslations('BagPage');
     const bagItems = useBagStore("BAG");
+
+    if (!bagItems.length) {
+        return <StatusInfo
+            iconConfig={{
+                icon: <ShoppingBagIcon></ShoppingBagIcon>,
+                textColor: "text-white-400",
+                backgroundColor: "bg-gray-400"
+            }}
+            title={t("emptyBag")}
+            description={t("emptyBagDescription")}
+        ></StatusInfo>
+    }
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 

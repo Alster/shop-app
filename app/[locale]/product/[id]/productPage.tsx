@@ -21,6 +21,8 @@ import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
 import {addToBagStore} from "@/utils/bag/staticStore";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
+import StatusInfo from "@/components/statusInfo";
+import * as React from "react";
 
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
@@ -47,9 +49,15 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
     if (!maybeProduct || maybeProduct.quantity === 0) {
-        return <div className="text-center">
-            <h1 className="text-4xl">{t('productNotAvailable')}</h1>
-        </div>
+        return <StatusInfo
+            iconConfig={{
+                icon: <ShoppingBagIcon></ShoppingBagIcon>,
+                textColor: "text-white-400",
+                backgroundColor: "bg-gray-400"
+            }}
+            title={t("productNotAvailable")}
+            description={t("productNotAvailableDescription")}
+        ></StatusInfo>
     }
     const product = maybeProduct;
 

@@ -1,6 +1,8 @@
 {
   "ProductsList": {
-    "hello": "Welcome to Next.js!"
+    "hello": "Welcome to Next.js!",
+    "emptyProductsList": "No products found",
+    "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters."
   },
   "ProductsPage": {
     "hello": "Welcome to Next.js!",
@@ -12,13 +14,16 @@
     "productAddedToBag": "Product added to bag",
     "goToBag": "Go to bag",
     "continueShopping": "Continue shopping",
-    "productNotAvailable": "Product not available"
+    "productNotAvailable": "Product not available",
+    "productNotAvailableDescription": "This product is not available at the moment. Please, try again later"
   },
   "BagPage": {
     "color": "Color",
     "size": "Size",
     "totalPrice": "Total price",
-    "bCheckout": "Checkout"
+    "bCheckout": "Checkout",
+    "emptyBag": "Your bag is empty",
+    "emptyBagDescription": "Please, add some products to your bag"
   },
   "CheckoutPage": {
     "totalPrice": "Total price",
@@ -52,5 +57,10 @@
     "orderInfo": "Order information",
     "orderInfo:totalPrice": "Total price",
     "orderInfo:dateCreated": "Date created"
+  },
+  "FailedToCreateOrderPage": {
+    "failedToCreateOrder": "Failed to create order",
+    "failedToCreateOrderDescription": "Your order has not been created. Please try again later",
+    "bGoToBag": "Go to bag"
   }
 }

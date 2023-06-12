@@ -15,6 +15,9 @@ import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {getCurrencyClient} from "@/shop-exchange-shared/getCurrencyClient";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
+import StatusInfo from "@/components/statusInfo";
+import {ShoppingBagIcon} from "@heroicons/react/24/outline";
+import * as React from "react";
 
 export default function ProductsList({ defaultList, attributes, categories, exchangeState, currency }: {
     defaultList: ProductsListType,
@@ -24,12 +27,20 @@ export default function ProductsList({ defaultList, attributes, categories, exch
     currency: CURRENCY,
 }) {
     const t = useTranslations('ProductsList');
-    const format = useFormatter();
     const locale = useLocale();
-    // const currency = getCurrencyClient();
-    // console.log(`ProductsList: currency=${currency}`);
-
     const [products, setProducts] = useState<ProductsListType>(defaultList);
+
+    if (!products.length) {
+        return <StatusInfo
+            iconConfig={{
+                icon: <ShoppingBagIcon></ShoppingBagIcon>,
+                textColor: "text-white-400",
+                backgroundColor: "bg-gray-400"
+            }}
+            title={t("emptyProductsList")}
+            description={t("emptyProductsListDescription")}
+        ></StatusInfo>
+    }
 
     const updateProducts = async () => {
         const data = await fetchProducts(locale);

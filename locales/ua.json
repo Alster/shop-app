@@ -1,6 +1,8 @@
 {
   "ProductsList": {
-    "hello": "Привіт!"
+    "hello": "Привіт!",
+    "emptyProductsList": "Список товарів порожній",
+    "emptyProductsListDescription": "На жаль, товарів з такими параметрами не знайдено. Будь ласка, спробуйте змінити параметри пошуку."
   },
   "ProductsPage": {
     "hello": "Привіт!",
@@ -12,13 +14,16 @@
     "productAddedToBag": "Товар додано в кошик",
     "goToBag": "Перейти до кошика",
     "continueShopping": "Продовжити покупки",
-    "productNotAvailable": "Товар відсутній"
+    "productNotAvailable": "Товар відсутній",
+    "productNotAvailableDescription": "На жаль, цей товар відсутній на складі. Будь ласка, спробуйте пізніше."
   },
   "BagPage": {
     "color": "Колір",
     "size": "Розмір",
     "totalPrice": "Загальна ціна",
-    "bCheckout": "Оформити замовлення"
+    "bCheckout": "Оформити замовлення",
+    "emptyBag": "Ваш кошик порожній",
+    "emptyBagDescription": "Ви ще не додали жодного товару в кошик. Перейдіть на сторінку з товаром та додайте його в кошик."
   },
   "CheckoutPage": {
     "totalPrice": "Загальна ціна",
@@ -52,5 +57,10 @@
     "orderInfo": "Інформація про замовлення",
     "orderInfo:totalPrice": "Загальна ціна",
     "orderInfo:dateCreated": "Дата створення"
+  },
+  "FailedToCreateOrderPage": {
+    "failedToCreateOrder": "Помилка оформлення замовлення",
+    "failedToCreateOrderDescription": "Під час оформлення замовлення виникла помилка. Будь ласка, спробуйте пізніше.",
+    "bGoToBag": "Перейти до кошика"
   }
 }
