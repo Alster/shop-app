@@ -41,5 +41,16 @@
     "buildingPlaceholder": "Enter building number",
     "room": "Room",
     "roomPlaceholder": "Enter room number"
+  },
+  "OrderStatusPage": {
+    "orderStatusWaiting": "Waiting for order confirmation",
+    "orderStatusWaitingDescription": "Your order is being processed. Please wait for confirmation",
+    "orderStatusSuccess": "Order successfully created",
+    "orderStatusSuccessDescription": "Your order has been successfully created. Wait your order to be delivered soon!",
+    "orderStatusFailed": "Order creation failed",
+    "orderStatusFailedDescription": "Your order has not been created. Please try again later",
+    "orderInfo": "Order information",
+    "orderInfo:totalPrice": "Total price",
+    "orderInfo:dateCreated": "Date created"
   }
 }

@@ -1,0 +1,15 @@
+.order-status {
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .order-status {
+        width: 700px
+    }
+}
+
+@media (min-width: 1024px) {
+    .order-status {
+        width: 1300px;
+    }
+}
