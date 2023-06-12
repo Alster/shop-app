@@ -16,7 +16,7 @@ import {getCurrencyClient} from "@/shop-exchange-shared/getCurrencyClient";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import StatusInfo from "@/components/statusInfo";
-import {ShoppingBagIcon} from "@heroicons/react/24/outline";
+import {MagnifyingGlassIcon} from "@heroicons/react/24/outline";
 import * as React from "react";
 
 export default function ProductsList({ defaultList, attributes, categories, exchangeState, currency }: {
@@ -33,7 +33,7 @@ export default function ProductsList({ defaultList, attributes, categories, exch
     if (!products.length) {
         return <StatusInfo
             iconConfig={{
-                icon: <ShoppingBagIcon></ShoppingBagIcon>,
+                icon: <MagnifyingGlassIcon></MagnifyingGlassIcon>,
                 textColor: "text-white-400",
                 backgroundColor: "bg-gray-400"
             }}

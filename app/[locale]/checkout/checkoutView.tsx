@@ -15,7 +15,7 @@ import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
-import {useBagStore} from "@/utils/bag/staticStore";
+import {useBagStore} from "@/utils/bag/bagItemsStorage";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 
 export default function CheckoutView({ exchangeState, currency }: {

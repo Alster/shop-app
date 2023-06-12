@@ -19,10 +19,10 @@ import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
-import {addToBagStore} from "@/utils/bag/staticStore";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import StatusInfo from "@/components/statusInfo";
 import * as React from "react";
+import {bagStore} from "@/utils/bag/bagItemsStorage";
 
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
@@ -61,24 +61,6 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     }
     const product = maybeProduct;
 
-    const selectableSizeValues: Set<string> = new Set();
-    const refreshSelectableSizeValues = () => {
-        selectableSizeValues.clear();
-        Object.entries(product.items).forEach(([sku, item]) => {
-            if (item.attributes[ATTRIBUTES.COLOR]?.includes(color)) {
-                const values = Array.from(SIZE_ATTRS.values())
-                    .map(key => item.attributes[key])
-                    .find(values => values) || [];
-                values.forEach(value => selectableSizeValues.add(value));
-            }
-        });
-
-        if (selectedSizeValue && !selectableSizeValues.has(selectedSizeValue)) {
-            sizeReset();
-        }
-    };
-    refreshSelectableSizeValues();
-
     const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
         const newColor = e.target.value;
         setColor(newColor);
@@ -96,6 +78,24 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     const sizeReset = () => {
         setSelectedSizeValue(null);
     };
+
+    const selectableSizeValues: Set<string> = new Set();
+    const refreshSelectableSizeValues = () => {
+        selectableSizeValues.clear();
+        Object.entries(product.items).forEach(([sku, item]) => {
+            if (item.attributes[ATTRIBUTES.COLOR]?.includes(color)) {
+                const values = Array.from(SIZE_ATTRS.values())
+                    .map(key => item.attributes[key])
+                    .find(values => values) || [];
+                values.forEach(value => selectableSizeValues.add(value));
+            }
+        });
+
+        if (selectedSizeValue && !selectableSizeValues.has(selectedSizeValue)) {
+            sizeReset();
+        }
+    };
+    refreshSelectableSizeValues();
 
     const drawAttributeTitle = (title: string, highlightMustSelect: boolean, highlightText: string) => {
         return <div className="text-slate-600 dark:text-slate-300">
@@ -234,7 +234,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
             quantity: 1,
         };
 
-        addToBagStore(bagItem);
+        bagStore.addToStore(bagItem);
     };
 
     const buyNow = () => {

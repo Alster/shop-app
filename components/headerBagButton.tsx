@@ -1,18 +1,15 @@
 "use client"
 
-import {IBagItem} from "@/utils/bag/IBagItem";
-import {LOCAL_STORAGE_BAG_KEY} from "@/utils/bag/constants";
 import Link from "next-intl/link";
 import {useEffect} from "react";
 import {ShoppingBagIcon} from "@heroicons/react/24/outline";
-import {useBagStore, mergeBagStore} from "@/utils/bag/staticStore";
+import {loadBag, useBagStore} from "@/utils/bag/bagItemsStorage";
 
 export default function HeaderBagButton() {
-    const bagItems = useBagStore('HEADER');
+    const bagItems = useBagStore();
 
     useEffect(() => {
-        const newBagItems: Record<string, IBagItem> = JSON.parse(localStorage.getItem(LOCAL_STORAGE_BAG_KEY) || "{}");
-        mergeBagStore(newBagItems);
+        loadBag();
     },[]);
 
     return <Link href="/bag"

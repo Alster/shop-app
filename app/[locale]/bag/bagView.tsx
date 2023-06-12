@@ -12,7 +12,7 @@ import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {CURRENCY} from "@/shop-shared/constants/exchange";
 import {formatPrice} from "@/shop-exchange-shared/formatPrice";
 import {doExchange} from "@/shop-exchange-shared/doExchange";
-import {useBagStore, removeFromBagStore} from "@/utils/bag/staticStore";
+import {bagStore, useBagStore} from "@/utils/bag/bagItemsStorage";
 import {moneySmallToBig} from "@/shop-shared/dto/primitiveTypes";
 import StatusInfo from "@/components/statusInfo";
 import * as React from "react";
@@ -22,9 +22,9 @@ export default function BagView({ exchangeState, currency }: {
     currency: CURRENCY,
 }) {
     const t = useTranslations('BagPage');
-    const bagItems = useBagStore("BAG");
+    const bagItems = useBagStore();
 
-    if (!bagItems.length) {
+    if (!Object.keys(bagItems).length) {
         return <StatusInfo
             iconConfig={{
                 icon: <ShoppingBagIcon></ShoppingBagIcon>,
@@ -76,7 +76,7 @@ export default function BagView({ exchangeState, currency }: {
                         <button
                             className=""
                             onClick={() => {
-                                removeFromBagStore(key)
+                                bagStore.removeFromStore(key)
                             }}
                         ><TrashIcon className="h-6 w-6 text-gray-500" />
                         </button>

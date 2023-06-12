@@ -5,7 +5,7 @@ import {useEffect, useState} from "react";
 import {fetchOrderStatus} from "@/utils/fetchOrderStatus";
 import {useLocale, useTranslations} from "next-intl";
 import {ORDER_STATUS, OrderStatus} from "@/shop-shared/constants/order";
-import {createBagItemKey, removeFromBagStore} from "@/utils/bag/staticStore";
+import {createBagItemKey, removeFromBagStore} from "@/utils/bag/bagItemsStorage";
 import {CheckIcon, ClockIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {NOVA_POSHTA_DELIVERY_TYPE, NovaPoshtaDeliveryType} from "@/shop-shared/constants/checkout";
 import {DeliveryNVCourierDto, DeliveryNVOfficeDto} from "@/shop-shared/dto/order/create-order.dto";
