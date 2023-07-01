@@ -56,6 +56,9 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     const updateProducts = async (pq: IFindProductsQuery) => {
         console.log("updateProducts", pq)
+        if (currentCategory) {
+            pq.categories = [currentCategory];
+        }
         const res = await fetchProducts(locale, pq);
         setProductsResponse(res);
     }

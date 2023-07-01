@@ -22,7 +22,6 @@ export default async function ProductsPage({ params, searchParams }: { params: P
     let currentCategory = '';
     if (params.categories && params.categories.length > 0) {
         currentCategory = params.categories[params.categories.length - 1];
-        searchParams.categories = [currentCategory];
     }
 
     console.log("searchParams", JSON.stringify(searchParams, null, 2))
