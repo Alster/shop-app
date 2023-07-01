@@ -65,7 +65,7 @@ export default function CurrencySelect(
     return <div className={className}>
         {!isListOpen && (
             <button
-                className="border border-white"
+                className=""
                 type="button"
                 onClick={toggleList}
             >

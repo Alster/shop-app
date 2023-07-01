@@ -90,7 +90,7 @@ export default function LanguageSelect({ className }: { className?: string }) {
     return <div className={className}>
         {!isListOpen && (
             <button
-                className="border border-white"
+                className=""
                 type="button"
                 onClick={toggleList}
             >

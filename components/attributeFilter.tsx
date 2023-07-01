@@ -21,10 +21,15 @@ export default function AttributeFilter({ key, values, selected, attributeInfo, 
     };
 
     return (
-        <div className="px-4 py-1" key={key}>
+        <div
+            className="px-4 py-1"
+            key={key}
+            onMouseEnter={() => setShowList(true)}
+            onMouseLeave={() => setShowList(false)}
+        >
             <div
                 className="cursor-pointer flex"
-                onClick={() => setShowList(!showList)}
+                // onClick={() => setShowList(!showList)}
             >
                 {showList ? <ChevronUpIcon className="h-7 w-7 text-white inline-block" /> : <ChevronDownIcon className="h-7 w-7 text-white inline-block" />}
                 {attributeInfo.title}
