@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react";
-import {useCallback, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useLocale, useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
@@ -23,11 +23,14 @@ import {usePathname} from "next-intl/client";
 import * as qs from "qs";
 import {IFindProductsQuery} from "@/utils/products/parseQuery";
 import AttributeFilter from "@/components/attributeFilter";
+import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
+import CategoryTreeView from "@/components/categoryTreeView";
 
-export default function ProductsList({ productsResponseEncoded, attributes, categories, exchangeState, currency, pageQueryEncoded }: {
+export default function ProductsList({ productsResponseEncoded, attributes, categories, currentCategory, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
     attributes: AttributeDto[],
-    categories: CategoryDto[],
+    categories: CategoriesNodeDto[],
+    currentCategory: string,
     exchangeState: ExchangeState,
     currency: CURRENCY,
     pageQueryEncoded: string,
@@ -193,37 +196,51 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         )
     }
 
-    return <div>
+    const drawCategories = () => {
+        return (
+            <div className="flex">
+                <CategoryTreeView
+                    tree={categories}
+                    current={currentCategory}
+                ></CategoryTreeView>
+            </div>
+        )
+    }
+
+    return <div className="flex">
         {/*{searchParams.toString()}*/}
-        {drawFilters()}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-            {productsResponse.products.map(product => (
-                <div key={product.id} className="border-2 border-gray-300 dark:border-gray-700 m-1">
-                    <Link href={`/product/${product.id}`}>
-                        <Image
-                            src="https://picsum.photos/200/200"
-                            alt={product.title}
-                            width={400}
-                            height={400}
-                            loading="lazy"
-                        />
-                    </Link>
-                    <div className="p-3">
-                        <div className="flex">
-                            {drawColorAttributes(product)}
-                            {drawSizeAttributes(product)}
-                        </div>
-                        <div className="flex flex-wrap">
-                            <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
-                                {product.title}
-                            </h1>
-                            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                                {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
+        {drawCategories()}
+        <div>
+            {drawFilters()}
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+                {productsResponse.products.map(product => (
+                    <div key={product.id} className="border-2 border-gray-300 dark:border-gray-700 m-1">
+                        <Link href={`/product/${product.id}`}>
+                            <Image
+                                src="https://picsum.photos/200/200"
+                                alt={product.title}
+                                width={400}
+                                height={400}
+                                loading="lazy"
+                            />
+                        </Link>
+                        <div className="p-3">
+                            <div className="flex">
+                                {drawColorAttributes(product)}
+                                {drawSizeAttributes(product)}
+                            </div>
+                            <div className="flex flex-wrap">
+                                <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+                                    {product.title}
+                                </h1>
+                                <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                                    {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
         </div>
     </div>
 }

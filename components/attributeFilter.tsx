@@ -21,7 +21,7 @@ export default function AttributeFilter({ key, values, selected, attributeInfo, 
     };
 
     return (
-        <div className="px-4 py-1">
+        <div className="px-4 py-1" key={key}>
             <div
                 className="cursor-pointer flex"
                 onClick={() => setShowList(!showList)}
