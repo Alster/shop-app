@@ -178,27 +178,15 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     const drawFilters = () => {
         return (
-            <div>
+            <div className="flex">
                 {Object.entries(productsResponse.filters).map(([key, values]) => (
-                    // <AttributeFilter
-                    //     key={key}
-                    //     values={values}
-                    //     selected={pageQuery.attrs?.find((attr: any) => attr.key === key)?.values || []}
-                    //     attributeInfo={attributes.find(a => a.key === key)}
-                    //     onToggle={(value: string) => toggleFilterValue(key, value)}
-                    // ></AttributeFilter>
-                    <div key={key}>
-                        <div className="font-semibold">{key}</div>
-                        <div>
-                            {values.map((v) => (
-                                <button
-                                    key={v}
-                                    onClick={() => toggleFilterValue(key, v)}
-                                    className="p-1 mx-2 bg-gray-500"
-                                >{v}</button>
-                            ))}
-                        </div>
-                    </div>
+                    <AttributeFilter
+                        key={key}
+                        values={values}
+                        selected={pageQuery.attrs?.find((attr: any) => attr.key === key)?.values || []}
+                        attributeInfo={attributes.find(a => a.key === key)}
+                        onToggle={(value: string) => toggleFilterValue(key, value)}
+                    ></AttributeFilter>
                 )
                 )}
             </div>
@@ -206,7 +194,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
     }
 
     return <div>
-        {searchParams.toString()}
+        {/*{searchParams.toString()}*/}
         {drawFilters()}
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
             {productsResponse.products.map(product => (
