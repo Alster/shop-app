@@ -29,7 +29,7 @@ export default function AttributeFilter({ key, values, selected, attributeInfo, 
         >
             <div
                 className="cursor-pointer flex"
-                // onClick={() => setShowList(!showList)}
+                onClick={() => setShowList(!showList)}
             >
                 {showList ? <ChevronUpIcon className="h-7 w-7 text-white inline-block" /> : <ChevronDownIcon className="h-7 w-7 text-white inline-block" />}
                 {attributeInfo.title}

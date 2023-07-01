@@ -36,7 +36,7 @@ export default function CategoryTreeView({ tree, current}: {
         return (
             <div className="px-4 py-1" key={key}>
                 <div
-                    className="cursor-pointer flex"
+                    className="cursor-pointer flex hover:underline"
                 >
                     <Link href={`catalog/${([...parents, node]).map(p => p.id).join("/")}`} className={isSelected ? "font-bold" : ""}>{node.title[locale]}</Link>
                 </div>
