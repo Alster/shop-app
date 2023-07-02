@@ -155,34 +155,23 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
             sizeValues = sizeAttribute[1];
         }
 
-        const arr1DivRef = useRef<HTMLDivElement>(null);
-        const arr2DivRef = useRef<HTMLDivElement>(null);
-
-        useEffect(() => {
-            if (!arr1DivRef.current || !arr2DivRef.current) {
-                return;
-            }
-            const arr1DivWidth = arr1DivRef.current.offsetWidth;
-            const arr2DivWidth = arr2DivRef.current.offsetWidth;
-            const totalWidth = arr1DivWidth + arr2DivWidth;
-
-            const arr1Width = Math.floor(arr1DivWidth / totalWidth * 100);
-            const arr2Width = Math.floor(arr2DivWidth / totalWidth * 100);
-            arr1DivRef.current.style.flexBasis = arr1Width + "%";
-            arr2DivRef.current.style.flexBasis = arr2Width + "%";
-        }, []);
+        const total = colorValues.length + sizeValues.length;
+        const arr1Size = (colorValues.length / total) * 100;
+        const arr2Size = (sizeValues.length / total) * 100;
+        const style1 = { flexBasis: arr1Size + "%" };
+        const style2 = { flexBasis: arr2Size + "%" };
 
         return (
             <div className="flex flex-wrap">
                 <ColorAttribute
-                    reference={arr1DivRef}
                     className={`flex flex-wrap gap-1`}
-                    product={product}
+                    style={style1}
                     values={colorValues}
+                    product={product}
                 ></ColorAttribute>
                 <SizeAttribute
-                    reference={arr2DivRef}
                     className={`flex flex-wrap gap-1 justify-end`}
+                    style={style2}
                     values={sizeValues}
                     attrKey={sizeKey}
                 ></SizeAttribute>
@@ -190,8 +179,8 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         )
     }
 
-    function ColorAttribute({ values, product, className, reference }: { values: string[], product: ProductDto, className: string, reference: RefObject<HTMLDivElement> }) {
-        return <div className={className} ref={reference}>
+    function ColorAttribute({ values, product, className, style }: { values: string[], product: ProductDto, className: string, style: any }) {
+        return <div className={className} style={style}>
             {values.map(value => (
                 <Link href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`} key={value}>
                     <div className="
@@ -205,14 +194,14 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         </div>
     }
 
-    function SizeAttribute({ values, attrKey, className, reference }: { values: string[], attrKey: string, className: string, reference: RefObject<HTMLDivElement> }) {
+    function SizeAttribute({ values, attrKey, className, style }: { values: string[], attrKey: string, className: string, style: any }) {
         const attribute = attributes.find(a => a.key === attrKey);
         if (!attribute) {
             console.log("SizeAttribute: attribute not found", attrKey)
             return <div className={className}></div>;
         }
 
-        return <div className={className} ref={reference}>
+        return <div className={className} style={style}>
             {values.map(value => (
                 <div key={value} className="flex-grow-0">{attribute.values.find(val => val.key === value)?.title}</div>
             ))}
