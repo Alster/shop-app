@@ -3,8 +3,7 @@ import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/20/solid";
 import * as React from "react";
 
-export default function AttributeFilter({ key, values, selected, attributeInfo, onToggle}: {
-    key: string,
+export default function AttributeFilter({ values, selected, attributeInfo, onToggle}: {
     values: string[],
     selected: string[],
     attributeInfo?: AttributeDto,
@@ -23,7 +22,6 @@ export default function AttributeFilter({ key, values, selected, attributeInfo, 
     return (
         <div
             className="px-4 py-1"
-            key={key}
             onMouseEnter={() => setShowList(true)}
             onMouseLeave={() => setShowList(false)}
         >
