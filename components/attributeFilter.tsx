@@ -21,7 +21,7 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
 
     return (
         <div
-            className="px-4 py-1"
+            className="px-2 py-1"
             onMouseEnter={() => setShowList(true)}
             onMouseLeave={() => setShowList(false)}
         >
@@ -31,23 +31,12 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
             >
                 {showList ? <ChevronUpIcon className="h-7 w-7 text-white inline-block" /> : <ChevronDownIcon className="h-7 w-7 text-white inline-block" />}
                 {attributeInfo.title}
-                {selected.length > 0 && (<span>:</span>)}
-                {
-                    selected
-                        .map((v) => (
-                            <span
-                                key={v}
-                                className="font-bold pl-1"
-                            >{localeValue(v)}</span>
-                        ))
-                        .reduce((prev, elem) => {
-                            if (prev.length > 0) {
-                                prev.push(<span key={Math.random()}>,</span>);
-                            }
-                            prev.push(elem);
-                            return prev;
-                        }, [] as ReactElement[])
-                }
+                {selected.length > 0 && (
+                    <span><span className="ml-1 inline-block bg-purple-500 w-5 text-sm rounded-full text-white text-center pb-0.5">{selected.length}</span> </span>
+                )}
+                {selected.length === 0 && (
+                    <span><span className="ml-1 inline-block w-5 pb-0.5"></span></span>
+                )}
             </div>
             <div className="flex">
                 <div>
@@ -59,9 +48,7 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                                     onClick={() => onToggle(v)}
                                     className={`px-2 py-1 w-full text-left`}
                                 >
-                                    <div className="inline-block w-4 h-4 border border-1 border-white mr-2">
-                                        {selected.includes(v) && <div className="w-2 h-2 ml-1 mt-1 bg-white"></div>}
-                                    </div>
+                                    <div className={`inline-block w-4 h-4 border border-1 border-white mr-2 ${selected.includes(v) ? "bg-purple-500" : ""}`}></div>
                                     {localeValue(v)}
                                 </button>
                             ))}
