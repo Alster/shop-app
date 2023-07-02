@@ -41,7 +41,7 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
             <div className="flex">
                 <div>
                     {showList && (
-                        <div className="absolute flex flex-col bg-black border-2 border-white">
+                        <div className="absolute flex flex-col bg-black border-2 border-white p-4">
                             {values.map((v) => (
                                 <button
                                     key={v}
