@@ -131,18 +131,6 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         pushQuery(newQuery);
     }
 
-    if (!productsResponse.products.length) {
-        return <StatusInfo
-            iconConfig={{
-                icon: <MagnifyingGlassIcon></MagnifyingGlassIcon>,
-                textColor: "text-white-400",
-                backgroundColor: "bg-gray-400"
-            }}
-            title={t("emptyProductsList")}
-            description={t("emptyProductsListDescription")}
-        ></StatusInfo>
-    }
-
     function AttributesLine({ product }: { product: ProductDto }) {
         const colorValues = product.attrs[ATTRIBUTES.COLOR] || [];
 
@@ -156,8 +144,8 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         }
 
         const total = colorValues.length + sizeValues.length;
-        const arr1Size = (colorValues.length / total) * 100;
-        const arr2Size = (sizeValues.length / total) * 100;
+        const arr1Size = Math.ceil((colorValues.length / total) * 100);
+        const arr2Size = Math.floor((sizeValues.length / total) * 100);
         const style1 = { flexBasis: arr1Size + "%" };
         const style2 = { flexBasis: arr2Size + "%" };
 
@@ -241,6 +229,17 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         {drawCategories()}
         <div>
             {drawFilters()}
+            {!productsResponse.products.length && (
+                <StatusInfo
+                    iconConfig={{
+                        icon: <MagnifyingGlassIcon></MagnifyingGlassIcon>,
+                        textColor: "text-white-400",
+                        backgroundColor: "bg-gray-400"
+                    }}
+                    title={t("emptyProductsList")}
+                    description={t("emptyProductsListDescription")}
+                ></StatusInfo>
+            )}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                 {productsResponse.products.map(product => (
                     <div key={product.id} className="m-1">
@@ -253,7 +252,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
                                 loading="lazy"
                             />
                         </Link>
-                        <div className="p-3">
+                        <div className="p-1">
                             <AttributesLine product={product}></AttributesLine>
                             <div className="flex flex-wrap">
                                 <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
