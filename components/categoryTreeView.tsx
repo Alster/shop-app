@@ -35,8 +35,6 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
     function CategoryTreeNode({ node, parents }: { node: CategoriesNodeDto, parents: CategoriesNodeDto[] }) {
         const isSelected = selectedLeafs.some(v => v.id === node.id);
 
-        console.log("parents", parents.map(v => v.publicId).join("/"), "node", node.publicId, "isSelected", isSelected)
-
         return (
             <div className="px-4 py-1" style={{ width: "200px"}}>
                 <div
