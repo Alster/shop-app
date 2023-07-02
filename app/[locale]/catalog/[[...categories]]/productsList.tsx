@@ -55,7 +55,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     const updateProducts = async (pq: IFindProductsQuery) => {
         if (selectedCategories.length > 0) {
-            pq.categories = selectedCategories;
+            pq.categories = [selectedCategories.join('/')];
         }
         console.log("updateProducts", pq)
         const res = await fetchProducts(locale, pq);
@@ -255,7 +255,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                 {productsResponse.products.map(product => (
                     <div key={product.id} className="m-1">
-                        <Link href={`/product/${product.id}`}>
+                        <Link href={`/product/${product.publicId}`}>
                             <Image
                                 src="https://picsum.photos/200/200"
                                 alt={product.title}
