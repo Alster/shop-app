@@ -149,27 +149,33 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     };
 
     const drawSizeAttributes = () => {
-        const attribute = attributes.find(attr => SIZE_ATTRS.includes(attr.key as ATTRIBUTES));
+        const attrPair = Object
+            .entries(product.attrs)
+            .find(([key, values]) => SIZE_ATTRS.includes(key as ATTRIBUTES));
+        if (!attrPair) {
+            return null;
+        }
+
+        const attributeKey = attrPair[0];
+        const attribute = attributes.find(attr => attr.key === attributeKey);
         if (!attribute) {
             return null;
         }
 
-        const key = attribute.key;
-        const values = product.attrs[key] || [];
-
+        const values = product.attrs[attributeKey] || [];
         const highlightMustSelect = !selectedSizeValue && buyButtonClicked;
 
-        return <div key={key} className="mt-4">
+        return <div key={attributeKey} className="mt-4">
             {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectSize"))}
             <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
                 {values.map(value => {
                     return <label key={value}>
                         <input
                             className="sr-only peer"
-                            name={key}
+                            name={attributeKey}
                             type="radio"
                             value={value}
-                            onChange={(e) => onSizeChange(key, e.target.value)}
+                            onChange={(e) => onSizeChange(attributeKey, e.target.value)}
                             disabled={!selectableSizeValues.has(value)}
                             checked={value === selectedSizeValue}
                         />
