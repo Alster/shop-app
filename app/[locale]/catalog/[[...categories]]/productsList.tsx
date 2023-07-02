@@ -25,11 +25,11 @@ import AttributeFilter from "@/components/attributeFilter";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
 import CategoryTreeView from "@/components/categoryTreeView";
 
-export default function ProductsList({ productsResponseEncoded, attributes, categories, currentCategory, exchangeState, currency, pageQueryEncoded }: {
+export default function ProductsList({ productsResponseEncoded, attributes, categories, selectedCategories, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
     attributes: AttributeDto[],
     categories: CategoriesNodeDto[],
-    currentCategory: string,
+    selectedCategories: string[],
     exchangeState: ExchangeState,
     currency: CURRENCY,
     pageQueryEncoded: string,
@@ -54,10 +54,10 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
     }
 
     const updateProducts = async (pq: IFindProductsQuery) => {
-        console.log("updateProducts", pq)
-        if (currentCategory) {
-            pq.categories = [currentCategory];
+        if (selectedCategories.length > 0) {
+            pq.categories = selectedCategories;
         }
+        console.log("updateProducts", pq)
         const res = await fetchProducts(locale, pq);
         setProductsResponse(res);
     }
@@ -241,7 +241,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
             <div className="flex">
                 <CategoryTreeView
                     tree={categories}
-                    current={currentCategory}
+                    selectedCategories={selectedCategories}
                 ></CategoryTreeView>
             </div>
         )

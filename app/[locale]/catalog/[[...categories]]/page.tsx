@@ -3,8 +3,6 @@ import {useTranslations, useFormatter, useLocale} from 'next-intl';
 import {fetchProducts} from "@/utils/fetchProducts";
 import {fetchAttributes} from "@/utils/fetchAttributes";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
-import {fetchCategoryList} from "@/utils/fetchCategoryList";
-import {CategoryDto} from "@/shop-shared/dto/category/category.dto";
 import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
 import {ExchangeState} from "@/shop-exchange-shared/helpers";
 import {getCurrencyStatic} from "@/utils/exchange/getCurrencyStatic";
@@ -19,28 +17,24 @@ export interface Params_Categories {
 export default async function ProductsPage({ params, searchParams }: { params: Params_Categories, searchParams: IFindProductsQuery }) {
     const locale = useLocale();
 
-    let currentCategory = '';
-    if (params.categories && params.categories.length > 0) {
-        currentCategory = params.categories[params.categories.length - 1];
-    }
+    const selectedCategories = (params.categories && params.categories.length) ? params.categories : [];
 
     console.log("searchParams", JSON.stringify(searchParams, null, 2))
 
-    const [productsResponse, attributes, categories , exchangeState] = await Promise.all([
-        fetchProducts(locale, searchParams),
+    const [productsResponse, attributes, exchangeState, categoryTree] = await Promise.all([
+        fetchProducts(locale, {...searchParams, categories: selectedCategories}),
         fetchAttributes(locale),
-        fetchCategoryTree(locale),
         getStaticExchange(),
-        ]
-    );
+        fetchCategoryTree(locale),
+    ]);
 
     return <ProductsContent
         productsResponseEncoded={JSON.stringify(productsResponse)}
         attributes={attributes}
-        categories={categories}
+        categories={categoryTree}
         exchangeState={exchangeState}
         pageQueryEncoded={JSON.stringify(searchParams)}
-        currentCategory={currentCategory}
+        selectedCategories={selectedCategories}
     ></ProductsContent>
 }
 
@@ -50,7 +44,7 @@ function ProductsContent (props: {
     categories: CategoriesNodeDto[],
     exchangeState: ExchangeState,
     pageQueryEncoded: string,
-    currentCategory: string,
+    selectedCategories: string[],
 }) {
     const t = useTranslations('ProductsList');
     const currency = getCurrencyStatic();
