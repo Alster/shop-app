@@ -22,7 +22,7 @@ export default async function ProductsPage({ params, searchParams }: { params: P
     console.log("searchParams", JSON.stringify(searchParams, null, 2))
 
     const [productsResponse, attributes, exchangeState, categoryTree] = await Promise.all([
-        fetchProducts(locale, {...searchParams, categories: selectedCategories}),
+        fetchProducts(locale, {...searchParams, categories: [selectedCategories.join("/")]}),
         fetchAttributes(locale),
         getStaticExchange(),
         fetchCategoryTree(locale),
