@@ -202,7 +202,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     const drawFilters = () => {
         return (
-            <div className="flex">
+            <div className="flex flex-wrap">
                 {Object.entries(productsResponse.filters).map(([key, values]) => (
                     <AttributeFilter
                         key={key}
