@@ -6,7 +6,7 @@ import Image from "next/image";
 import * as React from "react";
 
 export default async function Header() {
-    return <div className="flex bg-purple-500">
+    return <div className="flex unicorn-background">
         <div className="flex w-full justify-center">
             <div className="flex gap-2 flex-auto">
                 <LanguageSelect className="pt-4"></LanguageSelect>
@@ -15,7 +15,7 @@ export default async function Header() {
             <div>
                 <Image
                     src="/img/unicorn_logo_small.png"
-                    alt="Nova Poshta"
+                    alt="Unicorn Store"
                     width="60"
                     height="60"
                 ></Image>

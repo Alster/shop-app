@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+  --unicorn-color: #9999cc;
   --foreground-rgb: 0, 0, 0;
   --background-rgb: 255, 255, 255;
 }
@@ -18,4 +19,12 @@ body {
   color: rgb(var(--foreground-rgb));
   background-color: rgb(var(--background-rgb));
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.unicorn-background {
+  background-color: var(--unicorn-color);
+}
+
+.unicorn-text {
+  color: var(--unicorn-color);
 }
