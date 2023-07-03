@@ -41,14 +41,13 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
             <div className="flex">
                 <div>
                     {showList && (
-                        <div className="absolute flex flex-col bg-black border-2 border-white p-4">
+                        <div className="absolute flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm">
                             {values.map((v) => (
                                 <button
                                     key={v}
                                     onClick={() => onToggle(v)}
-                                    className={`px-2 py-1 w-full text-left`}
+                                    className={`px-2 py-1 m-1 border border-black dark:border-white ${selected.includes(v) ? "unicorn-background" : ""}`}
                                 >
-                                    <div className={`inline-block w-4 h-4 border border-1 border-white mr-2 ${selected.includes(v) ? "unicorn-background" : ""}`}></div>
                                     {localeValue(v)}
                                 </button>
                             ))}
