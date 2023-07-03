@@ -174,7 +174,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
                 const style = getStyleByColorCode(value);
                 return (
                     <Link
-                        href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`}
+                        href={`/product/${product.publicId}?${ATTRIBUTES.COLOR}=${value}`}
                         key={value}
                         className="
                         flex-grow-0
