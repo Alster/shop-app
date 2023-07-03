@@ -1,7 +1,7 @@
 "use client"
 
 import './productPage.css'
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, MouseEventHandler, useState} from "react";
 import {useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
@@ -63,16 +63,25 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
     }
     const product = maybeProduct;
 
-    const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const newColor = e.target.value;
+    const onColorChange = (e: ChangeEvent<HTMLInputElement>) => {};
+
+    const onColorClick = (e: MouseEventHandler<HTMLInputElement>) => {
+        // @ts-ignore
+        const newColor = color === e.target.value ? null : e.target.value;
         setColor(newColor);
-        router.replace(`${pathName}?${qs.stringify({ ...pageQuery, [ATTRIBUTES.COLOR]: newColor })}`);
+        const newQuery: any = {
+            ...pageQuery,
+        };
+        if (newColor) {
+            newQuery[ATTRIBUTES.COLOR] = newColor;
+        } else {
+            delete newQuery[ATTRIBUTES.COLOR];
+        }
+        router.replace(`${pathName}?${qs.stringify(newQuery)}`);
         refreshSelectableSizeValues();
     };
 
-    const onSizeChange = (key: string, value: string) => {
-
-    };
+    const onSizeChange = (key: string, value: string) => {};
 
     const sizeSelect = (value: string) => {
         setSelectedSizeValue(value);
@@ -128,6 +137,8 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
                             value={value}
                             checked={value === color}
                             onChange={onColorChange}
+                            // @ts-ignore
+                            onClick={onColorClick}
                         />
                         <div
                             className="h-9 w-9 flex items-center justify-center
