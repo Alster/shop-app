@@ -1,7 +1,7 @@
 "use client"
 
 import './productPage.css'
-import {ChangeEvent, MouseEventHandler, useState} from "react";
+import {ChangeEvent, Fragment, MouseEventHandler, useState} from "react";
 import {useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
@@ -115,7 +115,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
         </div>
     };
 
-    const drawColorAttributes = () => {
+    function AttributeColor({ className }: { className?: string }) {
         const attribute = attributes.find(attr => attr.key === ATTRIBUTES.COLOR);
         if (!attribute) {
             return null;
@@ -126,7 +126,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
 
         const highlightMustSelect = !color && buyButtonClicked;
 
-        return <div key={key} className="mt-4">
+        return <div key={key} className={className}>
             {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectColor"))}
             <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
                 {values.map(value => {
@@ -159,7 +159,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
         </div>
     };
 
-    const drawSizeAttributes = () => {
+    function AttributeSize ({ className }: { className?: string }) {
         const attrPair = Object
             .entries(product.attrs)
             .find(([key, values]) => SIZE_ATTRS.includes(key as ATTRIBUTES));
@@ -176,7 +176,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
         const values = product.attrs[attributeKey] || [];
         const highlightMustSelect = !selectedSizeValue && buyButtonClicked;
 
-        return <div key={attributeKey} className="mt-4">
+        return <div key={attributeKey} className={className}>
             {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectSize"))}
             <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
                 {values.map(value => {
@@ -206,25 +206,28 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
         </div>
     };
 
-    const drawCharacteristics = () => {
-        const attribute = attributes.find(attr => ![ATTRIBUTES.COLOR, ...SIZE_ATTRS].includes(attr.key as ATTRIBUTES));
-        if (!attribute) {
+    function Characteristics({ className }: { className?: string }) {
+        const characteristics = attributes.filter(attr => ![ATTRIBUTES.COLOR, ...SIZE_ATTRS].includes(attr.key as ATTRIBUTES));
+        if (!characteristics.length) {
             return null;
         }
 
-        const key = attribute.key;
-        const values = product.attrs[key] || [];
-
-        return <div key={key} className="mt-8 mb-8 flex">
-            {drawAttributeTitle(attribute?.title + ":", false, "")}
-            <div className="pl-3">
-                {values.map(value => {
-                    return <div key={value}>
-                        {attribute?.values.find(val => val.key === value)?.title}
+        return (
+            <div className={className}>
+                {characteristics.map(attr => (
+                    <div key={attr.key} className="mt-2 mb-2 flex">
+                        {drawAttributeTitle(attr?.title + ":", false, "")}
+                        <div className="pl-3">
+                            {(product.attrs[attr.key] || []).map(value => {
+                                return <div key={value}>
+                                    {attr?.values.find(val => val.key === value)?.title}
+                                </div>
+                            })}
+                        </div>
                     </div>
-                })}
+                ))}
             </div>
-        </div>
+        )
     };
 
     const addToBag = () => {
@@ -327,9 +330,9 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
                 </div>
 
                 <div className="mt-4">
-                    {drawColorAttributes()}
-                    {drawSizeAttributes()}
-                    {drawCharacteristics()}
+                    <AttributeColor className="mt-4"></AttributeColor>
+                    <AttributeSize className="mt-4"></AttributeSize>
+                    <Characteristics className="mt-4"></Characteristics>
                 </div>
 
                 <div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
