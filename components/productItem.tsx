@@ -11,6 +11,7 @@ import {IBagItem} from "@/utils/bag/IBagItem";
 import {useTranslations} from "next-intl";
 import {ReactElement} from "react";
 import {ExchangeState} from "@/shop-exchange-shared/helpers";
+import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 
 export default function ProductItem({ item, cornerBlock, currency, exchangeState }: {
     item: IProductShortDto,
@@ -35,6 +36,8 @@ export default function ProductItem({ item, cornerBlock, currency, exchangeState
 
         return sizeAttr[1].map(v => v.toUpperCase()).join(", ");
     };
+
+    const style = getStyleByColorCode(item.attributes[ATTRIBUTES.COLOR][0]);
 
     return <div className="p-1 m-3 flex">
         <Link
@@ -67,7 +70,7 @@ export default function ProductItem({ item, cornerBlock, currency, exchangeState
                         <div className="text-md flex text-slate-500">
                             <div className="w-20 text-sm">{t("color")}:</div>
                             <div
-                                style={{backgroundColor: item.attributes[ATTRIBUTES.COLOR][0]}}
+                                style={style}
                                 className="ml-2 w-6 h-6 border-2 border-gray-300 dark:border-gray-700"
                             ></div>
                         </div>
