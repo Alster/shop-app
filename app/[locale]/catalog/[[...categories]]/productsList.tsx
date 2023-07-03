@@ -131,7 +131,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         pushQuery(newQuery);
     }
 
-    function AttributesLine({ product }: { product: ProductDto }) {
+    function AttributesLine({ product, className }: { product: ProductDto, className: string }) {
         const colorValues = product.attrs[ATTRIBUTES.COLOR] || [];
 
         let sizeKey = '';
@@ -144,13 +144,13 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         }
 
         const total = colorValues.length + sizeValues.length;
-        const arr1Size = Math.ceil((colorValues.length / total) * 100);
+        const arr1Size = Math.floor((colorValues.length / total) * 100);
         const arr2Size = Math.floor((sizeValues.length / total) * 100);
         const style1 = { flexBasis: arr1Size + "%" };
         const style2 = { flexBasis: arr2Size + "%" };
 
         return (
-            <div className="flex flex-wrap">
+            <div className={`flex ${className}`}>
                 <ColorAttribute
                     className={`flex flex-wrap gap-1`}
                     style={style1}
@@ -168,15 +168,19 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
     }
 
     function ColorAttribute({ values, product, className, style }: { values: string[], product: ProductDto, className: string, style: any }) {
-        return <div className={className} style={style}>
+        return <div className={`${className} content-start`} style={style}>
             {values.map(value => (
-                <Link href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`} key={value}>
-                    <div className="
+                <Link
+                    href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`}
+                    key={value}
+                    className="
                         flex-grow-0
-                        w-5 h-5 border-2
+                        w-6 h-6 border-2
                         border-gray-300 hover:border-gray-600
                         dark:border-gray-700 hover:dark:border-gray-400
-                    " style={{backgroundColor: value}}></div>
+                    "
+                    style={{backgroundColor: value}}
+                >
                 </Link>
             ))}
         </div>
@@ -189,9 +193,9 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
             return <div className={className}></div>;
         }
 
-        return <div className={className} style={style}>
+        return <div className={`${className} content-start`} style={style}>
             {values.map(value => (
-                <div key={value} className="flex-grow-0">{attribute.values.find(val => val.key === value)?.title}</div>
+                <span key={value} className="flex-grow-0 h-6">{attribute.values.find(val => val.key === value)?.title}</span>
             ))}
         </div>
     }
@@ -242,7 +246,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
             )}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
                 {productsResponse.products.map(product => (
-                    <div key={product.id} className="m-1">
+                    <div key={product.id} className="m-1 flex flex-wrap flex-col">
                         <Link href={`/product/${product.publicId}`}>
                             <Image
                                 src="https://picsum.photos/200/200"
@@ -252,17 +256,15 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
                                 loading="lazy"
                             />
                         </Link>
-                        <div className="p-1">
-                            <AttributesLine product={product}></AttributesLine>
-                            <div className="flex flex-wrap">
-                                <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
-                                    {product.title}
-                                </h1>
-                                <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                                    {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
-                                </div>
+                        <div className="flex flex-wrap">
+                            <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+                                {product.title}
+                            </h1>
+                            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                                {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
                             </div>
                         </div>
+                        <AttributesLine className="mt-1" product={product}></AttributesLine>
                     </div>
                 ))}
             </div>
