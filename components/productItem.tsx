@@ -19,7 +19,7 @@ export default function ProductItem({ item, cornerBlock, currency, exchangeState
     exchangeState: ExchangeState,
 }) {
     const t = useTranslations('ProductItem');
-    let productHref = `/product/${item.productId}`;
+    let productHref = `/product/${item.publicId}`;
 
     if (item.attributes[ATTRIBUTES.COLOR]) {
         productHref += `?color=${item.attributes[ATTRIBUTES.COLOR][0]}`;
@@ -72,7 +72,7 @@ export default function ProductItem({ item, cornerBlock, currency, exchangeState
                             ></div>
                         </div>
                     )}
-                    {item.attributes[ATTRIBUTES.SIZE] && (
+                    {SIZE_ATTRS.some(sizeAttr => item.attributes[sizeAttr]) && (
                         <div className="flex">
                             <span className="w-20 text-slate-500 text-sm">{t("size")}</span>
                             <span className="font-bold pl-2">{drawSize(item)}</span>

@@ -248,6 +248,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
 
         const bagItem: IBagItem = {
             productId: product.id,
+            publicId: product.publicId,
             title: product.title,
             price: product.price,
             image: "https://picsum.photos/200/200",
@@ -364,6 +365,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
                         onClick={() => {
                             likeStore.addToStore({
                                 productId: product.id,
+                                publicId: product.publicId,
                                 title: product.title,
                                 price: product.price,
                                 image: "https://picsum.photos/200/200",
