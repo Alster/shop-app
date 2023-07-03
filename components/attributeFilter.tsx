@@ -56,10 +56,11 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                                             px-2 py-2 m-1 w-8 h-8 
                                             border border-black dark:border-white 
                                             ${selected.includes(value) ? "border-4" : ""}
+                                            ${selected.includes(value) ? "outline outline-white outline-2" : ""}
                                             `}
                                             style={style}
                                         >
-                                            {selected.includes(value) && <CheckCircleIcon className={`w-2 h-2 ${value === "white" ? "text-black" : ""}`}></CheckCircleIcon>}
+                                            {/*{selected.includes(value) && <CheckCircleIcon className={`w-2 h-2 ${value === "white" ? "text-black" : ""}`}></CheckCircleIcon>}*/}
                                         </button>
                                     )
                                 }
