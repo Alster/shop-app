@@ -4,6 +4,7 @@ import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/20/solid";
 import * as React from "react";
 import {ATTRIBUTES} from "@/app/constants";
 import {CheckCircleIcon} from "@heroicons/react/20/solid";
+import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 
 export default function AttributeFilter({ values, selected, attributeInfo, onToggle}: {
     values: string[],
@@ -44,38 +45,32 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                 <div>
                     {showList && (
                         <div className="absolute flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm">
-                            {values.map((v) => {
+                            {values.map((value) => {
                                 if (attributeInfo.key === ATTRIBUTES.COLOR) {
-                                    const style: any = {};
-                                    if (v === "multicolor") {
-                                        style["background"] = "linear-gradient(45deg, red 25%, yellow 25%, green 50%, blue 50%, purple 75%, pink 75%, white 100%)";
-                                    } else {
-                                        style["backgroundColor"] = v;
-                                    }
-
+                                    const style = getStyleByColorCode(value);
                                     return (
                                         <button
-                                            key={v}
-                                            onClick={() => onToggle(v)}
+                                            key={value}
+                                            onClick={() => onToggle(value)}
                                             className={`
                                             px-2 py-2 m-1 w-8 h-8 
                                             border border-black dark:border-white 
-                                            ${selected.includes(v) ? "border-4" : ""}
+                                            ${selected.includes(value) ? "border-4" : ""}
                                             `}
                                             style={style}
                                         >
-                                            {selected.includes(v) && <CheckCircleIcon className={`w-2 h-2 ${v === "white" ? "text-black" : ""}`}></CheckCircleIcon>}
+                                            {selected.includes(value) && <CheckCircleIcon className={`w-2 h-2 ${value === "white" ? "text-black" : ""}`}></CheckCircleIcon>}
                                         </button>
                                     )
                                 }
 
                                 return (
                                     <button
-                                        key={v}
-                                        onClick={() => onToggle(v)}
-                                        className={`px-2 py-1 m-1 border border-black dark:border-white ${selected.includes(v) ? "unicorn-background" : ""}`}
+                                        key={value}
+                                        onClick={() => onToggle(value)}
+                                        className={`px-2 py-1 m-1 border border-black dark:border-white ${selected.includes(value) ? "unicorn-background" : ""}`}
                                     >
-                                        {localeValue(v)}
+                                        {localeValue(value)}
                                     </button>
                                 )
                             })}

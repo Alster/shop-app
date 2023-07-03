@@ -24,6 +24,7 @@ import {IFindProductsQuery} from "@/utils/products/parseQuery";
 import AttributeFilter from "@/components/attributeFilter";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
 import CategoryTreeView from "@/components/categoryTreeView";
+import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 
 export default function ProductsList({ productsResponseEncoded, attributes, categories, selectedCategories, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
@@ -169,20 +170,23 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     function ColorAttribute({ values, product, className, style }: { values: string[], product: ProductDto, className: string, style: any }) {
         return <div className={`${className} content-start`} style={style}>
-            {values.map(value => (
-                <Link
-                    href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`}
-                    key={value}
-                    className="
+            {values.map(value => {
+                const style = getStyleByColorCode(value);
+                return (
+                    <Link
+                        href={`/product/${product.id}?${ATTRIBUTES.COLOR}=${value}`}
+                        key={value}
+                        className="
                         flex-grow-0
                         w-6 h-6 border-2
                         border-gray-300 hover:border-gray-600
                         dark:border-gray-700 hover:dark:border-gray-400
                     "
-                    style={{backgroundColor: value}}
-                >
-                </Link>
-            ))}
+                        style={style}
+                    >
+                    </Link>
+                )
+            })}
         </div>
     }
 

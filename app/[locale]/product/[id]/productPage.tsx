@@ -25,6 +25,7 @@ import * as React from "react";
 import {bagStore} from "@/utils/bag/bagItemsStorage";
 import {createLikeItemKey, likeStore, useLikesStore} from "@/utils/likes/likeItemsStorage";
 import {HeartIcon} from "@heroicons/react/24/solid";
+import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -130,6 +131,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
             {drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectColor"))}
             <div className={`space-x-4 flex text-sm mt-2 p-2 ${highlightMustSelect && UNSELECTED_ATTR_STYLE}`}>
                 {values.map(value => {
+                    const style = getStyleByColorCode(value);
                     return <label key={value}>
                         <input
                             className="sr-only peer"
@@ -150,7 +152,7 @@ export default function ProductPage({maybeProduct, attributes, categories, pageQ
                                                 dark:outline-white
                                                 cursor-pointer
                                                 "
-                            style={{backgroundColor: value}}
+                            style={style}
                         >
                         </div>
                     </label>
