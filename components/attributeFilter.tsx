@@ -60,7 +60,6 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                                             `}
                                             style={style}
                                         >
-                                            {/*{selected.includes(value) && <CheckCircleIcon className={`w-2 h-2 ${value === "white" ? "text-black" : ""}`}></CheckCircleIcon>}*/}
                                         </button>
                                     )
                                 }
