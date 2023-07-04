@@ -19,7 +19,7 @@ export default async function ProductsPage({ params, searchParams }: { params: P
 
     const selectedCategories = (params.categories && params.categories.length) ? params.categories : [];
 
-    console.log("searchParams", JSON.stringify(searchParams, null, 2))
+    console.log("ProductsPage searchParams", JSON.stringify(searchParams, null, 2))
 
     const [productsResponse, attributes, exchangeState, categoryTree] = await Promise.all([
         fetchProducts(locale, {...searchParams, categories: [selectedCategories.join("/")]}),

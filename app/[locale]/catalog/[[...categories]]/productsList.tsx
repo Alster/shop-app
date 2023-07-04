@@ -28,6 +28,7 @@ import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 import TextSearchMobile from "@/components/textSearchMobile";
 import {AdjustmentsHorizontalIcon} from "@heroicons/react/24/solid";
 import TextSearchDesktop from "@/components/textSearchDesktop";
+import useSearchTerm from "@/utils/seearch/useSearchTerm";
 
 export default function ProductsList({ productsResponseEncoded, attributes, categories, selectedCategories, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
@@ -48,9 +49,22 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
     const [productsResponse, setProductsResponse] = useState<ProductListResponseDto>(JSON.parse(productsResponseEncoded));
     const [pageQuery, setPageQuery] = useState<IFindProductsQuery>(JSON.parse(pageQueryEncoded));
 
+    const [searchTerm, setSearchTerm] = useSearchTerm(pageQuery.search || "");
+    useEffect(() => {
+        if (searchTerm !== pageQuery.search) {
+            const newPageQuery = { ...pageQuery };
+            if (searchTerm === "") {
+                delete newPageQuery.search;
+                pushQuery({ ...newPageQuery });
+            } else {
+                pushQuery({ ...newPageQuery, search: searchTerm });
+            }
+        }
+    }, [searchTerm]);
+
     const [showMobileFilters, toggleShowMobileFilters] = useReducer((state: boolean) => !state, false);
 
-    console.log("searchParams", qs.parse(searchParams.toString()))
+    console.log("ProductsList searchParams", qs.parse(searchParams.toString()))
 
     const pushQuery = (pageQuery: any) => {
         console.log("updateQuery", pageQuery)
@@ -65,6 +79,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         }
         console.log("updateProducts", pq)
         const res = await fetchProducts(locale, pq);
+        delete pq.categories;
         setProductsResponse(res);
     }
 

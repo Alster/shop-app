@@ -1,14 +1,17 @@
+import * as qs from "qs";
 import {useState} from "react";
 import * as React from "react";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
 import {useLocale} from "next-intl";
 import Link from "next-intl/link";
+import {useSearchParams} from "next/navigation";
 
 export default function CategoryTreeView({ tree, selectedCategories}: {
     tree: CategoriesNodeDto[],
     selectedCategories: string[],
 }) {
     const locale = useLocale();
+    const searchParams = useSearchParams();
 
     // Find recursively current category node by "current" param and id property
     // Also, collect all parent nodes
@@ -35,12 +38,20 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
     function CategoryTreeNode({ node, parents }: { node: CategoriesNodeDto, parents: CategoriesNodeDto[] }) {
         const isSelected = selectedLeafs.some(v => v.id === node.id);
 
+        const params = qs.parse(searchParams.toString());
+        delete params.attrs;
+        const newSearchParams = qs.stringify(params);
+
         return (
             <div className="px-4 py-1 hidden lg:block" style={{ width: "200px"}}>
                 <div
                     className="cursor-pointer flex hover:underline"
                 >
-                    <Link href={`/catalog/${([...parents, node]).map(p => p.publicId).join("/")}`} className={isSelected ? "font-bold" : ""}>{node.title[locale]}</Link>
+                    <Link href={
+                        `/catalog/${
+                            ([...parents, node]).map(p => p.publicId).join("/")
+                        }?${newSearchParams}`
+                    } className={isSelected ? "font-bold" : ""}>{node.title[locale]}</Link>
                 </div>
                 <div className="flex">
                     <div>
