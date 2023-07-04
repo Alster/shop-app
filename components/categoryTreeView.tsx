@@ -36,7 +36,7 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
         const isSelected = selectedLeafs.some(v => v.id === node.id);
 
         return (
-            <div className="px-4 py-1" style={{ width: "200px"}}>
+            <div className="px-4 py-1 hidden lg:block" style={{ width: "200px"}}>
                 <div
                     className="cursor-pointer flex hover:underline"
                 >

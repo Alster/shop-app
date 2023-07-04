@@ -4,23 +4,26 @@ import {CurrencyExchangeLoader} from "@/components/currencyExchangeLoader";
 import HeaderLikesButton from "@/components/headerLikesButton";
 import Image from "next/image";
 import * as React from "react";
+import Link from "next-intl/link";
+import {Bars3Icon} from "@heroicons/react/24/solid";
 
 export default async function Header() {
     return <div className="flex unicorn-background">
-        <div className="flex w-full justify-center">
+        <div className="flex w-full justify-center items-center">
             <div className="flex gap-2 flex-auto">
-                <LanguageSelect className="pt-4"></LanguageSelect>
-                <CurrencyExchangeLoader className="pt-4"></CurrencyExchangeLoader>
+                <LanguageSelect className="hidden lg:flex"></LanguageSelect>
+                <CurrencyExchangeLoader className="hidden lg:flex"></CurrencyExchangeLoader>
+                <Bars3Icon className="h-16 w-16 lg:hidden"></Bars3Icon>
             </div>
-            <div>
+            <Link href="/">
                 <Image
                     src="/img/unicorn_logo_small.png"
                     alt="Unicorn Store"
                     width="60"
                     height="60"
                 ></Image>
-            </div>
-            <div className="flex gap-2 flex-auto justify-end">
+            </Link>
+            <div className="flex gap-2 flex-auto justify-end items-center">
                 <HeaderLikesButton></HeaderLikesButton>
                 <HeaderBagButton></HeaderBagButton>
             </div>

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react";
-import {RefObject, useEffect, useRef, useState} from "react";
+import {Fragment, RefObject, useEffect, useReducer, useRef, useState} from "react";
 import {useLocale, useTranslations} from 'next-intl';
 import Link from "next-intl/link";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
@@ -25,6 +25,9 @@ import AttributeFilter from "@/components/attributeFilter";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
 import CategoryTreeView from "@/components/categoryTreeView";
 import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
+import TextSearchMobile from "@/components/textSearchMobile";
+import {AdjustmentsHorizontalIcon} from "@heroicons/react/24/solid";
+import TextSearchDesktop from "@/components/textSearchDesktop";
 
 export default function ProductsList({ productsResponseEncoded, attributes, categories, selectedCategories, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
@@ -44,6 +47,8 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     const [productsResponse, setProductsResponse] = useState<ProductListResponseDto>(JSON.parse(productsResponseEncoded));
     const [pageQuery, setPageQuery] = useState<IFindProductsQuery>(JSON.parse(pageQueryEncoded));
+
+    const [showMobileFilters, toggleShowMobileFilters] = useReducer((state: boolean) => !state, false);
 
     console.log("searchParams", qs.parse(searchParams.toString()))
 
@@ -204,9 +209,10 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         </div>
     }
 
-    const drawFilters = () => {
+    function FiltersDesktop({ className }: { className?: string }) {
         return (
-            <div className="flex flex-wrap">
+            <div className={`${className} flex flex-wrap items-center`}>
+                <TextSearchDesktop className="hidden lg:flex"></TextSearchDesktop>
                 {Object.entries(productsResponse.filters).map(([key, values]) => (
                     <AttributeFilter
                         key={key}
@@ -221,6 +227,28 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         )
     }
 
+    function FiltersButtonMobile({ className, toggle }: { className?: string, toggle: () => void }) {
+
+        return (
+            <Fragment>
+                <div className={`${className} flex flex-wrap`}>
+                    <button
+                        onClick={() => toggle()}
+                        className="
+                                flex justify-center items-center w-full h-12 uppercase font-medium tracking-wider
+                                 dark:bg-slate-200 dark:text-black
+                                 bg-slate-800 text-white
+                             ">
+                        <div className="flex items-center">
+                            <AdjustmentsHorizontalIcon className="h-10 w-10 text-black inline-block"></AdjustmentsHorizontalIcon>
+                            <div>Filters</div>
+                        </div>
+                    </button>
+                </div>
+            </Fragment>
+        )
+    }
+
     const drawCategories = () => {
         return (
             <div className="flex">
@@ -232,46 +260,72 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
         )
     }
 
-    return <div className="flex">
-        {/*{searchParams.toString()}*/}
-        {drawCategories()}
-        <div>
-            {drawFilters()}
-            {!productsResponse.products.length && (
-                <StatusInfo
-                    iconConfig={{
-                        icon: <MagnifyingGlassIcon></MagnifyingGlassIcon>,
-                        textColor: "text-white-400",
-                        backgroundColor: "bg-gray-400"
-                    }}
-                    title={t("emptyProductsList")}
-                    description={t("emptyProductsListDescription")}
-                ></StatusInfo>
+    return (
+        <Fragment>
+            {showMobileFilters && (
+                <div className="fixed w-full h-full top-0">
+                    <div className="flex flex-col h-full w-full bg-white dark:bg-slate-800">
+                        {Object.entries(productsResponse.filters).map(([key, values]) => (
+                                <AttributeFilter
+                                    key={key}
+                                    values={values}
+                                    selected={pageQuery.attrs?.find((attr: any) => attr.key === key)?.values || []}
+                                    attributeInfo={attributes.find(a => a.key === key)}
+                                    onToggle={(value: string) => toggleFilterValue(key, value)}
+                                ></AttributeFilter>
+                            )
+                        )}
+                    </div>
+                </div>
             )}
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
-                {productsResponse.products.map(product => (
-                    <div key={product.id} className="m-1 flex flex-wrap flex-col">
-                        <Link href={`/product/${product.publicId}`}>
-                            <Image
-                                src="https://picsum.photos/200/200"
-                                alt={product.title}
-                                width={400}
-                                height={400}
-                                loading="lazy"
-                            />
-                        </Link>
-                        <div className="flex flex-wrap">
-                            <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
-                                {product.title}
-                            </h1>
-                            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-                                {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
+            {!showMobileFilters && (
+                <Fragment>
+                    <TextSearchMobile className="flex lg:hidden"></TextSearchMobile>
+                    <FiltersButtonMobile toggle={toggleShowMobileFilters} className="flex lg:hidden"></FiltersButtonMobile>
+                    <div className="flex">
+                        {/*{searchParams.toString()}*/}
+                        {drawCategories()}
+                        <div>
+                            <FiltersDesktop className="hidden lg:flex"></FiltersDesktop>
+                            {!productsResponse.products.length && (
+                                <StatusInfo
+                                    iconConfig={{
+                                        icon: <MagnifyingGlassIcon></MagnifyingGlassIcon>,
+                                        textColor: "text-white-400",
+                                        backgroundColor: "bg-gray-400"
+                                    }}
+                                    title={t("emptyProductsList")}
+                                    description={t("emptyProductsListDescription")}
+                                ></StatusInfo>
+                            )}
+                            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
+                                {productsResponse.products.map(product => (
+                                    <div key={product.id} className="m-1 flex flex-wrap flex-col">
+                                        <Link href={`/product/${product.publicId}`}>
+                                            <Image
+                                                src="https://picsum.photos/200/200"
+                                                alt={product.title}
+                                                width={400}
+                                                height={400}
+                                                loading="lazy"
+                                            />
+                                        </Link>
+                                        <div className="flex flex-wrap">
+                                            <h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+                                                {product.title}
+                                            </h1>
+                                            <div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                                                {formatPrice(moneySmallToBig(doExchange(CURRENCY.UAH, currency, product.price, exchangeState)), currency)}
+                                            </div>
+                                        </div>
+                                        <AttributesLine className="mt-1" product={product}></AttributesLine>
+                                    </div>
+                                ))}
                             </div>
                         </div>
-                        <AttributesLine className="mt-1" product={product}></AttributesLine>
                     </div>
-                ))}
-            </div>
-        </div>
-    </div>
+                </Fragment>
+            )}
+        </Fragment>
+    )
 }

@@ -44,7 +44,7 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
             <div className="flex">
                 <div>
                     {showList && (
-                        <div className="absolute flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm">
+                        <div className="md:absolute flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm">
                             {values.map((value) => {
                                 if (attributeInfo.key === ATTRIBUTES.COLOR) {
                                     const style = getStyleByColorCode(value);
