@@ -240,7 +240,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
                                  bg-slate-800 text-white
                              ">
                         <div className="flex items-center">
-                            <AdjustmentsHorizontalIcon className="h-10 w-10 text-black inline-block"></AdjustmentsHorizontalIcon>
+                            <AdjustmentsHorizontalIcon className="h-10 w-10 inline-block"></AdjustmentsHorizontalIcon>
                             <div>Filters</div>
                         </div>
                     </button>

@@ -13,7 +13,7 @@ export default async function Header() {
             <div className="flex gap-2 flex-auto">
                 <LanguageSelect className="hidden lg:flex"></LanguageSelect>
                 <CurrencyExchangeLoader className="hidden lg:flex"></CurrencyExchangeLoader>
-                <Bars3Icon className="h-16 w-16 lg:hidden"></Bars3Icon>
+                <Bars3Icon className="h-16 w-16 lg:hidden text-white"></Bars3Icon>
             </div>
             <Link href="/">
                 <Image
