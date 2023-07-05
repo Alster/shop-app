@@ -41,6 +41,18 @@ const LANGUAGES_LIST: DropdownListItemInterface[] = [
             </marker>
             <path fill="none" markerMid="url(#a)" d="m0 0 18 11h65 65 65 65 66L51 39h65 65 65 65L18 66h65 65 65 65 66L51 94h65 65 65 65L18 121h65 65 65 65 66L51 149h65 65 65 65L18 177h65 65 65 65 66L51 205h65 65 65 65L18 232h65 65 65 65 66L0 0"/>
         </svg>
+    },
+    {
+        key: "ru",
+        title: "Русский",
+        selected: false,
+        flag: <svg xmlns="http://www.w3.org/2000/svg" id="flag-icons-ru" viewBox="0 0 512 512">
+            <g fillRule="evenodd" strokeWidth="1pt">
+                <path fill="#fff" d="M0 0h512v512H0z"/>
+                <path fill="#0039a6" d="M0 170.7h512V512H0z"/>
+                <path fill="#d52b1e" d="M0 341.3h512V512H0z"/>
+            </g>
+        </svg>
     }
 ];
 

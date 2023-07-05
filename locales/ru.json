@@ -1,0 +1,75 @@
+{
+  "ProductsList": {
+    "hello": "Привет!",
+    "emptyProductsList": "Список товаров пуст",
+    "emptyProductsListDescription": "К сожалению, товаров с такими параметрами не найдено. Пожалуйста, попробуйте изменить параметры поиска."
+  },
+  "ProductsPage": {
+    "hello": "Привет!",
+    "selectColor": "Пожалуйста, выберите цвет",
+    "selectSize": "Пожалуйста, выберите размер",
+    "bAddToBag": "Добавить в корзину",
+    "bBuyNow": "Купить сейчас",
+    "bAdd": "Добавить",
+    "productAddedToBag": "Товар добавлен в корзину",
+    "goToBag": "Перейти в корзину",
+    "continueShopping": "Продолжить покупки",
+    "productNotAvailable": "Товар отсутствует",
+    "productNotAvailableDescription": "К сожалению, этот товар отсутствует на складе. Пожалуйста, попробуйте позже."
+  },
+  "BagPage": {
+    "totalPrice": "Общая цена",
+    "bCheckout": "Оформить заказ",
+    "emptyBag": "Ваша корзина пуста",
+    "emptyBagDescription": "Вы еще не добавили ни одного товара в корзину. Перейдите на страницу с товаром и добавьте его в корзину."
+  },
+  "CheckoutPage": {
+    "totalPrice": "Общая цена",
+    "bCheckout": "Оформить заказ",
+    "contactInfo": "Контактная информация",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "phoneNumber": "Номер телефона",
+    "delivery": "Доставка",
+    "whereToDeliver:office": "Отделение",
+    "whereToDeliver:subOffice": "Почтомат",
+    "whereToDeliver:courier": "Курьер",
+    "deliveryCity": "Город",
+    "cityPlaceholder": "Введите название города",
+    "deliveryOffice": "Отделение",
+    "officePlaceholder": "Введите номер отделения",
+    "street": "Улица",
+    "streetPlaceholder": "Введите название улицы",
+    "building": "Дом",
+    "buildingPlaceholder": "Введите номер дома",
+    "room": "Квартира",
+    "roomPlaceholder": "Введите номер квартиры"
+  },
+  "OrderStatusPage": {
+    "orderStatusWaiting": "Ожидается оплата",
+    "orderStatusWaitingDescription": "Ваш заказ ожидает оплаты. Пожалуйста, оплатите его в ближайшее время.",
+    "orderStatusSuccess": "Заказ успешно оформлен",
+    "orderStatusSuccessDescription": "Ваш заказ успешно оформлен. Ожидайте вашу покупку в ближайшее время!",
+    "orderStatusFailed": "Ошибка оформления заказа",
+    "orderStatusFailedDescription": "Во время оформления заказа произошла ошибка. Пожалуйста, попробуйте позже.",
+    "orderInfo": "Информация о заказе",
+    "orderInfo:totalPrice": "Общая цена",
+    "orderInfo:dateCreated": "Дата создания",
+    "bCancelOrder": "Отменить заказ"
+  },
+  "FailedToCreateOrderPage": {
+    "failedToCreateOrder": "Ошибка оформления заказа",
+    "failedToCreateOrderDescription": "Во время оформления заказа произошла ошибка. Пожалуйста, попробуйте позже.",
+    "bGoToBag": "Перейти в корзину"
+  },
+  "LikesPage": {
+    "hello": "Привет!",
+    "emptyLikesList": "Список желаний пуст",
+    "emptyLikesListDescription": "Добавьте товар который вам понравился в список желаний, чтобы сохранить его и найти позже.",
+    "bClearLikes": "Очистить список желаний"
+  },
+  "ProductItem": {
+    "color": "Цвет",
+    "size": "Размер"
+  }
+}

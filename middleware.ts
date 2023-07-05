@@ -1,11 +1,12 @@
 import createMiddleware from 'next-intl/middleware';
+import {LanguageEnum} from "@/shop-shared/constants/localization";
 
 export default createMiddleware({
     // A list of all locales that are supported
-    locales: ['en', 'ua'],
+    locales: Object.values(LanguageEnum),
 
     // If this locale is matched, pathnames work without a prefix (e.g. `/about`)
-    defaultLocale: 'en'
+    defaultLocale: LanguageEnum.EN,
 });
 
 export const config = {

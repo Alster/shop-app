@@ -24,7 +24,7 @@ export default function CheckoutView({ exchangeState, currency }: {
 }) {
     const t = useTranslations('CheckoutPage');
     const locale = useLocale();
-    const bagItems = useBagStore('CHECKOUT');
+    const bagItems = useBagStore();
 
     const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 

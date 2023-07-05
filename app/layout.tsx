@@ -33,7 +33,6 @@ export default async function RootLayout({
     notFound();
   }
 
-  // const pathname = usePathname();
   console.log(params)
 
   return <html lang={locale}>
