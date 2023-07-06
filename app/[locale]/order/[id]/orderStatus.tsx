@@ -57,6 +57,7 @@ const StatusesConfig: {[key in OrderStatus]: IStatusConfig} = {
 const LANG_TO_LOCALE: {[key in LanguageEnum]: string} = {
     [LanguageEnum.EN]: "en-US",
     [LanguageEnum.UA]: "uk-UA",
+    [LanguageEnum.RU]: "ru-RU",
 }
 
 export default function OrderStatusIndicator({ order }: { order: OrderDto }){

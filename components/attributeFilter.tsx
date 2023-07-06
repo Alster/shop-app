@@ -1,18 +1,22 @@
-import {ReactElement, useState} from "react";
+import {useState} from "react";
 import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
 import {ChevronDownIcon, ChevronUpIcon} from "@heroicons/react/20/solid";
 import * as React from "react";
 import {ATTRIBUTES} from "@/app/constants";
-import {CheckCircleIcon} from "@heroicons/react/20/solid";
 import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
+import Link from "next-intl/link";
+import {IFindProductsQuery} from "@/utils/products/parseQuery";
+import * as qs from "qs";
+import {useSearchParams} from "next/navigation";
+import {usePathname} from "next-intl/client";
 
-export default function AttributeFilter({ values, selected, attributeInfo, onToggle}: {
+export default function AttributeFilter({ values, attributeInfo}: {
     values: string[],
-    selected: string[],
     attributeInfo?: AttributeDto,
-    onToggle: (value: string) => void,
 }) {
-    const [showList, setShowList] = useState<boolean>(false)
+    const pathname = usePathname();
+    const searchParams = useSearchParams();
+    const [showList, setShowList] = useState<boolean>(false);
 
     if (!attributeInfo) {
         return null
@@ -21,6 +25,44 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
     const localeValue = (key: string) => {
         return attributeInfo.values.find((v) => v.key === key)?.title || key;
     };
+
+    const getAttrsFromQuery = () => {
+        const pq = qs.parse(searchParams.toString()) as IFindProductsQuery;
+        const attrs: Record<string, string[]> = {};
+        (pq.attrs || []).forEach((attr) => {
+            attrs[attr.key] = [...attr.values];
+        });
+        return attrs;
+    }
+
+    const getLinkFromAttributes = (attrs: Record<string, string[]>) => {
+        return pathname + "?" + qs.stringify({
+            ...(qs.parse(searchParams.toString()) as any),
+            attrs: Object.entries(attrs).map(([key, values]) => ({key, values}))
+        });
+    }
+
+    const getToggledLink = (key: string, value: string) => {
+        const attrs = getAttrsFromQuery();
+
+        if (attrs[key]) {
+            if (attrs[key].includes(value)) {
+                attrs[key] = attrs[key].filter((v: string) => v !== value);
+                if (attrs[key].length === 0) {
+                    delete attrs[key];
+                }
+            } else {
+                attrs[key] = Array.from((new Set([...attrs[key], value])));
+            }
+        } else {
+            attrs[key] = [value];
+        }
+
+        return getLinkFromAttributes(attrs);
+    }
+
+    const selected = (qs.parse(searchParams.toString()) as IFindProductsQuery)
+        .attrs?.find((attr: any) => attr.key === attributeInfo.key)?.values || [];
 
     return (
         <div
@@ -49,9 +91,9 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                                 if (attributeInfo.key === ATTRIBUTES.COLOR) {
                                     const style = getStyleByColorCode(value);
                                     return (
-                                        <button
+                                        <Link
                                             key={value}
-                                            onClick={() => onToggle(value)}
+                                            href={getToggledLink(attributeInfo.key, value)}
                                             className={`
                                             px-2 py-2 m-1 w-8 h-8 
                                             border border-black dark:border-white 
@@ -60,18 +102,18 @@ export default function AttributeFilter({ values, selected, attributeInfo, onTog
                                             `}
                                             style={style}
                                         >
-                                        </button>
+                                        </Link>
                                     )
                                 }
 
                                 return (
-                                    <button
+                                    <Link
                                         key={value}
-                                        onClick={() => onToggle(value)}
+                                        href={getToggledLink(attributeInfo.key, value)}
                                         className={`px-2 py-1 m-1 border border-black dark:border-white ${selected.includes(value) ? "unicorn-background" : ""}`}
                                     >
                                         {localeValue(value)}
-                                    </button>
+                                    </Link>
                                 )
                             })}
                         </div>

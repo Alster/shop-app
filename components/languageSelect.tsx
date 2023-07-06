@@ -3,7 +3,7 @@
 import Link from "next-intl/link";
 import {usePathname, useRouter} from "next-intl/client";
 import {useSearchParams} from "next/navigation";
-import {Fragment, ReactElement, useState} from "react";
+import {Fragment, ReactElement, useReducer, useState} from "react";
 import {useLocale} from "next-intl";
 import {ChevronDownIcon} from "@heroicons/react/20/solid";
 
@@ -59,16 +59,12 @@ const LANGUAGES_LIST: DropdownListItemInterface[] = [
 export default function LanguageSelect({ className }: { className?: string }) {
     const pathname = usePathname();
     const query = useSearchParams();
-    const router = useRouter();
     // console.log(pathname, query.toString(), router)
     const url = `${pathname}?${query.toString()}`;
 
     const locale = useLocale();
 
-    const [isListOpen, setIsListOpen] = useState(false);
-    const toggleList = () => {
-        setIsListOpen(!isListOpen);
-    };
+    const [isListOpen, toggleList] = useReducer((state) => !state, false);
 
     const getLanguageByKey = (key: string) => {
         const foundCurrentLanguage = LANGUAGES_LIST.find(item => item.key === key);

@@ -66,6 +66,13 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
 
     console.log("ProductsList searchParams", qs.parse(searchParams.toString()))
 
+    console.log(`attributes`, attributes)
+    console.log(`categories`, categories)
+
+    useEffect(() => {
+        console.log("locale changed", locale, "pathName", pathName)
+    }, [locale])
+
     const pushQuery = (pageQuery: any) => {
         console.log("updateQuery", pageQuery)
         const newPath = `${pathName}?${qs.stringify(pageQuery)}`;

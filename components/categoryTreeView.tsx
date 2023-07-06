@@ -10,29 +10,43 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
     tree: CategoriesNodeDto[],
     selectedCategories: string[],
 }) {
-    const locale = useLocale();
     const searchParams = useSearchParams();
 
     // Find recursively current category node by "current" param and id property
     // Also, collect all parent nodes
-    const [selectedLeafs, setSelectedLeafs] = useState<CategoriesNodeDto[]>([]);
-    if (selectedLeafs.length === 0) {
-        let leafs: CategoriesNodeDto[] = [];
-        const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
-            const selectedCategory = selectedCategories[depth];
-            if (selectedCategory != node.publicId) {
-                return;
-            }
+    // const [selectedLeafs, setSelectedLeafs] = useState<CategoriesNodeDto[]>([]);
+    // if (selectedLeafs.length === 0) {
+    //     let leafs: CategoriesNodeDto[] = [];
+    //     const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
+    //         const selectedCategory = selectedCategories[depth];
+    //         if (selectedCategory != node.publicId) {
+    //             return;
+    //         }
+    //
+    //         leafs = [...parents, node];
+    //         for (const child of node.children) {
+    //             findNode(child, [...parents, node], depth + 1);
+    //         }
+    //     }
+    //     for (const node of tree) {
+    //         findNode(node, [], 0);
+    //     }
+    //     setSelectedLeafs(leafs);
+    // }
+    let selectedLeafs: CategoriesNodeDto[] = [];
+    const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
+        const selectedCategory = selectedCategories[depth];
+        if (selectedCategory != node.publicId) {
+            return;
+        }
 
-            leafs = [...parents, node];
-            for (const child of node.children) {
-                findNode(child, [...parents, node], depth + 1);
-            }
+        selectedLeafs = [...parents, node];
+        for (const child of node.children) {
+            findNode(child, [...parents, node], depth + 1);
         }
-        for (const node of tree) {
-            findNode(node, [], 0);
-        }
-        setSelectedLeafs(leafs);
+    }
+    for (const node of tree) {
+        findNode(node, [], 0);
     }
 
     function CategoryTreeNode({ node, parents }: { node: CategoriesNodeDto, parents: CategoriesNodeDto[] }) {
@@ -51,7 +65,7 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
                         `/catalog/${
                             ([...parents, node]).map(p => p.publicId).join("/")
                         }?${newSearchParams}`
-                    } className={isSelected ? "font-bold" : ""}>{node.title[locale]}</Link>
+                    } className={isSelected ? "font-bold" : ""}>{node.title}</Link>
                 </div>
                 <div className="flex">
                     <div>

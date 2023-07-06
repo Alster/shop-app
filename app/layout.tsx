@@ -33,8 +33,6 @@ export default async function RootLayout({
     notFound();
   }
 
-  console.log(params)
-
   return <html lang={locale}>
     <body className={inter.className}>
         <NextIntlClientProvider locale={locale} messages={messages}>
