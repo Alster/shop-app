@@ -1,101 +1,113 @@
-import {AttributeDto} from "@/shop-shared/dto/product/attribute.dto";
-import * as React from "react";
-import {ATTRIBUTES} from "@/app/constants";
-import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
+import { useSearchParams } from "next/navigation";
+import { usePathname } from "next-intl/client";
 import Link from "next-intl/link";
-import {IFindProductsQuery} from "@/utils/products/parseQuery";
 import * as qs from "qs";
-import {useSearchParams} from "next/navigation";
-import {usePathname} from "next-intl/client";
+import * as React from "react";
+
+import { AttributesEnum } from "@/app/constants";
 import FilterContainer from "@/components/filters/filterContainer";
+import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
+import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
+import { IFindProductsQuery } from "@/utils/products/parseQuery";
 
-export default function AttributeFilter({ values, attributeInfo}: {
-    values: string[],
-    attributeInfo?: AttributeDto,
+export default function AttributeFilter({
+	values,
+	attributeInfo,
+}: {
+	values: string[];
+	attributeInfo?: AttributeDto;
 }) {
-    const pathname = usePathname();
-    const searchParams = useSearchParams();
+	const pathname = usePathname();
+	const searchParameters = useSearchParams();
 
-    if (!attributeInfo) {
-        return null
-    }
+	if (!attributeInfo) {
+		return;
+	}
 
-    const localeValue = (key: string) => {
-        return attributeInfo.values.find((v) => v.key === key)?.title || key;
-    };
+	const localeValue = (key: string) => {
+		return attributeInfo.values.find((v) => v.key === key)?.title || key;
+	};
 
-    const getAttrsFromQuery = () => {
-        const pq = qs.parse(searchParams.toString()) as IFindProductsQuery;
-        const attrs: Record<string, string[]> = {};
-        (pq.attrs || []).forEach((attr) => {
-            attrs[attr.key] = [...attr.values];
-        });
-        return attrs;
-    }
+	const getAttributesFromQuery = () => {
+		const pq = qs.parse(searchParameters.toString()) as IFindProductsQuery;
+		const attributes: Record<string, string[]> = {};
+		for (const attribute of pq.attrs || []) {
+			attributes[attribute.key] = [...attribute.values];
+		}
+		return attributes;
+	};
 
-    const getLinkFromAttributes = (attrs: Record<string, string[]>) => {
-        return pathname + "?" + qs.stringify({
-            ...(qs.parse(searchParams.toString()) as any),
-            attrs: Object.entries(attrs).map(([key, values]) => ({key, values}))
-        });
-    }
+	const getLinkFromAttributes = (attributes: Record<string, string[]>) => {
+		return (
+			pathname +
+			"?" +
+			qs.stringify({
+				...(qs.parse(searchParameters.toString()) as any),
+				attrs: Object.entries(attributes).map(([key, values]) => ({ key, values })),
+			})
+		);
+	};
 
-    const getToggledLink = (key: string, value: string) => {
-        const attrs = getAttrsFromQuery();
+	const getToggledLink = (key: string, value: string) => {
+		const attributes = getAttributesFromQuery();
 
-        if (attrs[key]) {
-            if (attrs[key].includes(value)) {
-                attrs[key] = attrs[key].filter((v: string) => v !== value);
-                if (attrs[key].length === 0) {
-                    delete attrs[key];
-                }
-            } else {
-                attrs[key] = Array.from((new Set([...attrs[key], value])));
-            }
-        } else {
-            attrs[key] = [value];
-        }
+		if (attributes[key]) {
+			if (attributes[key].includes(value)) {
+				attributes[key] = attributes[key].filter((v: string) => v !== value);
+				if (attributes[key].length === 0) {
+					delete attributes[key];
+				}
+			} else {
+				attributes[key] = [...new Set([...attributes[key], value])];
+			}
+		} else {
+			attributes[key] = [value];
+		}
 
-        return getLinkFromAttributes(attrs);
-    }
+		return getLinkFromAttributes(attributes);
+	};
 
-    const selected = (qs.parse(searchParams.toString()) as IFindProductsQuery)
-        .attrs?.find((attr: any) => attr.key === attributeInfo.key)?.values || [];
+	const selected =
+		(qs.parse(searchParameters.toString()) as IFindProductsQuery).attrs?.find(
+			(attribute: any) => attribute.key === attributeInfo.key,
+		)?.values || [];
 
-    return (
-        <FilterContainer
-            title={attributeInfo.title}
-            selectedCount={selected.length}
-        >
-            {values.map((value) => {
-                if (attributeInfo.key === ATTRIBUTES.COLOR) {
-                    const style = getStyleByColorCode(value);
-                    return (
-                        <Link
-                            key={value}
-                            href={getToggledLink(attributeInfo.key, value)}
-                            className={`
+	return (
+		<FilterContainer title={attributeInfo.title} selectedCount={selected.length}>
+			{values.map((value) => {
+				if (attributeInfo.key === AttributesEnum.COLOR) {
+					const style = getStyleByColorCode(value);
+					return (
+						<Link
+							key={value}
+							href={getToggledLink(attributeInfo.key, value)}
+							className={`
                                             px-2 py-2 m-1 w-8 h-8 
                                             border border-black dark:border-white 
                                             ${selected.includes(value) ? "border-4" : ""}
-                                            ${selected.includes(value) ? "outline outline-black dark:outline-white outline-2" : ""}
+                                            ${
+												selected.includes(value)
+													? "outline outline-black dark:outline-white outline-2"
+													: ""
+											}
                                             `}
-                            style={style}
-                        >
-                        </Link>
-                    )
-                }
+							style={style}
+						></Link>
+					);
+				}
 
-                return (
-                    <Link
-                        key={value}
-                        href={getToggledLink(attributeInfo.key, value)}
-                        className={`px-2 py-1 m-1 border border-black dark:border-white ${selected.includes(value) ? "unicorn-background" : ""}`}
-                    >
-                        {localeValue(value)}
-                    </Link>
-                )
-            })}
-        </FilterContainer>
-    )
+				return (
+					<Link
+						key={value}
+						href={getToggledLink(attributeInfo.key, value)}
+						className={`px-2 py-1 m-1 border border-black dark:border-white ${
+							selected.includes(value) ? "unicorn-background" : ""
+						}`}
+					>
+						{localeValue(value)}
+					</Link>
+				);
+			})}
+		</FilterContainer>
+	);
 }

@@ -1,7 +1,7 @@
-export enum ATTRIBUTES {
-    COLOR = 'color',
-    SIZE = 'size',
-    SIZE_SHOES = 'sizeShoes',
+export enum AttributesEnum {
+	COLOR = "color",
+	SIZE = "size",
+	SIZE_SHOES = "sizeShoes",
 }
 
-export const SIZE_ATTRS = [ATTRIBUTES.SIZE, ATTRIBUTES.SIZE_SHOES];
+export const SIZE_ATTRS = [AttributesEnum.SIZE, AttributesEnum.SIZE_SHOES];

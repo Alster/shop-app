@@ -1,40 +1,39 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-export enum CurrentMobileViewScreen {
-    Catalog = 'catalog',
-    Filters = 'filters',
-    Menu = 'menu',
+export enum MobileViewScreenEnum {
+	Catalog = "catalog",
+	Filters = "filters",
+	Menu = "menu",
 }
 
-let currentVal: CurrentMobileViewScreen = CurrentMobileViewScreen.Catalog;
+let currentValue: MobileViewScreenEnum = MobileViewScreenEnum.Catalog;
 
-const callbacks: Function[] = [];
+const callbacks: ((value: MobileViewScreenEnum) => void)[] = [];
 
-function callCallbacks(newValue: CurrentMobileViewScreen) {
-    if (currentVal === newValue) {
-        return;
-    }
+function callCallbacks(newValue: MobileViewScreenEnum) {
+	if (currentValue === newValue) {
+		return;
+	}
 
-    currentVal = newValue;
-    callbacks.forEach((cb) => cb(newValue));
-    return;
+	currentValue = newValue;
+	for (const callback of callbacks) callback(newValue);
 }
 
-export default function useMobileViewScreen(defaultValue?: CurrentMobileViewScreen) {
-    if (currentVal === null && defaultValue && defaultValue.length) {
-        currentVal = defaultValue;
-    }
+export default function useMobileViewScreen(defaultValue?: MobileViewScreenEnum) {
+	if (currentValue === null && defaultValue && defaultValue.length > 0) {
+		currentValue = defaultValue;
+	}
 
-    const [searchTerm, setSearchTerm] = useState<CurrentMobileViewScreen>(currentVal);
+	const [searchTerm, setSearchTerm] = useState<MobileViewScreenEnum>(currentValue);
 
-    useEffect(() => {
-        callbacks.push(setSearchTerm);
+	useEffect(() => {
+		callbacks.push(setSearchTerm);
 
-        return () => {
-            const index = callbacks.indexOf(setSearchTerm);
-            callbacks.splice(index, 1);
-        };
-    }, []);
+		return () => {
+			const index = callbacks.indexOf(setSearchTerm);
+			callbacks.splice(index, 1);
+		};
+	}, []);
 
-    return [searchTerm, callCallbacks] as const;
+	return [searchTerm, callCallbacks] as const;
 }

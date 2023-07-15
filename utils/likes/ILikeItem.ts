@@ -1,8 +1,8 @@
-import {IProductShortDto} from "@/utils/IProductShort.dto";
+import { IProductShortDto } from "@/utils/IProductShort.dto";
 
-export interface ILikeItem extends IProductShortDto {}
+export type ILikeItem = IProductShortDto;
 
 export interface ILikeItemKeySource {
-    productId: string;
-    attributes: Record<string, string[]>;
+	productId: string;
+	attributes: Record<string, string[]>;
 }

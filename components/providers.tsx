@@ -1,11 +1,7 @@
-'use client';
+"use client";
 
-import {Fragment} from "react";
+import { Fragment, ReactElement } from "react";
 
-export function Providers({ children } : any) {
-    return (
-        <Fragment>
-            {children}
-        </Fragment>
-    );
+export function Providers({ children }: { children: ReactElement }) {
+	return <Fragment>{children}</Fragment>;
 }
