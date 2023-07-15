@@ -5,7 +5,11 @@ import * as React from "react";
 
 import StatusInfo from "@/components/statusInfo";
 
-export default function FailedToCreateOrderPage({ searchParams }: any) {
+export default function FailedToCreateOrderPage({
+	searchParams,
+}: {
+	searchParams: { reason: string };
+}) {
 	const t = useTranslations("FailedToCreateOrderPage");
 	return (
 		<div className="flex flex-col items-center justify-centent">

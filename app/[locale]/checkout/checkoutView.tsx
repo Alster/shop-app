@@ -14,8 +14,8 @@ import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
 import { NOVA_POSHTA_DELIVERY_TYPE } from "@/shop-shared/constants/checkout";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
-import { CreateOrderItemDataDto } from "@/shop-shared/dto/order/create-order.dto";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
+import { CreateOrderItemDataDto } from "@/shop-shared/dto/order/createOrder.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { useBagStore } from "@/utils/bag/bagItemsStorage";
 import { fetchNovaPoshta } from "@/utils/fetchNovaPoshta";
@@ -27,7 +27,7 @@ export default function CheckoutView({
 	currency,
 }: {
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 }) {
 	const t = useTranslations("CheckoutPage");
 	const locale = useLocale();
@@ -310,7 +310,7 @@ export default function CheckoutView({
 						{formatPrice(
 							moneySmallToBig(
 								doExchange(
-									CURRENCY.UAH,
+									CurrencyEnum.UAH,
 									currency,
 									sum(
 										Object.values(bagItems).map((item) => item.price as number),

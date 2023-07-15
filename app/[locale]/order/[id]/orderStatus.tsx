@@ -10,10 +10,7 @@ import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { NOVA_POSHTA_DELIVERY_TYPE } from "@/shop-shared/constants/checkout";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 import { ORDER_STATUS, OrderStatus } from "@/shop-shared/constants/order";
-import {
-	DeliveryNVCourierDto,
-	DeliveryNVOfficeDto,
-} from "@/shop-shared/dto/order/create-order.dto";
+import { DeliveryNVCourierDto, DeliveryNVOfficeDto } from "@/shop-shared/dto/order/createOrder.dto";
 import { OrderDto } from "@/shop-shared/dto/order/order.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { bagStore, createBagItemKey } from "@/utils/bag/bagItemsStorage";

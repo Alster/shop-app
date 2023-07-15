@@ -6,7 +6,7 @@ import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
 import { fetchCategoryTree } from "@/utils/fetchCategoryTree";
 import { fetchProducts } from "@/utils/fetchProducts";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 interface IParametersCategories {
 	categories: string[];

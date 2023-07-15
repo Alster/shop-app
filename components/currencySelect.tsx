@@ -6,7 +6,7 @@ import { Fragment, useState } from "react";
 
 import { setCookie } from "@/shop-exchange-shared/cookieClientHelper";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCIES, CURRENCY, CURRENCY_TO_SYMBOL } from "@/shop-shared/constants/exchange";
+import { CURRENCIES, CURRENCY_TO_SYMBOL, CurrencyEnum } from "@/shop-shared/constants/exchange";
 
 interface IDropdownListItemInterface {
 	key: string;
@@ -26,7 +26,7 @@ export default function CurrencySelect({
 	className,
 }: {
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 	className?: string;
 }) {
 	const router = useRouter();

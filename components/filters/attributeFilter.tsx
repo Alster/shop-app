@@ -8,7 +8,8 @@ import { AttributesEnum } from "@/app/constants";
 import FilterContainer from "@/components/filters/filterContainer";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
+import ISearchParameters from "@/utils/products/iSearchParameters";
 
 export default function AttributeFilter({
 	values,
@@ -38,14 +39,11 @@ export default function AttributeFilter({
 	};
 
 	const getLinkFromAttributes = (attributes: Record<string, string[]>) => {
-		return (
-			pathname +
-			"?" +
-			qs.stringify({
-				...(qs.parse(searchParameters.toString()) as any),
-				attrs: Object.entries(attributes).map(([key, values]) => ({ key, values })),
-			})
-		);
+		const parameters: ISearchParameters = {
+			...(qs.parse(searchParameters.toString()) as ISearchParameters),
+			attrs: Object.entries(attributes).map(([key, values]) => ({ key, values })),
+		};
+		return pathname + "?" + qs.stringify(parameters);
 	};
 
 	const getToggledLink = (key: string, value: string) => {

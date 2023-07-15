@@ -9,7 +9,7 @@ import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductDto } from "@/shop-shared/dto/product/product.dto";
@@ -23,7 +23,7 @@ export default function ProductsList({
 }: {
 	products: ProductDto[];
 	attributes: AttributeDto[];
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 	exchangeState: ExchangeState;
 }) {
 	function AttributesLine({ product, className }: { product: ProductDto; className: string }) {
@@ -146,7 +146,7 @@ export default function ProductsList({
 							{formatPrice(
 								moneySmallToBig(
 									doExchange(
-										CURRENCY.UAH,
+										CurrencyEnum.UAH,
 										currency,
 										product.price,
 										exchangeState,

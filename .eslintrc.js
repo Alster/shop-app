@@ -123,6 +123,14 @@ module.exports = {
 			},
 		],
 		"unicorn/prefer-node-protocol": "off",
+		"unicorn/prevent-abbreviations": [
+			"error",
+			{
+				replacements: {
+					i: false,
+				},
+			},
+		],
 		"react/prop-types": "off",
 		"react/react-in-jsx-scope": "off",
 	},

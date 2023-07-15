@@ -20,7 +20,7 @@ import TextSearchMobile from "@/components/textSearchMobile";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CategoriesNodeDto } from "@/shop-shared/dto/category/categories-tree.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
@@ -28,7 +28,7 @@ import { ProductDto } from "@/shop-shared/dto/product/product.dto";
 import { ProductListResponseDto } from "@/shop-shared/dto/product/product-list.response.dto";
 import { fetchProducts } from "@/utils/fetchProducts";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 import useMobileViewScreen from "@/utils/seearch/useMobileViewScreen";
 
 export default function ProductsList({
@@ -45,7 +45,7 @@ export default function ProductsList({
 	categories: CategoriesNodeDto[];
 	selectedCategories: string[];
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 	pageQueryEncoded: string;
 }) {
 	const t = useTranslations("ProductsList");
@@ -390,7 +390,7 @@ export default function ProductsList({
 												{formatPrice(
 													moneySmallToBig(
 														doExchange(
-															CURRENCY.UAH,
+															CurrencyEnum.UAH,
 															currency,
 															product.price,
 															exchangeState,

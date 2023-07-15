@@ -20,13 +20,14 @@ import StatusInfo from "@/components/statusInfo";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CategoryDto } from "@/shop-shared/dto/category/category.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductDto } from "@/shop-shared/dto/product/product.dto";
 import { bagStore } from "@/utils/bag/bagItemsStorage";
-import { IBagItem } from "@/utils/bag/IBagItem";
+import { IBagItem } from "@/utils/bag/iBagItem";
+import ISearchParameters from "@/utils/products/iSearchParameters";
 import { createLikeItemKey, likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 
@@ -43,11 +44,9 @@ export default function ProductPage({
 	maybeProduct: ProductDto | null;
 	attributes: AttributeDto[];
 	categories: CategoryDto[];
-	pageQuery: {
-		[AttributesEnum.COLOR]: string;
-	};
+	pageQuery: ISearchParameters;
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 }) {
 	const t = useTranslations("ProductsPage");
 	const likeItems = useLikesStore();
@@ -390,7 +389,12 @@ export default function ProductPage({
 					<div className="mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">
 						{formatPrice(
 							moneySmallToBig(
-								doExchange(CURRENCY.UAH, currency, product.price, exchangeState),
+								doExchange(
+									CurrencyEnum.UAH,
+									currency,
+									product.price,
+									exchangeState,
+								),
 							),
 							currency,
 						)}
@@ -427,7 +431,7 @@ export default function ProductPage({
 									{formatPrice(
 										moneySmallToBig(
 											doExchange(
-												CURRENCY.UAH,
+												CurrencyEnum.UAH,
 												currency,
 												product.price,
 												exchangeState,

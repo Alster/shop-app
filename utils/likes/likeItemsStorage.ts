@@ -1,4 +1,4 @@
-import { ILikeItem, ILikeItemKeySource } from "@/utils/likes/ILikeItem";
+import { ILikeItem, ILikeItemKeySource } from "@/utils/likes/iLikeItem";
 import { LocalListStorage, useLocalListStorage } from "@/utils/localListStorage";
 
 const LOCAL_STORAGE_KEY = "likes";

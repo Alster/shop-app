@@ -9,7 +9,7 @@ import HorizontalLine from "@/components/horizontalLine";
 import ProductItem from "@/components/productItem";
 import StatusInfo from "@/components/statusInfo";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
 
 export default function LikesView({
@@ -17,7 +17,7 @@ export default function LikesView({
 	currency,
 }: {
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 }) {
 	const t = useTranslations("LikesPage");
 	const likeItems = useLikesStore();

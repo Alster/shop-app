@@ -1,6 +1,6 @@
 import { ProductListResponseDto } from "@/shop-shared/dto/product/product-list.response.dto";
 import { fetchApi } from "@/utils/fetchApi";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export async function fetchProducts(
 	lang: string,

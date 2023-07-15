@@ -12,7 +12,7 @@ import StatusInfo from "@/components/statusInfo";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { bagStore, useBagStore } from "@/utils/bag/bagItemsStorage";
 
@@ -23,7 +23,7 @@ export default function BagView({
 	currency,
 }: {
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 }) {
 	const t = useTranslations("BagPage");
 	const bagItems = useBagStore();
@@ -79,7 +79,7 @@ export default function BagView({
 						{formatPrice(
 							moneySmallToBig(
 								doExchange(
-									CURRENCY.UAH,
+									CurrencyEnum.UAH,
 									currency,
 									sum(
 										Object.values(bagItems).map((item) => item.price as number),

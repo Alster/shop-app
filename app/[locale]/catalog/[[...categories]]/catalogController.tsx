@@ -17,11 +17,11 @@ import StatusInfo from "@/components/statusInfo";
 import TextSearchDesktop from "@/components/textSearchDesktop";
 import TextSearchMobile from "@/components/textSearchMobile";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
-import { CategoriesNodeDto } from "@/shop-shared/dto/category/categories-tree.dto";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
+import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
-import { ProductListResponseDto } from "@/shop-shared/dto/product/product-list.response.dto";
+import { ProductListResponseDto } from "@/shop-shared/dto/product/productList.response.dto";
 import useMobileViewScreen, { MobileViewScreenEnum } from "@/utils/seearch/useMobileViewScreen";
 
 export default function CatalogController({
@@ -37,7 +37,7 @@ export default function CatalogController({
 	categories: CategoriesNodeDto[];
 	selectedCategories: string[];
 	exchangeState: ExchangeState;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 }) {
 	console.log(`render view`);
 	const t = useTranslations("ProductsList");

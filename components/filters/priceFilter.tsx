@@ -7,7 +7,7 @@ import * as React from "react";
 import FilterContainer from "@/components/filters/filterContainer";
 import MultiRangeSlider from "@/components/multiRangeSlider/multiRangeSlider";
 import { MoneyBig, moneyBigToSmall, moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 function ValueView({ value, className }: { value: number; className?: string }) {
 	return <span className={`${className} text-sm w-10`}>{value}</span>;

@@ -1,4 +1,4 @@
-import { IProductShortDto } from "@/utils/IProductShort.dto";
+import { IProductShortDto } from "@/utils/iProductShort.dto";
 
 export type ILikeItem = IProductShortDto;
 

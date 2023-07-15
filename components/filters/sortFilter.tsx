@@ -6,7 +6,7 @@ import * as qs from "qs";
 import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
-import { IFindProductsQuery } from "@/utils/products/parseQuery";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 interface IValue {
 	key: string;

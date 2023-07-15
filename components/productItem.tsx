@@ -8,10 +8,10 @@ import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { CURRENCY } from "@/shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
-import { IBagItem } from "@/utils/bag/IBagItem";
-import { IProductShortDto } from "@/utils/IProductShort.dto";
+import { IBagItem } from "@/utils/bag/iBagItem";
+import { IProductShortDto } from "@/utils/iProductShort.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 
 export default function ProductItem({
@@ -22,7 +22,7 @@ export default function ProductItem({
 }: {
 	item: IProductShortDto;
 	cornerBlock?: ReactElement;
-	currency: CURRENCY;
+	currency: CurrencyEnum;
 	exchangeState: ExchangeState;
 }) {
 	const t = useTranslations("ProductItem");
@@ -90,7 +90,12 @@ export default function ProductItem({
 						<div className="flex">
 							{formatPrice(
 								moneySmallToBig(
-									doExchange(CURRENCY.UAH, currency, item.price, exchangeState),
+									doExchange(
+										CurrencyEnum.UAH,
+										currency,
+										item.price,
+										exchangeState,
+									),
 								),
 								currency,
 							)}

@@ -1,4 +1,4 @@
-import { IBagItem, IBagItemKeySource } from "@/utils/bag/IBagItem";
+import { IBagItem, IBagItemKeySource } from "@/utils/bag/iBagItem";
 import { LocalListStorage, useLocalListStorage } from "@/utils/localListStorage";
 
 const LOCAL_STORAGE_KEY = "bag";
