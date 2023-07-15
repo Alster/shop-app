@@ -53,6 +53,7 @@ module.exports = {
 		semi: [2, "always"],
 		"no-console": "error",
 		"no-duplicate-imports": "error",
+		"linebreak-style": ["error", "unix"],
 		"@typescript-eslint/promise-function-async": "error",
 		"@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
 		"@typescript-eslint/naming-convention": [
@@ -77,7 +78,7 @@ module.exports = {
 				selector: ["interface"],
 				format: ["PascalCase"],
 				custom: {
-					regex: "^I[A-Za-z]",
+					regex: "^I[A-Za-z]|[A-Za-z]Dto$",
 					match: true,
 				},
 			},
