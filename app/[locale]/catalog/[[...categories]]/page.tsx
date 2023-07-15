@@ -1,5 +1,5 @@
 import {useLocale} from "next-intl";
-import CatalogView from "@/app/[locale]/catalog/[[...categories]]/catalogView";
+import CatalogController from "@/app/[locale]/catalog/[[...categories]]/catalogController";
 import {fetchProducts} from "@/utils/fetchProducts";
 import {fetchAttributes} from "@/utils/fetchAttributes";
 import {getStaticExchange} from "@/shop-exchange-shared/staticStore";
@@ -25,14 +25,16 @@ export default async function CatalogPage({ params, searchParams }: { params: Pa
         fetchCategoryTree(locale),
     ]);
 
+    console.log(productsResponse, JSON.stringify(productsResponse));
+
     return (
-        <CatalogView
+        <CatalogController
             productsResponseEncoded={JSON.stringify(productsResponse)}
             attributes={attributes}
             categories={categoryTree}
             selectedCategories={selectedCategories}
             exchangeState={exchangeState}
             currency={currency}
-        ></CatalogView>
+        ></CatalogController>
     )
 }

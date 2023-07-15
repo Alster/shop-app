@@ -4,6 +4,17 @@
     "emptyProductsList": "No products found",
     "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters."
   },
+  "FilterSort": {
+    "title": "Sort by",
+    "priceLowToHigh": "Price: low to high",
+    "priceHighToLow": "Price: high to low",
+    "newToOld": "New to old"
+  },
+  "FilterPrice": {
+    "title": "Price",
+    "from": "Price from",
+    "to": "Price to"
+  },
   "ProductsPage": {
     "hello": "Welcome to Next.js!",
     "selectColor": "Please, choose Color",

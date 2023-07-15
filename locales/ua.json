@@ -4,6 +4,12 @@
     "emptyProductsList": "Список товарів порожній",
     "emptyProductsListDescription": "На жаль, товарів з такими параметрами не знайдено. Будь ласка, спробуйте змінити параметри пошуку."
   },
+  "FilterSort": {
+    "title": "Сортувати за",
+    "priceLowToHigh": "Ціна: найдешевші",
+    "priceHighToLow": "Ціна: найдорожчі",
+    "newToOld": "Новинки"
+  },
   "ProductsPage": {
     "hello": "Привіт!",
     "selectColor": "Будь ласка, оберіть колір",

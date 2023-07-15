@@ -5,10 +5,12 @@ export interface IFindProductsQuery {
     attrs?: { key: string; values: string[] }[];
     categories?: string[];
     sortField?: string;
-    sortOrder?: number;
+    sortOrder?: 'asc' | 'desc';
     skip?: number;
     limit?: number;
     search?: string;
+    priceFrom?: number;
+    priceTo?: number;
 }
 
 export const parseQuery = (query: any) => {}

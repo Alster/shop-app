@@ -21,14 +21,14 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {usePathname} from "next-intl/client";
 import * as qs from "qs";
 import {IFindProductsQuery} from "@/utils/products/parseQuery";
-import AttributeFilter from "@/components/attributeFilter";
+import AttributeFilter from "@/components/filters/attributeFilter";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
 import CategoryTreeView from "@/components/categoryTreeView";
 import {getStyleByColorCode} from "@/utils/products/getStyleByColorCode";
 import TextSearchMobile from "@/components/textSearchMobile";
 import {AdjustmentsHorizontalIcon} from "@heroicons/react/24/solid";
 import TextSearchDesktop from "@/components/textSearchDesktop";
-import useSearchTerm from "@/utils/seearch/useSearchTerm";
+import useMobileViewScreen from "@/utils/seearch/useMobileViewScreen";
 
 export default function ProductsList({ productsResponseEncoded, attributes, categories, selectedCategories, exchangeState, currency, pageQueryEncoded }: {
     productsResponseEncoded: string,
@@ -49,7 +49,7 @@ export default function ProductsList({ productsResponseEncoded, attributes, cate
     const [productsResponse, setProductsResponse] = useState<ProductListResponseDto>(JSON.parse(productsResponseEncoded));
     const [pageQuery, setPageQuery] = useState<IFindProductsQuery>(JSON.parse(pageQueryEncoded));
 
-    const [searchTerm, setSearchTerm] = useSearchTerm(pageQuery.search || "");
+    const [searchTerm, setSearchTerm] = useMobileViewScreen(pageQuery.search || "");
     useEffect(() => {
         if (searchTerm !== pageQuery.search) {
             const newPageQuery = { ...pageQuery };

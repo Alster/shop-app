@@ -1,38 +1,16 @@
 import * as qs from "qs";
-import {useState} from "react";
 import * as React from "react";
 import {CategoriesNodeDto} from "@/shop-shared/dto/category/categories-tree.dto";
-import {useLocale} from "next-intl";
 import Link from "next-intl/link";
 import {useSearchParams} from "next/navigation";
 
-export default function CategoryTreeView({ tree, selectedCategories}: {
+export default function CategoryTreeView({ tree, selectedCategories, className }: {
     tree: CategoriesNodeDto[],
     selectedCategories: string[],
+    className?: string,
 }) {
     const searchParams = useSearchParams();
 
-    // Find recursively current category node by "current" param and id property
-    // Also, collect all parent nodes
-    // const [selectedLeafs, setSelectedLeafs] = useState<CategoriesNodeDto[]>([]);
-    // if (selectedLeafs.length === 0) {
-    //     let leafs: CategoriesNodeDto[] = [];
-    //     const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
-    //         const selectedCategory = selectedCategories[depth];
-    //         if (selectedCategory != node.publicId) {
-    //             return;
-    //         }
-    //
-    //         leafs = [...parents, node];
-    //         for (const child of node.children) {
-    //             findNode(child, [...parents, node], depth + 1);
-    //         }
-    //     }
-    //     for (const node of tree) {
-    //         findNode(node, [], 0);
-    //     }
-    //     setSelectedLeafs(leafs);
-    // }
     let selectedLeafs: CategoriesNodeDto[] = [];
     const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
         const selectedCategory = selectedCategories[depth];
@@ -57,7 +35,7 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
         const newSearchParams = qs.stringify(params);
 
         return (
-            <div className="px-4 py-1 hidden lg:block" style={{ width: "200px"}}>
+            <div className="px-4 py-1" style={{ width: "200px"}}>
                 <div
                     className="cursor-pointer flex hover:underline"
                 >
@@ -87,7 +65,7 @@ export default function CategoryTreeView({ tree, selectedCategories}: {
     }
 
     return (
-        <div>
+        <div className={className}>
             {tree.map((node) => (
                 <CategoryTreeNode
                     key={node.id}

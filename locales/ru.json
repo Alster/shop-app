@@ -4,6 +4,12 @@
     "emptyProductsList": "Список товаров пуст",
     "emptyProductsListDescription": "К сожалению, товаров с такими параметрами не найдено. Пожалуйста, попробуйте изменить параметры поиска."
   },
+  "FilterSort": {
+    "title": "Сортировать по",
+    "priceLowToHigh": "Цена: от дешевых",
+    "priceHighToLow": "Цена: от дорогих",
+    "newToOld": "Новинки"
+  },
   "ProductsPage": {
     "hello": "Привет!",
     "selectColor": "Пожалуйста, выберите цвет",

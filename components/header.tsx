@@ -5,7 +5,7 @@ import HeaderLikesButton from "@/components/headerLikesButton";
 import Image from "next/image";
 import * as React from "react";
 import Link from "next-intl/link";
-import {Bars3Icon} from "@heroicons/react/24/solid";
+import MobileMenuButton from "@/components/mobileMenuButton";
 
 export default async function Header() {
     return <div className="flex unicorn-background">
@@ -13,7 +13,7 @@ export default async function Header() {
             <div className="flex gap-2 flex-auto">
                 <LanguageSelect className="hidden lg:flex"></LanguageSelect>
                 <CurrencyExchangeLoader className="hidden lg:flex"></CurrencyExchangeLoader>
-                <Bars3Icon className="h-16 w-16 lg:hidden text-white"></Bars3Icon>
+                <MobileMenuButton></MobileMenuButton>
             </div>
             <Link href="/">
                 <Image
