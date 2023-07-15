@@ -27,9 +27,9 @@ import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductDto } from "@/shop-shared/dto/product/product.dto";
 import { bagStore } from "@/utils/bag/bagItemsStorage";
 import { IBagItem } from "@/utils/bag/iBagItem";
-import ISearchParameters from "@/utils/products/iSearchParameters";
 import { createLikeItemKey, likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
+import ISearchParameters from "@/utils/products/iSearchParameters";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -81,7 +81,7 @@ export default function ProductPage({
 		// @ts-ignore
 		const newColor = color === event.target.value ? undefined : event.target.value;
 		setColor(newColor);
-		const newQuery: any = {
+		const newQuery: ISearchParameters = {
 			...pageQuery,
 		};
 		if (newColor) {
@@ -106,7 +106,7 @@ export default function ProductPage({
 	const refreshSelectableSizeValues = () => {
 		selectableSizeValues.clear();
 		for (const [sku, item] of Object.entries(product.items)) {
-			if (item.attributes[AttributesEnum.COLOR]?.includes(color)) {
+			if (item.attributes[AttributesEnum.COLOR]?.includes(color || "")) {
 				const values =
 					[...SIZE_ATTRS.values()].map((key) => item.attributes[key]).find(Boolean) || [];
 				for (const value of values) selectableSizeValues.add(value);
@@ -299,7 +299,7 @@ export default function ProductPage({
 			price: product.price,
 			image: "https://picsum.photos/200/200",
 			attributes: {
-				[AttributesEnum.COLOR.toString()]: [color],
+				[AttributesEnum.COLOR.toString()]: [color || ""],
 				[attribute.key]: [selectedSizeValue],
 			},
 			quantity: 1,
