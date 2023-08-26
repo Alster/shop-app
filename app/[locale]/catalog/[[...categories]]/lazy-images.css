@@ -1,0 +1,8 @@
+img.unicorn-lazy-image{
+    opacity: 0;
+    transition: opacity 300ms ease-in-out;
+}
+
+img.unicorn-lazy-image.loaded{
+    opacity: 1;
+}

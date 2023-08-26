@@ -1,10 +1,12 @@
 "use client";
 
-import Image from "next/image";
+import "./lazy-images.css";
+
 import Link from "next-intl/link";
 import * as React from "react";
 import { CSSProperties } from "react";
 
+import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
@@ -26,6 +28,7 @@ export default function ProductsList({
 	currency: CurrencyEnum;
 	exchangeState: ExchangeState;
 }) {
+	const [changeProductColorState, setChangeProductColorState] = React.useState("asmndnamfbnasd");
 	function AttributesLine({ product, className }: { product: ProductDto; className: string }) {
 		const colorValues = product.attrs[AttributesEnum.COLOR] || [];
 
@@ -80,8 +83,12 @@ export default function ProductsList({
 				{values.map((value) => {
 					const style = getStyleByColorCode(value);
 					return (
-						<Link
-							href={`/product/${product.publicId}?${AttributesEnum.COLOR}=${value}`}
+						<button
+							type="button"
+							onClick={() => {
+								product.selectedColor = value;
+								setChangeProductColorState(`${product.id}-${value}`);
+							}}
 							key={value}
 							className="
                         flex-grow-0
@@ -90,7 +97,7 @@ export default function ProductsList({
                         dark:border-gray-700 hover:dark:border-gray-400
                     "
 							style={style}
-						></Link>
+						></button>
 					);
 				})}
 			</div>
@@ -110,7 +117,7 @@ export default function ProductsList({
 	}) {
 		const attribute = attributes.find((a) => a.key === attrKey);
 		if (!attribute) {
-			console.log("SizeAttribute: attribute not found", attrKey);
+			console.warn("SizeAttribute: attribute not found", attrKey);
 			return <div className={className}></div>;
 		}
 
@@ -129,14 +136,12 @@ export default function ProductsList({
 		<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
 			{products.map((product) => (
 				<div key={product.id} className="m-1 flex flex-wrap flex-col">
-					<Link href={`/product/${product.publicId}`}>
-						<Image
-							src="https://picsum.photos/200/200"
-							alt={product.title}
-							width={400}
-							height={400}
-							loading="lazy"
-						/>
+					<Link href={`/product/${product.publicId}?color=${product.selectedColor}`}>
+						<SlowLoadingImage
+							postfixes={["small", "medium"]}
+							product={product}
+							size={400}
+						></SlowLoadingImage>
 					</Link>
 					<div className="flex flex-wrap">
 						<h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">

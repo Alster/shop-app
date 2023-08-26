@@ -9,7 +9,6 @@ import FilterContainer from "@/components/filters/filterContainer";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
-import ISearchParameters from "@/utils/products/iSearchParameters";
 
 export default function AttributeFilter({
 	values,
@@ -39,8 +38,8 @@ export default function AttributeFilter({
 	};
 
 	const getLinkFromAttributes = (attributes: Record<string, string[]>) => {
-		const parameters: ISearchParameters = {
-			...(qs.parse(searchParameters.toString()) as ISearchParameters),
+		const parameters: IFindProductsQuery = {
+			...(qs.parse(searchParameters.toString()) as IFindProductsQuery),
 			attrs: Object.entries(attributes).map(([key, values]) => ({ key, values })),
 		};
 		return pathname + "?" + qs.stringify(parameters);

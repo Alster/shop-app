@@ -14,6 +14,7 @@ import { ChangeEvent, MouseEventHandler, useState } from "react";
 import * as React from "react";
 import { undefined } from "zod";
 
+import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import Modal from "@/components/modal";
 import StatusInfo from "@/components/statusInfo";
@@ -29,7 +30,7 @@ import { bagStore } from "@/utils/bag/bagItemsStorage";
 import { IBagItem } from "@/utils/bag/iBagItem";
 import { createLikeItemKey, likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
-import ISearchParameters from "@/utils/products/iSearchParameters";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -44,7 +45,7 @@ export default function ProductPage({
 	maybeProduct: ProductDto | null;
 	attributes: AttributeDto[];
 	categories: CategoryDto[];
-	pageQuery: ISearchParameters;
+	pageQuery: IFindProductsQuery;
 	exchangeState: ExchangeState;
 	currency: CurrencyEnum;
 }) {
@@ -75,13 +76,17 @@ export default function ProductPage({
 	}
 	const product = maybeProduct;
 
+	if (maybeProduct) {
+		maybeProduct.selectedColor = color ?? maybeProduct.attrs[AttributesEnum.COLOR][0];
+	}
+
 	const onColorChange = (event: ChangeEvent<HTMLInputElement>) => {};
 
 	const onColorClick = (event: MouseEventHandler<HTMLInputElement>) => {
 		// @ts-ignore
 		const newColor = color === event.target.value ? undefined : event.target.value;
 		setColor(newColor);
-		const newQuery: ISearchParameters = {
+		const newQuery: IFindProductsQuery = {
 			...pageQuery,
 		};
 		if (newColor) {
@@ -372,15 +377,11 @@ export default function ProductPage({
 			)}
 
 			<div className="products-page grid grid-cols-1 lg:grid-cols-2">
-				<Link href={`/product/${product.id}`}>
-					<Image
-						src="https://picsum.photos/200/200"
-						alt={product.title}
-						width={1000}
-						height={1000}
-						priority
-					/>
-				</Link>
+				<SlowLoadingImage
+					postfixes={["small", "big"]}
+					product={product}
+					size={1000}
+				></SlowLoadingImage>
 				<div className="p-3">
 					<div className="flex"></div>
 					<h1 className="flex-auto text-lg font-medium text-slate-700 dark:text-slate-200 mt-1">

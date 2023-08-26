@@ -10,6 +10,11 @@
     "priceHighToLow": "Ціна: найдорожчі",
     "newToOld": "Новинки"
   },
+  "FilterPrice": {
+    "title": "Ціна",
+    "from": "Price from",
+    "to": "Price to"
+  },
   "ProductsPage": {
     "hello": "Привіт!",
     "selectColor": "Будь ласка, оберіть колір",

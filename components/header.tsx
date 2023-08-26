@@ -23,6 +23,7 @@ export default async function Header() {
 						alt="Unicorn Store"
 						width="60"
 						height="60"
+						priority={true}
 					></Image>
 				</Link>
 				<div className="flex gap-2 flex-auto justify-end items-center">

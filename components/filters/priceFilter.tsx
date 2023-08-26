@@ -30,14 +30,21 @@ export default function PriceFilter({
 	const { priceFrom: queryPriceFrom, priceTo: queryPriceTo } = qs.parse(
 		searchParameters.toString(),
 	) as IFindProductsQuery;
+
 	const currentPriceRange = {
 		min: (queryPriceFrom ? moneySmallToBig(queryPriceFrom) : defaultPriceMin) as number,
 		max: (queryPriceTo ? moneySmallToBig(queryPriceTo) : defaultPriceMax) as number,
 	};
+
 	const onePercent = (staticPriceRange.max - staticPriceRange.min) / 100;
+
 	const currentSliderRange = {
-		min: Math.floor((currentPriceRange.min - staticPriceRange.min) / onePercent),
-		max: Math.ceil((currentPriceRange.max - staticPriceRange.min) / onePercent),
+		min: onePercent
+			? Math.floor((currentPriceRange.min - staticPriceRange.min) / onePercent)
+			: 0,
+		max: onePercent
+			? Math.ceil((currentPriceRange.max - staticPriceRange.min) / onePercent)
+			: 100,
 	};
 
 	const formatValue = (value: number) => {
@@ -45,15 +52,38 @@ export default function PriceFilter({
 	};
 
 	return (
-		<FilterContainer title={t("title")} selectedCount={0} className="flex items-center">
+		<FilterContainer
+			title={t("title")}
+			selectedCount={currentSliderRange.min !== 0 || currentSliderRange.max !== 100 ? 1 : 0}
+			className="flex items-center"
+		>
 			<MultiRangeSlider
 				min={0}
 				max={100}
 				defaultMinVal={currentSliderRange.min}
 				defaultMaxVal={currentSliderRange.max}
 				onChange={(range) => {
-					const newQuery = {
-						...(qs.parse(searchParameters.toString()) as any),
+					if (
+						range.min === currentSliderRange.min &&
+						range.max === currentSliderRange.max
+					) {
+						return;
+					}
+
+					if (range.min === 0 && range.max === 100 && queryPriceFrom && queryPriceTo) {
+						const newQuery: IFindProductsQuery = {
+							...(qs.parse(searchParameters.toString()) as IFindProductsQuery),
+							priceFrom: undefined,
+							priceTo: undefined,
+						};
+						const newParameters = qs.stringify(newQuery);
+						const targetHref = `${pathname}?${newParameters}`;
+						router.push(targetHref);
+						return;
+					}
+
+					const newQuery: IFindProductsQuery = {
+						...(qs.parse(searchParameters.toString()) as IFindProductsQuery),
 						priceFrom: moneyBigToSmall(Math.floor(formatValue(range.min))),
 						priceTo: moneyBigToSmall(Math.ceil(formatValue(range.max))),
 					};

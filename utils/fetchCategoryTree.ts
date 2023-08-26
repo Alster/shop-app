@@ -1,4 +1,4 @@
-import { CategoriesNodeDto } from "@/shop-shared/dto/category/categories-tree.dto";
+import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
 import { fetchApi } from "@/utils/fetchApi";
 
 export async function fetchCategoryTree(lang: string): Promise<CategoriesNodeDto[]> {

@@ -33,8 +33,6 @@ export default async function CatalogPage({
 		fetchCategoryTree(locale),
 	]);
 
-	console.log(productsResponse, JSON.stringify(productsResponse));
-
 	return (
 		<CatalogController
 			productsResponseEncoded={JSON.stringify(productsResponse)}

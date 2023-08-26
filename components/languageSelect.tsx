@@ -73,7 +73,6 @@ const LANGUAGES_LIST: IDropdownListItem[] = [
 export default function LanguageSelect({ className }: { className?: string }) {
 	const pathname = usePathname();
 	const query = useSearchParams();
-	// console.log(pathname, query.toString(), router)
 	const url = `${pathname}?${query.toString()}`;
 
 	const locale = useLocale();

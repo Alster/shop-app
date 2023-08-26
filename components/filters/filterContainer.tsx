@@ -45,7 +45,7 @@ export default function FilterContainer({
 				<div>
 					{showList && (
 						<div
-							className={`${className} md:absolute flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm`}
+							className={`${className} md:absolute z-10 flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm`}
 						>
 							{children}
 						</div>

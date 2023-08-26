@@ -3,14 +3,15 @@ import { useSearchParams } from "next/navigation";
 import { usePathname, useRouter } from "next-intl/client";
 import * as qs from "qs";
 import { useState } from "react";
-import ISearchParameters from "@/utils/products/iSearchParameters";
+
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export default function TextSearchMobile({ className }: { className?: string }) {
 	const pathname = usePathname();
 	const searchParameters = useSearchParams();
 	const router = useRouter();
 
-	const pageQuery = qs.parse(searchParameters.toString()) as ISearchParameters;
+	const pageQuery = qs.parse(searchParameters.toString()) as IFindProductsQuery;
 	const [currentValue, setCurrentValue] = useState<string>(pageQuery.search || "");
 
 	const newQuery = { ...pageQuery };

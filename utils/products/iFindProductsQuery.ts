@@ -1,4 +1,6 @@
+import { AttributesEnum } from "@/app/constants";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
+import { MoneySmall } from "@/shop-shared/dto/primitiveTypes";
 
 export interface IFindProductsQuery {
 	lang?: LanguageEnum;
@@ -9,6 +11,9 @@ export interface IFindProductsQuery {
 	skip?: number;
 	limit?: number;
 	search?: string;
-	priceFrom?: number;
-	priceTo?: number;
+	priceFrom?: MoneySmall;
+	priceTo?: MoneySmall;
+	[AttributesEnum.COLOR]?: string;
+	[AttributesEnum.SIZE]?: string;
+	[AttributesEnum.SIZE_SHOES]?: string;
 }

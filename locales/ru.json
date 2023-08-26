@@ -10,6 +10,11 @@
     "priceHighToLow": "Цена: от дорогих",
     "newToOld": "Новинки"
   },
+  "FilterPrice": {
+    "title": "Цена",
+    "from": "Цена от",
+    "to": "Цена до"
+  },
   "ProductsPage": {
     "hello": "Привет!",
     "selectColor": "Пожалуйста, выберите цвет",

@@ -1,13 +1,12 @@
 import { useLocale } from "next-intl";
 
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
-import { AttributesEnum } from "@/app/constants";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
 import { fetchCategoryList } from "@/utils/fetchCategoryList";
 import { fetchProduct } from "@/utils/fetchProduct";
-import ISearchParameters from "@/utils/products/iSearchParameters";
+import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export interface IParametersProductId {
 	id: string;
@@ -18,7 +17,7 @@ export default async function Product({
 	searchParams,
 }: {
 	params: IParametersProductId;
-	searchParams: ISearchParameters;
+	searchParams: IFindProductsQuery;
 }) {
 	const locale = useLocale();
 	const currency = getCurrencyStatic();

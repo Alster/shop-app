@@ -35,7 +35,6 @@ export default function MultiRangeSlider({
 
 	const [firstCall, setFirstCall] = useState(true);
 	useEffect(() => {
-		console.log(firstCall);
 		if (firstCall) {
 			setFirstCall(false);
 			return;
