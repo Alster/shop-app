@@ -1,9 +1,9 @@
 "use client";
 
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useRouter } from "next-intl/client";
 import { Fragment, useState } from "react";
 
+import { useRouter } from "@/navigation";
 import { setCookie } from "@/shop-exchange-shared/cookieClientHelper";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
 import { CURRENCIES, CURRENCY_TO_SYMBOL, CurrencyEnum } from "@/shop-shared/constants/exchange";
@@ -72,13 +72,13 @@ export default function CurrencySelect({
 			{!isListOpen && (
 				<button className="" type="button" onClick={toggleList}>
 					<div className="flex flex-wrap text-white">
-						<ChevronDownIcon className="pt-1 h-7 w-7 text-white inline-block" />{" "}
+						<ChevronDownIcon className="inline-block h-7 w-7 pt-1 text-white" />{" "}
 						{drawItem(selectedCurrency)}
 					</div>
 				</button>
 			)}
 			{isListOpen && (
-				<div className="absolute bg-white dark:bg-black border-2 border-black dark:border-white">
+				<div className="absolute border-2 border-black bg-white dark:border-white dark:bg-black">
 					{CURRENCIES_LIST.map((item) => (
 						<div key={item.key}>
 							<button

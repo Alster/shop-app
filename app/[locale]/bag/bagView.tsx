@@ -2,13 +2,13 @@
 
 import { ShoppingBagIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
-import { ReactElement } from "react";
 import * as React from "react";
+import { ReactElement } from "react";
 
 import HorizontalLine from "@/components/horizontalLine";
 import ProductItem from "@/components/productItem";
 import StatusInfo from "@/components/statusInfo";
+import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -72,8 +72,8 @@ export default function BagView({
 						return previous;
 					}, [] as ReactElement[])}
 			</div>
-			<div className="m-2 p-2 bg-gray-100 dark:bg-gray-900 lg:w-1/3">
-				<div className="text-lg flex">
+			<div className="m-2 bg-gray-100 p-2 dark:bg-gray-900 lg:w-1/3">
+				<div className="flex text-lg">
 					<div className="flex-auto">{t("totalPrice")}:</div>
 					<div className="font-bold">
 						{formatPrice(
@@ -95,12 +95,12 @@ export default function BagView({
 				<Link
 					href="/checkout"
 					className="
-                                flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-full justify-center bg-slate-800 font-medium uppercase
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 				>
-					<span className="mt-3 ml-2">{`${t("bCheckout")}`}</span>
+					<span className="ml-2 mt-3">{`${t("bCheckout")}`}</span>
 				</Link>
 			</div>
 		</div>

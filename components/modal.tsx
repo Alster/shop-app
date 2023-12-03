@@ -1,6 +1,6 @@
-import { Fragment, ReactElement } from "react";
+import { Fragment, PropsWithChildren } from "react";
 
-export default function Modal({ children }: { children: ReactElement | ReactElement[] }) {
+export default function Modal({ children }: PropsWithChildren) {
 	return (
 		<div>
 			<div className="fixed inset-0 bg-black opacity-50"></div>

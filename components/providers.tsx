@@ -1,10 +1,10 @@
 "use client";
 
-import { Fragment, ReactElement } from "react";
+import { Fragment, PropsWithChildren } from "react";
 
 import { ThemeContext } from "@/utils/some.context";
 
-export function Providers({ children }: { children: ReactElement[] }) {
+export function Providers({ children }: PropsWithChildren) {
 	console.log("render providers client");
 	return (
 		<Fragment>

@@ -1,139 +1,27 @@
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = {
-	parser: "@typescript-eslint/parser",
+	root: true,
 	parserOptions: {
+		ecmaFeatures: {
+			jsx: true,
+		},
+		ecmaVersion: "latest",
 		project: "tsconfig.json",
+		// eslint-disable-next-line unicorn/prefer-module
 		tsconfigRootDir: __dirname,
 		sourceType: "module",
+		parser: "@typescript-eslint/parser",
 	},
-	plugins: [
-		"@typescript-eslint/eslint-plugin",
-		"prettier",
-		"simple-import-sort",
-		"import",
-		"sonarjs",
-		"unicorn",
-		"jsx-a11y",
-		"react",
-		"react-hooks",
-	],
-	extends: [
-		"next/core-web-vitals",
-		"next",
-		"plugin:react/recommended",
-		"plugin:@typescript-eslint/recommended",
-		"plugin:prettier/recommended",
-		"eslint:recommended",
-		"plugin:import/typescript",
-		"plugin:sonarjs/recommended",
-		"plugin:unicorn/all",
-		"plugin:jsx-a11y/recommended",
-		"plugin:react/recommended",
-		"plugin:react-hooks/recommended",
-		"plugin:prettier/recommended", // Enables eslint-plugin-prettier and eslint-config-prettier. This will display prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
-	],
-	root: true,
+	settings: {
+		react: {
+			version: "detect",
+		},
+	},
+	plugins: ["@typescript-eslint", "@typescript-eslint/eslint-plugin"],
 	env: {
+		browser: true,
+		es2021: true,
 		node: true,
 	},
-	globals: {
-		NodeJS: true,
-	},
-	ignorePatterns: [".eslintrc.js"],
-	rules: {
-		"max-len": [
-			"error",
-			{
-				code: 120,
-				tabWidth: 2,
-				ignoreUrls: true,
-				ignoreRegExpLiterals: true,
-				ignoreStrings: true,
-			},
-		],
-		semi: [2, "always"],
-		"no-console": "warn",
-		"no-duplicate-imports": "error",
-		"linebreak-style": ["error", "unix"],
-		"@typescript-eslint/promise-function-async": "error",
-		"@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-		"@typescript-eslint/naming-convention": [
-			"error",
-			{
-				selector: ["class"],
-				format: ["PascalCase"],
-				custom: {
-					regex: "[A-Za-z]",
-					match: true,
-				},
-			},
-			{
-				selector: ["enum"],
-				format: ["PascalCase"],
-				custom: {
-					regex: "[A-Za-z]Enum$",
-					match: true,
-				},
-			},
-			{
-				selector: ["interface"],
-				format: ["PascalCase"],
-				custom: {
-					regex: "^I[A-Za-z]|[A-Za-z]Dto$",
-					match: true,
-				},
-			},
-		],
-		"@typescript-eslint/interface-name-prefix": "off",
-		"@typescript-eslint/explicit-function-return-type": "off",
-		"@typescript-eslint/explicit-module-boundary-types": "off",
-		"@typescript-eslint/no-explicit-any": "error",
-		"@typescript-eslint/no-empty-function": "off",
-		"@typescript-eslint/no-floating-promises": "error",
-		"no-nested-ternary": "off",
-		"simple-import-sort/imports": "warn",
-		"@typescript-eslint/member-ordering": [
-			"error",
-			{
-				classes: [
-					"public-static-field",
-					"protected-static-field",
-					"private-static-field",
-					"public-field",
-					"protected-field",
-					"constructor",
-					"public-static-method",
-					"protected-static-method",
-					"private-static-method",
-					"public-method",
-					"protected-method",
-					"private-method",
-				],
-			},
-		],
-		"no-else-return": "error",
-		"import/no-absolute-path": "error",
-		"import/no-useless-path-segments": "error",
-		"import/newline-after-import": "error",
-		"import/no-unresolved": "warn",
-		"unicorn/no-array-reduce": "off",
-		"unicorn/no-keyword-prefix": "off",
-		"unicorn/filename-case": [
-			"error",
-			{
-				case: "camelCase",
-			},
-		],
-		"unicorn/prefer-node-protocol": "off",
-		"unicorn/prevent-abbreviations": [
-			"error",
-			{
-				replacements: {
-					i: false,
-				},
-			},
-		],
-		"unicorn/no-null": "off",
-		"react/prop-types": "off",
-		"react/react-in-jsx-scope": "off",
-	},
+	extends: ["./shop-shared/.eslintrc.base.js", "./shop-shared/.eslintrc.next.js"],
 };

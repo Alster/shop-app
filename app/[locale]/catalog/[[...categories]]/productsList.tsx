@@ -2,12 +2,12 @@
 
 import "./lazy-images.css";
 
-import Link from "next-intl/link";
 import * as React from "react";
 import { CSSProperties } from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
+import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -58,7 +58,7 @@ export default function ProductsList({
 					product={product}
 				></ColorAttribute>
 				<SizeAttribute
-					className={`flex flex-wrap gap-1 justify-end`}
+					className={`flex flex-wrap justify-end gap-1`}
 					style={style2}
 					values={sizeValues}
 					attrKey={sizeKey}
@@ -91,8 +91,8 @@ export default function ProductsList({
 							}}
 							key={value}
 							className="
-                        flex-grow-0
-                        w-6 h-6 border-2
+                        h-6
+                        w-6 grow-0 border-2
                         border-gray-300 hover:border-gray-600
                         dark:border-gray-700 hover:dark:border-gray-400
                     "
@@ -124,7 +124,7 @@ export default function ProductsList({
 		return (
 			<div className={`${className} content-start`} style={style}>
 				{values.map((value) => (
-					<span key={value} className="flex-grow-0 h-6">
+					<span key={value} className="h-6 grow-0">
 						{attribute.values.find((value_) => value_.key === value)?.title}
 					</span>
 				))}
@@ -135,7 +135,7 @@ export default function ProductsList({
 	return (
 		<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
 			{products.map((product) => (
-				<div key={product.id} className="m-1 flex flex-wrap flex-col">
+				<div key={product.id} className="m-1 flex flex-col flex-wrap">
 					<Link href={`/product/${product.publicId}?color=${product.selectedColor}`}>
 						<SlowLoadingImage
 							postfixes={["small", "medium"]}
@@ -144,7 +144,7 @@ export default function ProductsList({
 						></SlowLoadingImage>
 					</Link>
 					<div className="flex flex-wrap">
-						<h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+						<h1 className="mt-1 flex-auto text-sm font-medium text-slate-700 dark:text-slate-200">
 							{product.title}
 						</h1>
 						<div className="text-lg font-semibold text-slate-800 dark:text-slate-100">

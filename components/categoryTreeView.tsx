@@ -1,9 +1,9 @@
 import { useSearchParams } from "next/navigation";
-import Link from "next-intl/link";
 import * as qs from "qs";
 import * as React from "react";
 
-import { CategoriesNodeDto } from "@/shop-shared/dto/category/categories-tree.dto";
+import { Link } from "@/navigation";
+import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
 
 export default function CategoryTreeView({
 	tree,
@@ -47,7 +47,7 @@ export default function CategoryTreeView({
 
 		return (
 			<div className="px-4 py-1" style={{ width: "200px" }}>
-				<div className="cursor-pointer flex hover:underline">
+				<div className="flex cursor-pointer hover:underline">
 					<Link
 						href={`/catalog/${[...parents, node]
 							.map((p) => p.publicId)

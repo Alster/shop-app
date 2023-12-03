@@ -4,20 +4,16 @@ import "./productPage.css";
 
 import { CheckIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
 import * as qs from "qs";
-import { ChangeEvent, MouseEventHandler, useState } from "react";
 import * as React from "react";
-import { undefined } from "zod";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import Modal from "@/components/modal";
 import StatusInfo from "@/components/statusInfo";
+import { Link, usePathname, useRouter } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -83,7 +79,7 @@ export default function ProductPage({
 	const onColorChange = (event: ChangeEvent<HTMLInputElement>) => {};
 
 	const onColorClick = (event: MouseEventHandler<HTMLInputElement>) => {
-		// @ts-ignore
+		// @ts-expect-error - wtf
 		const newColor = color === event.target.value ? undefined : event.target.value;
 		setColor(newColor);
 		const newQuery: IFindProductsQuery = {
@@ -152,7 +148,7 @@ export default function ProductPage({
 			<div key={key} className={className}>
 				{drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectColor"))}
 				<div
-					className={`space-x-4 flex text-sm mt-2 p-2 ${
+					className={`mt-2 flex space-x-4 p-2 text-sm ${
 						highlightMustSelect && UNSELECTED_ATTR_STYLE
 					}`}
 				>
@@ -161,7 +157,7 @@ export default function ProductPage({
 						return (
 							<label key={value}>
 								<input
-									className="sr-only peer"
+									className="peer sr-only"
 									name={key}
 									type="radio"
 									value={value}
@@ -171,14 +167,14 @@ export default function ProductPage({
 									onClick={onColorClick}
 								/>
 								<div
-									className="h-9 w-9 flex items-center justify-center
-                                                border-2 peer-checked:border-4
+									className="flex h-9 w-9 cursor-pointer items-center
+                                                justify-center border-2
                                                 border-black
-                                                dark:border-white
-                                                peer-checked:outline peer-checked:outline-4
                                                 outline-black
+                                                peer-checked:border-4 peer-checked:outline
+                                                peer-checked:outline-4
+                                                dark:border-white
                                                 dark:outline-white
-                                                cursor-pointer
                                                 "
 									style={style}
 								></div>
@@ -211,7 +207,7 @@ export default function ProductPage({
 			<div key={attributeKey} className={className}>
 				{drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectSize"))}
 				<div
-					className={`space-x-4 flex text-sm mt-2 p-2 ${
+					className={`mt-2 flex space-x-4 p-2 text-sm ${
 						highlightMustSelect && UNSELECTED_ATTR_STYLE
 					}`}
 				>
@@ -219,7 +215,7 @@ export default function ProductPage({
 						return (
 							<label key={value}>
 								<input
-									className="sr-only peer"
+									className="peer sr-only"
 									name={attributeKey}
 									type="radio"
 									value={value}
@@ -229,11 +225,11 @@ export default function ProductPage({
 								/>
 								<div
 									onClick={() => sizeSelect(value)}
-									className="h-9 p-3 flex items-center justify-center peer-checked:font-semibold border
-                                            text-slate-700 peer-checked:bg-slate-900 peer-checked:text-white
-                                            dark:text-slate-200 dark:peer-checked:bg-slate-100 dark:peer-checked:text-black dark:border-white
-                                            peer-disabled:opacity-30
-                                            cursor-pointer
+									className="flex h-9 cursor-pointer items-center justify-center border p-3
+                                            text-slate-700 peer-checked:bg-slate-900 peer-checked:font-semibold
+                                            peer-checked:text-white peer-disabled:opacity-30 dark:border-white dark:text-slate-200
+                                            dark:peer-checked:bg-slate-100
+                                            dark:peer-checked:text-black
                                             "
 								>
 									{
@@ -261,7 +257,7 @@ export default function ProductPage({
 		return (
 			<div className={className}>
 				{characteristics.map((attribute) => (
-					<div key={attribute.key} className="mt-2 mb-2 flex">
+					<div key={attribute.key} className="my-2 flex">
 						{drawAttributeTitle(attribute?.title + ":", false, "")}
 						<div className="pl-3">
 							{(product.attrs[attribute.key] || []).map((value) => {
@@ -321,18 +317,18 @@ export default function ProductPage({
 		<div className="flex items-center justify-center">
 			{isAddProductModalOpen && (
 				<Modal>
-					<div className="flex items-center justify-between relative">
+					<div className="relative flex items-center justify-between">
 						<h3 className="text-xl font-medium text-gray-900 dark:text-white">
 							{t("productAddedToBag")}
 						</h3>
 						<button
 							type="button"
-							className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+							className="ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
 							onClick={() => setIsAddProductModalOpen(false)}
 						>
 							<svg
 								aria-hidden="true"
-								className="w-5 h-5"
+								className="h-5 w-5"
 								fill="currentColor"
 								viewBox="0 0 20 20"
 								xmlns="http://www.w3.org/2000/svg"
@@ -346,7 +342,7 @@ export default function ProductPage({
 							<span className="sr-only">Close modal</span>
 						</button>
 					</div>
-					<div className="flex justify-center m-8">
+					<div className="m-8 flex justify-center">
 						<div className="rounded-full bg-gray-100">
 							<CheckIcon className="m-4 h-16 w-16 text-green-400" />
 						</div>
@@ -354,20 +350,20 @@ export default function ProductPage({
 					<Link
 						href="/bag"
 						className="
-                                     flex items-center justify-center h-12 border border-slate-200\
-                                     uppercase font-medium tracking-wider
+                                     border-slate-200\ flex h-12 items-center justify-center border
+                                     bg-slate-800 font-medium uppercase
+                                     tracking-wider text-white
                                      dark:bg-slate-200 dark:text-black
-                                     bg-slate-800 text-white
                                  "
 					>
 						{t("goToBag")}
 					</Link>
 					<button
 						onClick={() => setIsAddProductModalOpen(false)}
-						className="flex items-center justify-center w-full
-                                    h-12 uppercase font-medium tracking-wider border
+						className="flex h-12 w-full items-center
+                                    justify-center border border-slate-800 font-medium uppercase
+                                    tracking-wider text-black
                                     dark:border-slate-200 dark:text-white
-                                    border-slate-800 text-black
                                 "
 						type="button"
 					>
@@ -384,7 +380,7 @@ export default function ProductPage({
 				></SlowLoadingImage>
 				<div className="p-3">
 					<div className="flex"></div>
-					<h1 className="flex-auto text-lg font-medium text-slate-700 dark:text-slate-200 mt-1">
+					<h1 className="mt-1 flex-auto text-lg font-medium text-slate-700 dark:text-slate-200">
 						{product.title}
 					</h1>
 					<div className="mt-3 text-2xl font-semibold text-slate-800 dark:text-slate-100">
@@ -407,7 +403,7 @@ export default function ProductPage({
 						<Characteristics className="mt-4"></Characteristics>
 					</div>
 
-					<div className="flex space-x-4 mb-5 text-sm font-medium mt-6">
+					<div className="mb-5 mt-6 flex space-x-4 text-sm font-medium">
 						<button
 							onClick={() => {
 								setBuyButtonClicked(true);
@@ -418,15 +414,15 @@ export default function ProductPage({
 								setIsAddProductModalOpen(true);
 							}}
 							className="
-                                flex flex-auto justify-center w-1/2 h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-1/2 flex-auto justify-center bg-slate-800 font-medium uppercase
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 						>
 							<span className="mt-2">
 								<ShoppingBagIcon className="h-8 w-8" />
 							</span>
-							<span className="mt-4 ml-2">
+							<span className="ml-2 mt-4">
 								{t("bAdd")}
 								<span className="ml-2">
 									{formatPrice(
@@ -462,13 +458,13 @@ export default function ProductPage({
 								});
 							}}
 							className="
-                            flex-none flex items-center justify-center w-12 h-12 text-slate-300 border border-slate-200\
+                            border-slate-200\ flex h-12 w-12 flex-none items-center justify-center border text-slate-300
                         "
 							type="button"
 							aria-label="Like"
 						>
 							<HeartIcon
-								className={`w-8 h-8 ${
+								className={`h-8 w-8 ${
 									likeItems.hasOwnProperty(
 										createLikeItemKey({
 											productId: product.id,

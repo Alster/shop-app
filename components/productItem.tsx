@@ -1,10 +1,10 @@
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import Link from "next-intl/link";
 import * as React from "react";
 import { ReactElement } from "react";
 
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
+import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -47,7 +47,7 @@ export default function ProductItem({
 	const style = getStyleByColorCode(item.attributes[AttributesEnum.COLOR][0]);
 
 	return (
-		<div className="p-1 m-3 flex">
+		<div className="m-3 flex p-1">
 			<Link href={productHref}>
 				<Image
 					className="rounded-2xl"
@@ -58,10 +58,10 @@ export default function ProductItem({
 					loading="lazy"
 				/>
 			</Link>
-			<div className="pl-4 w-full flex flex-wrap flex-col">
-				<div className="flex-auto flex flex-wrap">
+			<div className="flex w-full flex-col flex-wrap pl-4">
+				<div className="flex flex-auto flex-wrap">
 					<div className="flex-auto">
-						<Link className="font-semibold text-lg" href={productHref}>
+						<Link className="text-lg font-semibold" href={productHref}>
 							{item.title}
 						</Link>
 					</div>
@@ -74,18 +74,18 @@ export default function ProductItem({
 								<div className="w-20 text-sm">{t("color")}:</div>
 								<div
 									style={style}
-									className="ml-2 w-6 h-6 border-2 border-gray-300 dark:border-gray-700"
+									className="ml-2 h-6 w-6 border-2 border-gray-300 dark:border-gray-700"
 								></div>
 							</div>
 						)}
 						{SIZE_ATTRS.some((sizeAttribute) => item.attributes[sizeAttribute]) && (
 							<div className="flex">
-								<span className="w-20 text-slate-500 text-sm">{t("size")}</span>
-								<span className="font-bold pl-2">{drawSize(item)}</span>
+								<span className="w-20 text-sm text-slate-500">{t("size")}</span>
+								<span className="pl-2 font-bold">{drawSize(item)}</span>
 							</div>
 						)}
 					</div>
-					<div className="font-bold text-lg flex flex-wrap flex-col">
+					<div className="flex flex-col flex-wrap text-lg font-bold">
 						<div className="flex-auto"></div>
 						<div className="flex">
 							{formatPrice(

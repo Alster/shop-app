@@ -3,13 +3,11 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
 import * as qs from "qs";
 import * as React from "react";
-import { Fragment, RefObject, useEffect, useReducer, useRef, useState } from "react";
+import { Fragment, useEffect, useReducer, useState } from "react";
 
 import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import CategoryTreeView from "@/components/categoryTreeView";
@@ -17,6 +15,7 @@ import AttributeFilter from "@/components/filters/attributeFilter";
 import StatusInfo from "@/components/statusInfo";
 import TextSearchDesktop from "@/components/textSearchDesktop";
 import TextSearchMobile from "@/components/textSearchMobile";
+import { Link, usePathname, useRouter } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -87,7 +86,7 @@ export default function ProductsList({
 		console.log("locale changed", locale, "pathName", pathName);
 	}, [locale]);
 
-	const pushQuery = (pageQuery: any) => {
+	const pushQuery = (pageQuery: unknown) => {
 		console.log("updateQuery", pageQuery);
 		const newPath = `${pathName}?${qs.stringify(pageQuery)}`;
 		console.log("newPath", newPath);
@@ -198,7 +197,7 @@ export default function ProductsList({
 					product={product}
 				></ColorAttribute>
 				<SizeAttribute
-					className={`flex flex-wrap gap-1 justify-end`}
+					className={`flex flex-wrap justify-end gap-1`}
 					style={style2}
 					values={sizeValues}
 					attrKey={sizeKey}
@@ -227,8 +226,8 @@ export default function ProductsList({
 							href={`/product/${product.publicId}?${AttributesEnum.COLOR}=${value}`}
 							key={value}
 							className="
-                        flex-grow-0
-                        w-6 h-6 border-2
+                        h-6
+                        w-6 grow-0 border-2
                         border-gray-300 hover:border-gray-600
                         dark:border-gray-700 hover:dark:border-gray-400
                     "
@@ -260,7 +259,7 @@ export default function ProductsList({
 		return (
 			<div className={`${className} content-start`} style={style}>
 				{values.map((value) => (
-					<span key={value} className="flex-grow-0 h-6">
+					<span key={value} className="h-6 grow-0">
 						{attribute.values.find((value_) => value_.key === value)?.title}
 					</span>
 				))}
@@ -301,13 +300,13 @@ export default function ProductsList({
 					<button
 						onClick={() => toggle()}
 						className="
-                                flex justify-center items-center w-full h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-full items-center justify-center bg-slate-800 font-medium uppercase
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 					>
 						<div className="flex items-center">
-							<AdjustmentsHorizontalIcon className="h-10 w-10 inline-block"></AdjustmentsHorizontalIcon>
+							<AdjustmentsHorizontalIcon className="inline-block h-10 w-10"></AdjustmentsHorizontalIcon>
 							<div>Filters</div>
 						</div>
 					</button>
@@ -330,8 +329,8 @@ export default function ProductsList({
 	return (
 		<Fragment>
 			{showMobileFilters && (
-				<div className="fixed w-full h-full top-0">
-					<div className="flex flex-col h-full w-full bg-white dark:bg-slate-800">
+				<div className="fixed top-0 h-full w-full">
+					<div className="flex h-full w-full flex-col bg-white dark:bg-slate-800">
 						{Object.entries(productsResponse.filters).map(([key, values]) => (
 							<AttributeFilter
 								key={key}
@@ -372,7 +371,7 @@ export default function ProductsList({
 							)}
 							<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
 								{productsResponse.products.map((product) => (
-									<div key={product.id} className="m-1 flex flex-wrap flex-col">
+									<div key={product.id} className="m-1 flex flex-col flex-wrap">
 										<Link href={`/product/${product.publicId}`}>
 											<Image
 												src="https://picsum.photos/200/200"
@@ -383,7 +382,7 @@ export default function ProductsList({
 											/>
 										</Link>
 										<div className="flex flex-wrap">
-											<h1 className="flex-auto text-sm font-medium text-slate-700 dark:text-slate-200 mt-1">
+											<h1 className="mt-1 flex-auto text-sm font-medium text-slate-700 dark:text-slate-200">
 												{product.title}
 											</h1>
 											<div className="text-lg font-semibold text-slate-800 dark:text-slate-100">

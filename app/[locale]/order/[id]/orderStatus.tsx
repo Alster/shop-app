@@ -2,8 +2,8 @@
 
 import { CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useLocale, useTranslations } from "next-intl";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
 import * as React from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 
 import StatusInfo from "@/components/statusInfo";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
@@ -54,9 +54,9 @@ const StatusesConfig: { [key in OrderStatus]: IStatusConfig } = {
 };
 
 const LANG_TO_LOCALE: { [key in LanguageEnum]: string } = {
-	[LanguageEnum.EN]: "en-US",
-	[LanguageEnum.UA]: "uk-UA",
-	[LanguageEnum.RU]: "ru-RU",
+	[LanguageEnum.en]: "en-US",
+	[LanguageEnum.ua]: "uk-UA",
+	[LanguageEnum.eu]: "ru-RU",
 };
 
 export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
@@ -97,7 +97,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	function InfoBlock({ title, children }: { title: string; children: ReactNode }) {
 		return (
 			<div className="flex flex-col p-4">
-				<div className="font-extrabold text-center">{title}</div>
+				<div className="text-center font-extrabold">{title}</div>
 				<div>{children}</div>
 			</div>
 		);
@@ -106,8 +106,8 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	function InfoRow({ title, value }: { title: string; value: string }) {
 		return (
 			<div className="flex font-mono">
-				<div className="w-1/2 text-right pr-2">{title}</div>
-				<div className="w-1/2 text-left pl-2">
+				<div className="w-1/2 pr-2 text-right">{title}</div>
+				<div className="w-1/2 pl-2 text-left">
 					<span className="bg-gray-200 dark:bg-gray-800">{value}</span>
 				</div>
 			</div>
@@ -115,7 +115,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-centent">
+		<div className="justify-centent flex flex-col items-center">
 			<div className="order-status">
 				{/*Status*/}
 				<div className="flex flex-col text-center">
@@ -192,12 +192,12 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 							queueFetch();
 						}}
 						className="
-                        flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                        flex h-12 w-full justify-center bg-slate-800 font-medium uppercase
+                         tracking-wider text-white
                          dark:bg-slate-200 dark:text-black
-                         bg-slate-800 text-white
                      "
 					>
-						<span className="mt-3 ml-2">{`${t("bCancelOrder")}`}</span>
+						<span className="ml-2 mt-3">{`${t("bCancelOrder")}`}</span>
 					</button>
 				)}
 			</div>

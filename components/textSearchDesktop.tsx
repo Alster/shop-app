@@ -1,9 +1,9 @@
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSearchParams } from "next/navigation";
-import { usePathname, useRouter } from "next-intl/client";
 import * as qs from "qs";
 import { useState } from "react";
 
+import { usePathname, useRouter } from "@/navigation";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export default function TextSearchDesktop({ className }: { className?: string }) {
@@ -23,7 +23,7 @@ export default function TextSearchDesktop({ className }: { className?: string })
 	const newParameters = qs.stringify(newQuery);
 	const targetHref = `${pathname}?${newParameters}`;
 
-	const onSubmit = (event: any) => {
+	const onSubmit = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		router.push(targetHref);
 	};
@@ -34,14 +34,14 @@ export default function TextSearchDesktop({ className }: { className?: string })
 			className={`${className} flex border-b-2 border-black dark:border-white`}
 		>
 			<div className="flex items-center">
-				<MagnifyingGlassIcon className="w-6 h-6 mr-2"></MagnifyingGlassIcon>
+				<MagnifyingGlassIcon className="mr-2 h-6 w-6"></MagnifyingGlassIcon>
 			</div>
 			<input
 				type="text"
 				value={currentValue}
 				onChange={(event) => setCurrentValue(event.target.value)}
 				placeholder={"Search"}
-				className="font-bold h-10 bg-transparent border-none outline-none w-full placeholder-black dark:placeholder-white"
+				className="h-10 w-full border-none bg-transparent font-bold outline-none placeholder:text-black dark:placeholder:text-white"
 			></input>
 			<input type="submit" className="hidden"></input>
 		</form>

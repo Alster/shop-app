@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires,unicorn/prefer-module
 const withNextIntl = require("next-intl/plugin")(
 	// This is the default (also the `src` folder is supported out of the box)
 	"./i18n.ts",
@@ -21,6 +22,10 @@ const nextConfig = {
 			},
 		],
 	},
+	eslint: {
+		ignoreDuringBuilds: true,
+	},
 };
 
+// eslint-disable-next-line unicorn/prefer-module
 module.exports = withNextIntl(nextConfig);

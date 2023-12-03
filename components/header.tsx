@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next-intl/link";
 import * as React from "react";
 
 import { CurrencyExchangeLoader } from "@/components/currencyExchangeLoader";
@@ -7,12 +6,13 @@ import HeaderBagButton from "@/components/headerBagButton";
 import HeaderLikesButton from "@/components/headerLikesButton";
 import LanguageSelect from "@/components/languageSelect";
 import MobileMenuButton from "@/components/mobileMenuButton";
+import { Link } from "@/navigation";
 
 export default async function Header() {
 	return (
-		<div className="flex unicorn-background">
-			<div className="flex w-full justify-center items-center">
-				<div className="flex gap-2 flex-auto">
+		<div className="unicorn-background flex">
+			<div className="flex w-full items-center justify-center">
+				<div className="flex flex-auto gap-2">
 					<LanguageSelect className="hidden lg:flex"></LanguageSelect>
 					<CurrencyExchangeLoader className="hidden lg:flex"></CurrencyExchangeLoader>
 					<MobileMenuButton></MobileMenuButton>
@@ -26,7 +26,7 @@ export default async function Header() {
 						priority={true}
 					></Image>
 				</Link>
-				<div className="flex gap-2 flex-auto justify-end items-center">
+				<div className="flex flex-auto items-center justify-end gap-2">
 					<HeaderLikesButton></HeaderLikesButton>
 					<HeaderBagButton></HeaderBagButton>
 				</div>
