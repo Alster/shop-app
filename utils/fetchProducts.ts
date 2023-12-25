@@ -1,4 +1,4 @@
-import { AttributesEnum } from "@/app/constants";
+import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { ProductListResponseDto } from "@/shop-shared/dto/product/productList.response.dto";
 import { fetchApi } from "@/utils/fetchApi";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";

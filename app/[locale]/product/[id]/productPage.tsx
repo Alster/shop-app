@@ -10,13 +10,13 @@ import * as React from "react";
 import { ChangeEvent, MouseEventHandler, useState } from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
-import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import Modal from "@/components/modal";
 import StatusInfo from "@/components/statusInfo";
 import { Link, usePathname, useRouter } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
+import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CategoryDto } from "@/shop-shared/dto/category/category.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";

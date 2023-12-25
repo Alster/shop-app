@@ -1,4 +1,4 @@
-import { AttributesEnum } from "@/app/constants";
+import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 import { MoneySmall } from "@/shop-shared/dto/primitiveTypes";
 

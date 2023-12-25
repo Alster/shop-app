@@ -9,7 +9,6 @@ import * as qs from "qs";
 import * as React from "react";
 import { Fragment, useEffect, useReducer, useState } from "react";
 
-import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import CategoryTreeView from "@/components/categoryTreeView";
 import AttributeFilter from "@/components/filters/attributeFilter";
 import StatusInfo from "@/components/statusInfo";
@@ -19,6 +18,7 @@ import { Link, usePathname, useRouter } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
+import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CategoriesNodeDto } from "@/shop-shared/dto/category/categories-tree.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";

@@ -3,11 +3,11 @@ import { useTranslations } from "next-intl";
 import * as React from "react";
 import { ReactElement } from "react";
 
-import { AttributesEnum, SIZE_ATTRS } from "@/app/constants";
 import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
+import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { IBagItem } from "@/utils/bag/iBagItem";

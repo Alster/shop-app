@@ -2,9 +2,9 @@ import { useSearchParams } from "next/navigation";
 import * as qs from "qs";
 import * as React from "react";
 
-import { AttributesEnum } from "@/app/constants";
 import FilterContainer from "@/components/filters/filterContainer";
 import { Link, usePathname } from "@/navigation";
+import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
