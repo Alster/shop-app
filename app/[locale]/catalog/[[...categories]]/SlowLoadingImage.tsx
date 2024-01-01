@@ -8,16 +8,56 @@ import ImagePostfixType from "@/shop-shared/utils/imagePostfixType";
 export default function SlowLoadingImage({
 	postfixes,
 	product,
-	number,
+	colorInFilters,
 	size,
 }: {
 	postfixes: [ImagePostfixType, ImagePostfixType];
 	product: ProductDto;
-	number?: number;
+	colorInFilters?: string[];
 	size: number;
 }) {
-	const backgroundUrl = getImageUrl(product, postfixes[0], product.selectedColor, number);
-	const mainUrl = getImageUrl(product, postfixes[1], product.selectedColor, number);
+	const [suitableItemByColor] = colorInFilters
+		? product.items
+				.flatMap((item) =>
+					colorInFilters.map((color) => ({
+						score: item.attributes.color.indexOf(color),
+						item,
+					})),
+				)
+				.filter((item) => item.score !== -1)
+				.sort((a, b) => a.score - b.score)
+		: [undefined];
+
+	const { itemToShow, indexToShow } =
+		(product.selectedItem
+			? {
+					itemToShow: product.items.find((item) => item.sku === product.selectedItem),
+					indexToShow: 0,
+			  }
+			: undefined) ??
+		(suitableItemByColor
+			? {
+					itemToShow: suitableItemByColor.item,
+					indexToShow: suitableItemByColor.score,
+			  }
+			: undefined) ??
+		(product.items[0]
+			? {
+					itemToShow: product.items[0],
+					indexToShow: 0,
+			  }
+			: {
+					itemToShow: undefined,
+					indexToShow: 0,
+			  });
+
+	if (!itemToShow) {
+		throw new Error("No items in product");
+	}
+
+	const backgroundUrl = getImageUrl(itemToShow, postfixes[0], indexToShow);
+	const mainUrl = getImageUrl(itemToShow, postfixes[1], indexToShow);
+
 	return (
 		<Image
 			src={mainUrl}

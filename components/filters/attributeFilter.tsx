@@ -6,6 +6,7 @@ import FilterContainer from "@/components/filters/filterContainer";
 import { Link, usePathname } from "@/navigation";
 import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
+import compareColors from "@/shop-shared/utils/colorSorter";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
@@ -21,6 +22,10 @@ export default function AttributeFilter({
 
 	if (!attributeInfo) {
 		return;
+	}
+
+	if (attributeInfo.key === AttributesEnum.COLOR) {
+		values.sort(compareColors);
 	}
 
 	const localeValue = (key: string) => {

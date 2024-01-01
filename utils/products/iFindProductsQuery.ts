@@ -2,6 +2,9 @@ import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 import { MoneySmall } from "@/shop-shared/dto/primitiveTypes";
 
+export interface IProductPageQuery {
+	item?: string;
+}
 export interface IFindProductsQuery {
 	lang?: LanguageEnum;
 	attrs?: { key: string; values: string[] }[];

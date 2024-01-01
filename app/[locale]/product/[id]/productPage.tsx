@@ -26,7 +26,7 @@ import { bagStore } from "@/utils/bag/bagItemsStorage";
 import { IBagItem } from "@/utils/bag/iBagItem";
 import { createLikeItemKey, likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
-import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
+import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
 const UNSELECTED_ATTR_STYLE = "outline outline-2 outline-red-500";
 
@@ -41,7 +41,7 @@ export default function ProductPage({
 	maybeProduct: ProductDto | null;
 	attributes: AttributeDto[];
 	categories: CategoryDto[];
-	pageQuery: IFindProductsQuery;
+	pageQuery: IProductPageQuery;
 	exchangeState: ExchangeState;
 	currency: CurrencyEnum;
 }) {
@@ -49,7 +49,7 @@ export default function ProductPage({
 	const likeItems = useLikesStore();
 
 	const [buyButtonClicked, setBuyButtonClicked] = useState(false);
-	const [color, setColor] = useState(pageQuery[AttributesEnum.COLOR]);
+	const [selectedItem, setSelectedItem] = useState(pageQuery["item"]);
 	const [selectedSizeValue, setSelectedSizeValue] = useState<string | undefined>();
 
 	const router = useRouter();
@@ -72,23 +72,24 @@ export default function ProductPage({
 	}
 	const product = maybeProduct;
 
-	if (maybeProduct) {
-		maybeProduct.selectedColor = color ?? maybeProduct.attrs[AttributesEnum.COLOR][0];
-	}
+	// if (maybeProduct) {
+	// 	maybeProduct.selectedItem = maybeProduct.items[0]?.sku ?? null;
+	// }
 
-	const onColorChange = (event: ChangeEvent<HTMLInputElement>) => {};
+	const onSelectedItemChange = (event: ChangeEvent<HTMLInputElement>) => {};
 
-	const onColorClick = (event: MouseEventHandler<HTMLInputElement>) => {
-		// @ts-expect-error - wtf
-		const newColor = color === event.target.value ? undefined : event.target.value;
-		setColor(newColor);
-		const newQuery: IFindProductsQuery = {
+	const onItemClick = (event: MouseEventHandler<HTMLInputElement>) => {
+		const newSelectedItem =
+			// @ts-expect-error - wtf
+			selectedItem === event.target.value ? undefined : event.target.value;
+		setSelectedItem(newSelectedItem);
+		const newQuery: IProductPageQuery = {
 			...pageQuery,
 		};
-		if (newColor) {
-			newQuery[AttributesEnum.COLOR] = newColor;
+		if (newSelectedItem) {
+			newQuery["item"] = newSelectedItem;
 		} else {
-			delete newQuery[AttributesEnum.COLOR];
+			delete newQuery["item"];
 		}
 		router.replace(`${pathName}?${qs.stringify(newQuery)}`);
 		refreshSelectableSizeValues();
@@ -107,7 +108,7 @@ export default function ProductPage({
 	const refreshSelectableSizeValues = () => {
 		selectableSizeValues.clear();
 		for (const [sku, item] of Object.entries(product.items)) {
-			if (item.attributes[AttributesEnum.COLOR]?.includes(color || "")) {
+			if (item.attributes[AttributesEnum.COLOR]?.includes(selectedItem || "")) {
 				const values =
 					[...SIZE_ATTRS.values()].map((key) => item.attributes[key]).find(Boolean) || [];
 				for (const value of values) selectableSizeValues.add(value);
@@ -142,7 +143,7 @@ export default function ProductPage({
 		const key = attribute.key;
 		const values = product.attrs[key] || [];
 
-		const highlightMustSelect = !color && buyButtonClicked;
+		const highlightMustSelect = !selectedItem && buyButtonClicked;
 
 		return (
 			<div key={key} className={className}>
@@ -161,10 +162,10 @@ export default function ProductPage({
 									name={key}
 									type="radio"
 									value={value}
-									checked={value === color}
-									onChange={onColorChange}
+									checked={value === selectedItem}
+									onChange={onSelectedItemChange}
 									// @ts-ignore
-									onClick={onColorClick}
+									onClick={onItemClick}
 								/>
 								<div
 									className="flex h-9 w-9 cursor-pointer items-center
@@ -300,7 +301,7 @@ export default function ProductPage({
 			price: product.price,
 			image: "https://picsum.photos/200/200",
 			attributes: {
-				[AttributesEnum.COLOR.toString()]: [color || ""],
+				[AttributesEnum.COLOR.toString()]: [selectedItem || ""],
 				[attribute.key]: [selectedSizeValue],
 			},
 			quantity: 1,
@@ -407,7 +408,7 @@ export default function ProductPage({
 						<button
 							onClick={() => {
 								setBuyButtonClicked(true);
-								if (!color || !selectedSizeValue) {
+								if (!selectedItem || !selectedSizeValue) {
 									return;
 								}
 								buyNow();
@@ -448,9 +449,11 @@ export default function ProductPage({
 									price: product.price,
 									image: "https://picsum.photos/200/200",
 									attributes: {
-										...(color
+										...(selectedItem
 											? {
-													[AttributesEnum.COLOR.toString()]: [color],
+													[AttributesEnum.COLOR.toString()]: [
+														selectedItem,
+													],
 											  }
 											: {}),
 									},
@@ -469,10 +472,10 @@ export default function ProductPage({
 										createLikeItemKey({
 											productId: product.id,
 											attributes: {
-												...(color
+												...(selectedItem
 													? {
 															[AttributesEnum.COLOR.toString()]: [
-																color,
+																selectedItem,
 															],
 													  }
 													: {}),

@@ -6,7 +6,7 @@ import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
 import { fetchCategoryList } from "@/utils/fetchCategoryList";
 import { fetchProduct } from "@/utils/fetchProduct";
-import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
+import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
 export interface IParametersProductId {
 	id: string;
@@ -17,7 +17,7 @@ export default async function Product({
 	searchParams,
 }: {
 	params: IParametersProductId;
-	searchParams: IFindProductsQuery;
+	searchParams: IProductPageQuery;
 }) {
 	const locale = useLocale();
 	const currency = getCurrencyStatic();
