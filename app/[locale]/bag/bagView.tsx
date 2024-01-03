@@ -14,9 +14,8 @@ import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
+import sum from "@/shop-shared/utils/sum";
 import { bagStore, useBagStore } from "@/utils/bag/bagItemsStorage";
-
-const sum = (array: number[]) => array.reduce((a, b) => a + b, 0);
 
 export default function BagView({
 	exchangeState,
@@ -27,6 +26,12 @@ export default function BagView({
 }) {
 	const t = useTranslations("BagPage");
 	const bagItems = useBagStore();
+
+	console.log("bagItems: " + JSON.stringify(bagItems, null, 2));
+
+	console.log("bagItems keys: " + JSON.stringify(Object.keys(bagItems), null, 2));
+
+	console.log("bagItems values: " + JSON.stringify(Object.values(bagItems), null, 2));
 
 	if (Object.keys(bagItems).length === 0) {
 		return (
@@ -49,7 +54,7 @@ export default function BagView({
 					.map(([key, bagItem]) => (
 						<ProductItem
 							key={key}
-							item={bagItem}
+							shortProduct={bagItem}
 							currency={currency}
 							exchangeState={exchangeState}
 							cornerBlock={

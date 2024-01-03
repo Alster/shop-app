@@ -3,6 +3,7 @@
 import "./lazy-images.css";
 import "./productsList.css";
 
+import * as qs from "qs";
 import * as React from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
@@ -134,7 +135,21 @@ export default function ProductsList({
 	// 	);
 	// }
 
-	function Item({ item, product }: { item: ProductItemDto; product: ProductDto }) {
+	const [selectedItemMap, selectedItemMapSet] = React.useState(new Map<string, string | null>());
+
+	function Item({
+		item,
+		product,
+		selectedItemMapSetter,
+		isSelected,
+		indexToShow,
+	}: {
+		item: ProductItemDto;
+		product: ProductDto;
+		isSelected: boolean;
+		indexToShow?: number;
+		selectedItemMapSetter: (sku: string | null) => void;
+	}) {
 		const colors = item.attributes[AttributesEnum.COLOR] || [];
 		const [size] =
 			item.attributes[AttributesEnum.SIZE] ||
@@ -144,19 +159,23 @@ export default function ProductsList({
 		return (
 			<div
 				onClick={() => {
-					product.selectedItem = item.sku;
+					selectedItemMapSetter(item.sku);
 					console.log("setChangeProductColorState");
 				}}
-				className="product-item flex gap-0 border-2 border-white hover:border-gray-300 dark:border-black"
+				className={`product-item flex cursor-pointer gap-0 border-2 ${
+					isSelected
+						? "border-gray-400 dark:border-gray-400"
+						: "border-white dark:border-black"
+				} hover:border-gray-300 hover:dark:border-gray-500`}
 			>
 				{size && (
 					<div className="size-attribute bg-gray-200 uppercase dark:bg-gray-700">
 						{size}
 					</div>
 				)}
-				{colors.map((color) => (
+				{colors.map((color, index) => (
 					<div
-						key={color}
+						key={`color+${index + 1}`}
 						className="h-6 w-6 border-2 border-gray-300 dark:border-gray-700"
 						style={getStyleByColorCode(color)}
 					></div>
@@ -165,58 +184,114 @@ export default function ProductsList({
 		);
 	}
 
-	function ItemsLine({ product, className }: { product: ProductDto; className: string }) {
+	function ItemsLine({
+		product,
+		className,
+		selectedItemMapSetter,
+		itemToShow,
+		indexToShow,
+	}: {
+		product: ProductDto;
+		itemToShow?: ProductItemDto;
+		indexToShow?: number;
+		selectedItemMapSetter: (sku: string | null) => void;
+		className: string;
+	}) {
 		const items = product.items || [];
 
 		return (
-			<div className={`flex ${className}`}>
-				<div className={`flex flex-wrap gap-1`}>
-					{items.map((item) => (
-						<Item key={item.sku} item={item} product={product}></Item>
-					))}
-				</div>
+			<div className={`flex ${className} flex-wrap gap-x-2 gap-y-1`}>
+				{/*<div className={`flex flex-wrap gap-x-2 gap-y-1`}>*/}
+				{items.map((item) => (
+					<Item
+						key={item.sku}
+						item={item}
+						product={product}
+						isSelected={itemToShow?.sku === item.sku}
+						indexToShow={indexToShow}
+						selectedItemMapSetter={selectedItemMapSetter}
+					></Item>
+				))}
+				{/*</div>*/}
 			</div>
 		);
 	}
 
 	return (
 		<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
-			{products.map((product) => (
-				<div key={product.id} className="m-1 flex flex-col flex-wrap">
-					<Link
-						href={`/product/${product.publicId}${
-							product.selectedItem ? `?item=${product.selectedItem} ` : ""
-						}`}
-					>
-						<SlowLoadingImage
-							postfixes={["small", "medium"]}
-							product={product}
-							colorInFilters={colorInFilters}
-							size={400}
-						></SlowLoadingImage>
-					</Link>
-					<div className="flex flex-wrap">
-						<h1 className="mt-1 flex-auto text-sm font-medium text-slate-700 dark:text-slate-200">
-							{product.title}
-						</h1>
-						<div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-							{formatPrice(
-								moneySmallToBig(
-									doExchange(
-										CurrencyEnum.UAH,
-										currency,
-										product.price,
-										exchangeState,
+			{products.map((product) => {
+				const getSelectedItem = (): { itemToShow: ProductItemDto; indexToShow: number } => {
+					const itemFromMap = selectedItemMap?.get(product.id);
+					if (itemFromMap) {
+						const itemToShow = product.items.find((item) => item.sku === itemFromMap);
+						if (itemToShow) {
+							return { itemToShow, indexToShow: 0 };
+						}
+					}
+
+					if (product.selectedItem) {
+						const itemToShow = product.items.find(
+							(item) => item.sku === product.selectedItem,
+						);
+						if (itemToShow) {
+							return { itemToShow, indexToShow: 0 };
+						}
+					}
+
+					return { itemToShow: product.items[0], indexToShow: 0 };
+				};
+
+				const { itemToShow, indexToShow } = getSelectedItem();
+
+				return (
+					<div key={product.id} className="m-1 flex flex-col flex-wrap">
+						<Link
+							href={
+								`/product/${product.publicId}/?` +
+								qs.stringify({
+									...(itemToShow && { item: itemToShow.sku }),
+								})
+							}
+						>
+							<SlowLoadingImage
+								postfixes={["small", "medium"]}
+								product={product}
+								itemToShow={itemToShow}
+								indexToShow={indexToShow}
+								size={400}
+							></SlowLoadingImage>
+						</Link>
+						<div className="flex flex-wrap">
+							<h1 className="mt-1 flex-auto text-sm font-medium text-slate-700 dark:text-slate-200">
+								{product.title}
+							</h1>
+							<div className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+								{formatPrice(
+									moneySmallToBig(
+										doExchange(
+											CurrencyEnum.UAH,
+											currency,
+											product.price,
+											exchangeState,
+										),
 									),
-								),
-								currency,
-							)}
+									currency,
+								)}
+							</div>
 						</div>
+						<ItemsLine
+							className=""
+							product={product}
+							itemToShow={itemToShow}
+							indexToShow={indexToShow}
+							selectedItemMapSetter={(sku: string | null) => {
+								selectedItemMapSet(new Map(selectedItemMap).set(product.id, sku));
+							}}
+						></ItemsLine>
+						{/*<AttributesLine className="mt-1" product={product}></AttributesLine>*/}
 					</div>
-					<ItemsLine className="mt-1" product={product}></ItemsLine>
-					{/*<AttributesLine className="mt-1" product={product}></AttributesLine>*/}
-				</div>
-			))}
+				);
+			})}
 		</div>
 	);
 }

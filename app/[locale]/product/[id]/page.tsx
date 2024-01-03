@@ -1,5 +1,6 @@
 import { useLocale } from "next-intl";
 
+import NoProductPage from "@/app/[locale]/product/[id]/noProductPage";
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
@@ -29,14 +30,16 @@ export default async function Product({
 		getStaticExchange(),
 	]);
 
-	return (
+	return maybeProduct ? (
 		<ProductPage
-			maybeProduct={maybeProduct}
+			product={maybeProduct}
 			attributes={attributes}
 			categories={categories}
 			pageQuery={searchParams}
 			exchangeState={exchangeState}
 			currency={currency}
 		></ProductPage>
+	) : (
+		<NoProductPage></NoProductPage>
 	);
 }

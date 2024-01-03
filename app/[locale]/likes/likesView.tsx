@@ -43,7 +43,7 @@ export default function LikesView({
 					.map(([key, likeItem]) => (
 						<ProductItem
 							key={key}
-							item={likeItem}
+							shortProduct={likeItem}
 							currency={currency}
 							exchangeState={exchangeState}
 							cornerBlock={
@@ -66,19 +66,19 @@ export default function LikesView({
 						return previous;
 					}, [] as ReactElement[])}
 			</div>
-			<div className="m-2 p-2 bg-gray-100 dark:bg-gray-900 lg:w-1/3">
+			<div className="m-2 bg-gray-100 p-2 dark:bg-gray-900 lg:w-1/3">
 				<HorizontalLine></HorizontalLine>
 				<button
 					onClick={() => {
 						likeStore.clearStore();
 					}}
 					className="
-                                flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-full justify-center bg-slate-800 font-medium uppercase
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 				>
-					<span className="mt-3 ml-2">{`${t("bClearLikes")}`}</span>
+					<span className="ml-2 mt-3">{`${t("bClearLikes")}`}</span>
 				</button>
 			</div>
 		</div>

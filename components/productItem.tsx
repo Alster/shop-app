@@ -3,6 +3,7 @@ import { useTranslations } from "next-intl";
 import * as React from "react";
 import { ReactElement } from "react";
 
+import getImageUrl from "@/app/[locale]/catalog/[[...categories]]/getImageUrl";
 import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
@@ -15,25 +16,23 @@ import { IProductShortDto } from "@/utils/iProductShort.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 
 export default function ProductItem({
-	item,
+	shortProduct,
 	cornerBlock,
 	currency,
 	exchangeState,
 }: {
-	item: IProductShortDto;
+	shortProduct: IProductShortDto;
 	cornerBlock?: ReactElement;
 	currency: CurrencyEnum;
 	exchangeState: ExchangeState;
 }) {
 	const t = useTranslations("ProductItem");
-	let productHref = `/product/${item.publicId}`;
-
-	if (item.attributes[AttributesEnum.COLOR]) {
-		productHref += `?color=${item.attributes[AttributesEnum.COLOR][0]}`;
-	}
+	const productHref =
+		`/product/${shortProduct.publicId}` +
+		(shortProduct.item.sku && `?item=${shortProduct.item.sku}`);
 
 	const drawSize = (bagItem: IBagItem) => {
-		const sizeAttribute = Object.entries(bagItem.attributes).find(([key]) =>
+		const sizeAttribute = Object.entries(bagItem.item.attributes).find(([key]) =>
 			[...SIZE_ATTRS.values()].includes(key as AttributesEnum),
 		);
 
@@ -44,15 +43,16 @@ export default function ProductItem({
 		return sizeAttribute[1].map((v) => v.toUpperCase()).join(", ");
 	};
 
-	const style = getStyleByColorCode(item.attributes[AttributesEnum.COLOR][0]);
+	const colors = shortProduct.item.attributes[AttributesEnum.COLOR];
+	const image = getImageUrl(shortProduct.item, "medium", 0);
 
 	return (
 		<div className="m-3 flex p-1">
 			<Link href={productHref}>
 				<Image
 					className="rounded-2xl"
-					src="https://picsum.photos/200/200"
-					alt={item.title}
+					src={image}
+					alt={shortProduct.title}
 					width={200}
 					height={200}
 					loading="lazy"
@@ -62,26 +62,29 @@ export default function ProductItem({
 				<div className="flex flex-auto flex-wrap">
 					<div className="flex-auto">
 						<Link className="text-lg font-semibold" href={productHref}>
-							{item.title}
+							{shortProduct.title}
 						</Link>
 					</div>
 					<div>{cornerBlock}</div>
 				</div>
 				<div className="flex flex-wrap">
 					<div className="flex-auto">
-						{item.attributes[AttributesEnum.COLOR] && (
-							<div className="text-md flex text-slate-500">
-								<div className="w-20 text-sm">{t("color")}:</div>
+						<div className="text-md flex text-slate-500">
+							<div className="w-20 text-sm">{t("color")}:</div>
+							{colors.map((color) => (
 								<div
-									style={style}
-									className="ml-2 h-6 w-6 border-2 border-gray-300 dark:border-gray-700"
+									key={color}
+									style={getStyleByColorCode(color)}
+									className="h-6 w-6 border-2 border-gray-300 dark:border-gray-700"
 								></div>
-							</div>
-						)}
-						{SIZE_ATTRS.some((sizeAttribute) => item.attributes[sizeAttribute]) && (
+							))}
+						</div>
+						{SIZE_ATTRS.some(
+							(sizeAttribute) => shortProduct.item.attributes[sizeAttribute],
+						) && (
 							<div className="flex">
 								<span className="w-20 text-sm text-slate-500">{t("size")}</span>
-								<span className="pl-2 font-bold">{drawSize(item)}</span>
+								<span className="pl-2 font-bold">{drawSize(shortProduct)}</span>
 							</div>
 						)}
 					</div>
@@ -93,7 +96,7 @@ export default function ProductItem({
 									doExchange(
 										CurrencyEnum.UAH,
 										currency,
-										item.price,
+										shortProduct.price,
 										exchangeState,
 									),
 								),

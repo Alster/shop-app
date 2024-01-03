@@ -7,6 +7,7 @@ type StateType<T> = Record<string, T>;
 
 export class LocalListStorage<T> {
 	_state: StateType<T> = {};
+	// eslint-disable-next-line unicorn/prefer-event-target
 	events: EventEmitter = new EventEmitter();
 
 	constructor(

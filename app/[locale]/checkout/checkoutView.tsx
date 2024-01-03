@@ -36,7 +36,7 @@ export default function CheckoutView({
 	const drawStepTitle = (number_: number, text: string) => {
 		return (
 			<div className="flex p-2">
-				<div className="bg-purple-500 rounded-full pl-2 pr-2 text-white">{number_}</div>
+				<div className="rounded-full bg-purple-500 px-2 text-white">{number_}</div>
 				<div className="pl-4">{text}</div>
 			</div>
 		);
@@ -54,7 +54,7 @@ export default function CheckoutView({
 		return (
 			<label
 				htmlFor="last_name"
-				className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+				className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 			>
 				{text}
 			</label>
@@ -106,7 +106,7 @@ export default function CheckoutView({
 			action={`${process.env.NEXT_PUBLIC_APP_API_URL}order/create`}
 			method="get"
 		>
-			<div className="px-2 lg:px-8 flex-auto">
+			<div className="flex-auto px-2 lg:px-8">
 				{drawStepTitle(1, t("contactInfo"))}
 				<div className="">
 					<div className="py-1">
@@ -155,8 +155,9 @@ export default function CheckoutView({
 								([, value]) =>
 									({
 										productId: value.productId,
-										attributes: value.attributes,
-										qty: value.quantity,
+										sku: value.item.sku,
+										attributes: value.item.attributes,
+										images: value.item.images,
 									}) as CreateOrderItemDataDto,
 							),
 						)}
@@ -184,7 +185,7 @@ export default function CheckoutView({
 				<div>
 					<div className="flex gap-4">
 						<Image
-							className="w-5 h-5"
+							className="h-5 w-5"
 							src="/img/novaPoshta.png"
 							alt="Nova Poshta"
 							width="20"
@@ -202,7 +203,7 @@ export default function CheckoutView({
 						].map((item) => (
 							<label
 								key={item.value}
-								className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+								className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
 							>
 								<input
 									name="where_to_deliver"
@@ -271,7 +272,7 @@ export default function CheckoutView({
 									maxLength={30}
 								></input>
 							</div>
-							<div className="py-1 flex gap-2">
+							<div className="flex gap-2 py-1">
 								<div className="w-1/2">
 									{drawLabel(t("building"))}
 									<input
@@ -303,8 +304,8 @@ export default function CheckoutView({
 					)}
 				</div>
 			</div>
-			<div className="m-2 p-2 bg-gray-100 dark:bg-gray-900 lg:w-1/3">
-				<div className="text-lg flex">
+			<div className="m-2 bg-gray-100 p-2 dark:bg-gray-900 lg:w-1/3">
+				<div className="flex text-lg">
 					<div className="flex-auto">{t("totalPrice")}:</div>
 					<div className="font-bold">
 						{formatPrice(
@@ -322,16 +323,16 @@ export default function CheckoutView({
 						)}
 					</div>
 				</div>
-				<hr className="border-gray-300 dark:border-gray-700 m-4" />
+				<hr className="m-4 border-gray-300 dark:border-gray-700" />
 				<button
 					type="submit"
 					className="
-                                flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-full justify-center bg-slate-800 font-medium uppercase
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 				>
-					<span className="mt-3 ml-2">{`${t("bCheckout")}`}</span>
+					<span className="ml-2 mt-3">{`${t("bCheckout")}`}</span>
 				</button>
 			</div>
 		</form>

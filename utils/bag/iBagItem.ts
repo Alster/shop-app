@@ -4,5 +4,5 @@ export type IBagItem = IProductShortDto;
 
 export interface IBagItemKeySource {
 	productId: string;
-	attributes: Record<string, string[]>;
+	item: { sku: string };
 }
