@@ -1,4 +1,4 @@
-import { useLocale } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 import NoProductPage from "@/app/[locale]/product/[id]/noProductPage";
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
@@ -21,12 +21,7 @@ export default async function Product({
 	params: IParametersProductId;
 	searchParams: IProductPageQuery;
 }) {
-	const localeFromEffect = useLocale();
-	console.log(
-		`render product age. locale from params: ${params.locale}, locale from effect: ${localeFromEffect}`,
-	);
-	console.log(`params object: ${JSON.stringify(params, null, 2)}`);
-	console.log(`searchParams object: ${JSON.stringify(searchParams, null, 2)}`);
+	unstable_setRequestLocale(params.locale);
 	const currency = getCurrencyStatic();
 
 	const [maybeProduct, attributes, categories, exchangeState] = await Promise.all([

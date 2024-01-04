@@ -76,6 +76,10 @@ function useSelectedItem(itemFromQuery: null | string, product: ProductDto) {
 
 	useEffect(() => {
 		const newSelectedItem = getSelectedItem(itemFromQuery, product);
+		const isSame = JSON.stringify(selectedItem) === JSON.stringify(newSelectedItem);
+		if (isSame) {
+			return;
+		}
 		setSelectedItem(newSelectedItem);
 	}, [itemFromQuery, product]);
 

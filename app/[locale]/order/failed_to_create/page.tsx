@@ -1,5 +1,6 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import * as React from "react";
 
 import StatusInfo from "@/components/statusInfo";
@@ -7,10 +8,14 @@ import { Link } from "@/navigation";
 
 export default function FailedToCreateOrderPage({
 	searchParams,
+	params,
 }: {
 	searchParams: { reason: string };
+	params: { locale: string };
 }) {
+	unstable_setRequestLocale(params.locale);
 	const t = useTranslations("FailedToCreateOrderPage");
+
 	return (
 		<div className="justify-centent flex flex-col items-center">
 			<div className="flex flex-col text-center">

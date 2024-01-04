@@ -1,8 +1,8 @@
 import "../globals.css";
 
 import { Inter } from "next/font/google";
-import { NextIntlClientProvider, useLocale } from "next-intl";
-import { getTranslations } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
+import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
 import { PropsWithChildren } from "react";
 
 import Header from "@/components/header";
@@ -17,11 +17,7 @@ export default async function RootLayout({
 	children,
 	params: { locale },
 }: PropsWithChildren & { params: { locale: LanguageEnum } }) {
-	const localeFromEffect = useLocale();
-
-	console.log(
-		`render layout static. locale from params: ${locale}, locale from effect: ${localeFromEffect}`,
-	);
+	unstable_setRequestLocale(locale);
 
 	const intlConfig = await i18n({ locale });
 
