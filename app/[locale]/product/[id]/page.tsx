@@ -11,6 +11,7 @@ import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
 export interface IParametersProductId {
 	id: string;
+	locale: string;
 }
 
 export default async function Product({
@@ -20,13 +21,18 @@ export default async function Product({
 	params: IParametersProductId;
 	searchParams: IProductPageQuery;
 }) {
-	const locale = useLocale();
+	const localeFromEffect = useLocale();
+	console.log(
+		`render product age. locale from params: ${params.locale}, locale from effect: ${localeFromEffect}`,
+	);
+	console.log(`params object: ${JSON.stringify(params, null, 2)}`);
+	console.log(`searchParams object: ${JSON.stringify(searchParams, null, 2)}`);
 	const currency = getCurrencyStatic();
 
 	const [maybeProduct, attributes, categories, exchangeState] = await Promise.all([
-		fetchProduct(params.id, locale),
-		fetchAttributes(locale),
-		fetchCategoryList(locale),
+		fetchProduct(params.id, params.locale),
+		fetchAttributes(params.locale),
+		fetchCategoryList(params.locale),
 		getStaticExchange(),
 	]);
 

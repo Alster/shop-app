@@ -4,19 +4,12 @@ import OrderStatusIndicator from "@/app/[locale]/order/[id]/orderStatus";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchOrder } from "@/utils/fetchOrder";
-import ISearchParameters from "@/utils/products/iSearchParameters";
 
 export interface IParametersOrderId {
 	id: string;
 }
 
-export default async function OrderPage({
-	params,
-	searchParams,
-}: {
-	params: IParametersOrderId;
-	searchParams: ISearchParameters;
-}) {
+export default async function OrderPage({ params }: { params: IParametersOrderId }) {
 	const locale = useLocale();
 	const currency = getCurrencyStatic();
 

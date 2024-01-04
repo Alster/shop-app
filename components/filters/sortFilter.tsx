@@ -13,11 +13,11 @@ interface IValue {
 	direction: "asc" | "desc";
 }
 
-const values: IValue[] = [
+const values = [
 	{ key: "priceLowToHigh", field: "price", direction: "asc" },
 	{ key: "priceHighToLow", field: "price", direction: "desc" },
 	{ key: "newToOld", field: "createDate", direction: "desc" },
-];
+] as const satisfies IValue[];
 
 export default function SortFilter() {
 	const pathname = usePathname();

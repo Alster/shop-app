@@ -191,16 +191,18 @@ export default function CheckoutView({
 							width="20"
 							height="20"
 						></Image>
-						{[
-							{
-								value: NOVA_POSHTA_DELIVERY_TYPE.OFFICE,
-								title: "whereToDeliver:office",
-							},
-							{
-								value: NOVA_POSHTA_DELIVERY_TYPE.COURIER,
-								title: "whereToDeliver:courier",
-							},
-						].map((item) => (
+						{(
+							[
+								{
+									value: NOVA_POSHTA_DELIVERY_TYPE.OFFICE,
+									title: "whereToDeliver:office",
+								},
+								{
+									value: NOVA_POSHTA_DELIVERY_TYPE.COURIER,
+									title: "whereToDeliver:courier",
+								},
+							] as const
+						).map((item) => (
 							<label
 								key={item.value}
 								className="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -304,7 +306,7 @@ export default function CheckoutView({
 					)}
 				</div>
 			</div>
-			<div className="m-2 bg-gray-100 p-2 dark:bg-gray-900 lg:w-1/3">
+			<div className="m-2 bg-gray-100 p-2 lg:w-1/3 dark:bg-gray-900">
 				<div className="flex text-lg">
 					<div className="flex-auto">{t("totalPrice")}:</div>
 					<div className="font-bold">

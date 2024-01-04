@@ -1,36 +1,55 @@
 import "../globals.css";
 
 import { Inter } from "next/font/google";
-import { notFound } from "next/navigation";
 import { NextIntlClientProvider, useLocale } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { PropsWithChildren } from "react";
 
 import Header from "@/components/header";
 import { Providers } from "@/components/providers";
+import i18n from "@/i18n";
+import { SupportedLocales } from "@/navigation";
+import { LanguageEnum } from "@/shop-shared/constants/localization";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default async function RootLayout({ children }: PropsWithChildren) {
-	const locale = useLocale();
+export default async function RootLayout({
+	children,
+	params: { locale },
+}: PropsWithChildren & { params: { locale: LanguageEnum } }) {
+	const localeFromEffect = useLocale();
 
-	let messages;
-	try {
-		const file = await import(`../../locales/${locale}.json`);
-		messages = file.default;
-	} catch {
-		notFound();
-	}
+	console.log(
+		`render layout static. locale from params: ${locale}, locale from effect: ${localeFromEffect}`,
+	);
 
-	console.log("render layout static");
+	const intlConfig = await i18n({ locale });
 
 	return (
 		<html lang={locale}>
 			<body className={inter.className}>
-				<NextIntlClientProvider locale={locale} messages={messages}>
+				<NextIntlClientProvider {...intlConfig}>
 					<Header></Header>
 					<Providers>{children}</Providers>
 				</NextIntlClientProvider>
 			</body>
 		</html>
 	);
+}
+
+// eslint-disable-next-line unicorn/prevent-abbreviations
+export function generateStaticParams() {
+	return SupportedLocales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+	params: { locale },
+}: {
+	params: { locale: LanguageEnum };
+}) {
+	const t = await getTranslations("Metadata");
+	return {
+		title: t("title"),
+		description: t("description"),
+	};
 }

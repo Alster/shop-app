@@ -1,4 +1,8 @@
 {
+  "Metadata": {
+    "title": "Unicorn - Store",
+    "description": "Built with Next.js and next-intl"
+  },
   "ProductsList": {
     "hello": "Привіт!",
     "emptyProductsList": "Список товарів порожній",
@@ -19,6 +23,7 @@
     "hello": "Привіт!",
     "selectColor": "Будь ласка, оберіть колір",
     "selectSize": "Будь ласка, оберіть розмір",
+    "availableVariantsToBuy": "Доступні варіанти для покупки",
     "bAddToBag": "Додати в кошик",
     "bBuyNow": "Купити зараз",
     "bAdd": "Додати",

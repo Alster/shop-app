@@ -1,5 +1,6 @@
 import Image from "next/image";
 import * as React from "react";
+import { useState } from "react";
 
 import getImageUrl from "@/app/[locale]/catalog/[[...categories]]/getImageUrl";
 import { ProductDto, ProductItemDto } from "@/shop-shared/dto/product/product.dto";
@@ -18,26 +19,41 @@ export default function SlowLoadingImage({
 	indexToShow?: number;
 	size: number;
 }) {
-	if (!itemToShow) {
-		return <>no items here</>;
+	const [imageIndex, setImageIndex] = useState(indexToShow || 0);
+
+	function RenderItem({ item }: { item: ProductItemDto }) {
+		const backgroundUrl = getImageUrl(item, postfixes[0], imageIndex);
+		const mainUrl = getImageUrl(item, postfixes[1], imageIndex);
+
+		return (
+			<div>
+				<Image
+					src={mainUrl}
+					width={size}
+					height={size}
+					alt=""
+					loading="lazy"
+					className="bg-cover"
+					style={{
+						background: `url(${backgroundUrl}) no-repeat center`,
+						backgroundSize: "cover",
+						backdropFilter: "blur(10px) opacity(0.5)",
+					}}
+				/>
+			</div>
+		);
 	}
 
-	const backgroundUrl = getImageUrl(itemToShow, postfixes[0], indexToShow);
-	const mainUrl = getImageUrl(itemToShow, postfixes[1], indexToShow);
+	function RenderNoItem() {
+		return (
+			<div className="flex flex-col items-center justify-center">
+				<div className="flex h-20 w-20 items-center justify-center rounded-full bg-gray-300">
+					<span className="text-3xl font-bold">?</span>
+				</div>
+				<span className="text-sm text-gray-500">No item</span>
+			</div>
+		);
+	}
 
-	return (
-		<Image
-			src={mainUrl}
-			width={size}
-			height={size}
-			alt=""
-			loading="lazy"
-			className="bg-cover"
-			style={{
-				background: `url(${backgroundUrl}) no-repeat center`,
-				backgroundSize: "cover",
-				backdropFilter: "blur(10px) opacity(0.5)",
-			}}
-		/>
-	);
+	return itemToShow ? <RenderItem item={itemToShow} /> : <RenderNoItem />;
 }

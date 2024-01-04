@@ -30,6 +30,15 @@ function BreakParagraph() {
 	return <div className="my-10"></div>;
 }
 
+const drawAttributeTitle = (title: string, highlightMustSelect: boolean, highlightText: string) => {
+	return (
+		<div className="text-slate-600 dark:text-slate-300">
+			{title}
+			{highlightMustSelect && <span className="pl-3 text-red-500">{highlightText}</span>}
+		</div>
+	);
+};
+
 function findBySku(sku: string | null | undefined, product: ProductDto): ProductItemDto | null {
 	const foundItem = product.items.find((item) => item.sku === sku);
 	return foundItem ?? null;
@@ -61,14 +70,16 @@ function getSelectedItem(itemFromQuery: string | null, product: ProductDto): Pro
 }
 
 function useSelectedItem(itemFromQuery: null | string, product: ProductDto) {
-	const [selectedItem, setSelectedItem] = useState<ProductItemDto | null>(null);
+	const [selectedItem, setSelectedItem] = useState<ProductItemDto | null>(
+		getSelectedItem(itemFromQuery, product),
+	);
 
 	useEffect(() => {
 		const newSelectedItem = getSelectedItem(itemFromQuery, product);
 		setSelectedItem(newSelectedItem);
 	}, [itemFromQuery, product]);
 
-	return [selectedItem, setSelectedItem] as const;
+	return [selectedItem] as const;
 }
 
 export default function ProductPage({
@@ -94,20 +105,12 @@ export default function ProductPage({
 	const [buyButtonClicked, setBuyButtonClicked] = useState(false);
 	const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
-	const [selectedItem, setSelectedItem] = useSelectedItem(pageQuery["item"] ?? null, product);
+	const [selectedItem] = useSelectedItem(pageQuery["item"] ?? null, product);
+	console.log("ITEM: " + JSON.stringify(pageQuery["item"], null, 2));
 
-	const drawAttributeTitle = (
-		title: string,
-		highlightMustSelect: boolean,
-		highlightText: string,
-	) => {
-		return (
-			<div className="text-slate-600 dark:text-slate-300">
-				{title}
-				{highlightMustSelect && <span className="pl-3 text-red-500">{highlightText}</span>}
-			</div>
-		);
-	};
+	useEffect(() => {
+		console.log(`selectedItem: ${JSON.stringify(selectedItem, null, 2)}`);
+	}, [selectedItem]);
 
 	// function AttributeColor({ className }: { className?: string }) {
 	// 	const attribute = attributes.find((attribute_) => attribute_.key === AttributesEnum.COLOR);
@@ -266,7 +269,7 @@ export default function ProductPage({
 
 		return (
 			<>
-				<div>{drawAttributeTitle("Available variants to buy:", false, "")}</div>
+				<div>{drawAttributeTitle(`${t("availableVariantsToBuy")}:`, false, "")}</div>
 				<div className={`${className}`}>
 					{items.map((item) => (
 						<div key={item.sku} className="my-2 flex">

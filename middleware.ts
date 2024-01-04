@@ -1,19 +1,20 @@
 import { NextRequest } from "next/server";
 import createIntlMiddleware from "next-intl/middleware";
 
-import { localePrefix, locales } from "@/navigation";
+import { DefaultLocale, LocalePrefix, SupportedLocales } from "@/navigation";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 
 export default async function middleware(request: NextRequest) {
 	// Step 1: Use the incoming request (example)
 	const defaultLocale =
-		(request.headers.get("x-default-locale") as LanguageEnum) ?? LanguageEnum.en;
+		(request.headers.get("x-default-locale") as LanguageEnum) ?? DefaultLocale;
 
 	// Step 2: Create and call the next-intl middleware (example)
 	const handleI18nRouting = createIntlMiddleware({
-		localePrefix,
-		locales,
+		localePrefix: LocalePrefix,
+		locales: SupportedLocales,
 		defaultLocale,
+		localeDetection: true,
 	});
 	const response = handleI18nRouting(request);
 

@@ -24,47 +24,47 @@ interface IStatusConfig {
 	textColor: string;
 }
 
-const CONFIG_WAITING: IStatusConfig = {
+const CONFIG_WAITING = {
 	icon: <ClockIcon></ClockIcon>,
 	translateKey: "orderStatusWaiting",
 	translateKeyDescription: "orderStatusWaitingDescription",
 	textColor: "text-blue-400",
-};
+} as const satisfies IStatusConfig;
 
-const CONFIG_SUCCESS: IStatusConfig = {
+const CONFIG_SUCCESS = {
 	icon: <CheckIcon></CheckIcon>,
 	translateKey: "orderStatusSuccess",
 	translateKeyDescription: "orderStatusSuccessDescription",
 	textColor: "text-green-400",
-};
+} as const satisfies IStatusConfig;
 
-const CONFIG_FAILED: IStatusConfig = {
+const CONFIG_FAILED = {
 	icon: <XMarkIcon></XMarkIcon>,
 	translateKey: "orderStatusFailed",
 	translateKeyDescription: "orderStatusFailedDescription",
 	textColor: "text-red-400",
-};
+} as const satisfies IStatusConfig;
 
-const StatusesConfig: { [key in OrderStatus]: IStatusConfig } = {
+const StatusesConfig = {
 	[ORDER_STATUS.CREATED]: CONFIG_WAITING,
 	[ORDER_STATUS.PENDING]: CONFIG_WAITING,
 	[ORDER_STATUS.PAID]: CONFIG_SUCCESS,
 	[ORDER_STATUS.FINISHED]: CONFIG_SUCCESS,
 	[ORDER_STATUS.FAILED]: CONFIG_FAILED,
-};
+} as const satisfies { [key in OrderStatus]: IStatusConfig };
 
-const LANG_TO_LOCALE: { [key in LanguageEnum]: string } = {
+const LANG_TO_LOCALE = {
 	[LanguageEnum.en]: "en-US",
 	[LanguageEnum.ua]: "uk-UA",
-	[LanguageEnum.eu]: "ru-RU",
-};
+	[LanguageEnum.ru]: "ru-RU",
+} as const satisfies { [key in LanguageEnum]: string };
 
 export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	const t = useTranslations("OrderStatusPage");
 	const tCheckout = useTranslations("CheckoutPage");
 	const locale = useLocale();
 	const [status, setStatus] = useState(order.status);
-	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>();
+	const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
 	const queueFetch = () => {
 		const timeoutId = setTimeout(async () => {
@@ -72,7 +72,14 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 			setStatus(status);
 
 			if (status === ORDER_STATUS.PAID) {
-				const alreadyBuyItems = order.itemsData.map((item) => createBagItemKey(item));
+				const alreadyBuyItems = order.itemsData.map((item) =>
+					createBagItemKey({
+						productId: item.productId,
+						item: {
+							sku: item.sku,
+						},
+					}),
+				);
 				bagStore.removeFromStore(...alreadyBuyItems);
 			}
 
@@ -80,7 +87,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 				queueFetch();
 			}
 		}, 1000);
-		setTimeoutId(timeoutId);
+		setTimeoutId(timeoutId as unknown as number);
 	};
 	useEffect(() => {
 		queueFetch();
