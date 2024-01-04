@@ -108,6 +108,8 @@ export default function ProductPage({
 	const [selectedItem] = useSelectedItem(pageQuery["item"] ?? null, product);
 	console.log("ITEM: " + JSON.stringify(pageQuery["item"], null, 2));
 
+	const [imageIndex, setImageIndex] = useState(0);
+
 	useEffect(() => {
 		console.log(`selectedItem: ${JSON.stringify(selectedItem, null, 2)}`);
 	}, [selectedItem]);
@@ -421,13 +423,38 @@ export default function ProductPage({
 			)}
 
 			<div className="products-page grid grid-cols-1 lg:grid-cols-2">
-				<SlowLoadingImage
-					postfixes={["small", "big"]}
-					product={product}
-					itemToShow={selectedItem}
-					indexToShow={0}
-					size={1000}
-				></SlowLoadingImage>
+				<div>
+					<SlowLoadingImage
+						postfixes={["small", "big"]}
+						product={product}
+						itemToShow={selectedItem}
+						indexToShow={imageIndex}
+						size={1000}
+					></SlowLoadingImage>
+					{selectedItem && (
+						<div className="grid grid-cols-3 pt-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5">
+							{selectedItem.images.map((imageUrl, index) => (
+								<div
+									className={`m-1 cursor-pointer border-4 ${
+										index === imageIndex
+											? "border-black dark:border-white"
+											: "border-white dark:border-black"
+									} hover:border-black dark:hover:border-white`}
+									onClick={() => setImageIndex(index)}
+								>
+									<SlowLoadingImage
+										key={index}
+										postfixes={["small", "medium"]}
+										product={product}
+										itemToShow={selectedItem}
+										indexToShow={index}
+										size={256}
+									></SlowLoadingImage>
+								</div>
+							))}
+						</div>
+					)}
+				</div>
 				<div className="p-3">
 					<div className="flex"></div>
 					<h1 className="mt-1 flex-auto text-lg font-medium text-slate-700 dark:text-slate-200">

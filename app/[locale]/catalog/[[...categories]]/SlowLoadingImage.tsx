@@ -1,6 +1,5 @@
 import Image from "next/image";
 import * as React from "react";
-import { useState } from "react";
 
 import getImageUrl from "@/app/[locale]/catalog/[[...categories]]/getImageUrl";
 import { ProductDto, ProductItemDto } from "@/shop-shared/dto/product/product.dto";
@@ -12,35 +11,35 @@ export default function SlowLoadingImage({
 	itemToShow,
 	indexToShow,
 	size,
+	className,
 }: {
 	postfixes: [ImagePostfixType, ImagePostfixType];
 	product: ProductDto;
 	itemToShow?: ProductItemDto | null;
 	indexToShow?: number;
 	size: number;
+	className?: string;
 }) {
-	const [imageIndex, setImageIndex] = useState(indexToShow || 0);
+	const imageIndex = indexToShow || 0;
 
 	function RenderItem({ item }: { item: ProductItemDto }) {
 		const backgroundUrl = getImageUrl(item, postfixes[0], imageIndex);
 		const mainUrl = getImageUrl(item, postfixes[1], imageIndex);
 
 		return (
-			<div>
-				<Image
-					src={mainUrl}
-					width={size}
-					height={size}
-					alt=""
-					loading="lazy"
-					className="bg-cover"
-					style={{
-						background: `url(${backgroundUrl}) no-repeat center`,
-						backgroundSize: "cover",
-						backdropFilter: "blur(10px) opacity(0.5)",
-					}}
-				/>
-			</div>
+			<Image
+				src={mainUrl}
+				width={size}
+				height={size}
+				alt=""
+				loading="lazy"
+				className={`${className} bg-cover`}
+				style={{
+					background: `url(${backgroundUrl}) no-repeat center`,
+					backgroundSize: "cover",
+					backdropFilter: "blur(10px) opacity(0.5)",
+				}}
+			/>
 		);
 	}
 
