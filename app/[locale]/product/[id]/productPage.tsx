@@ -2,371 +2,86 @@
 
 import "./productPage.css";
 
+import assert from "node:assert";
+
 import { CheckIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
 import Modal from "@/components/modal";
-import { Link, usePathname, useRouter } from "@/navigation";
+import Characteristics from "@/components/productPage/characteristics";
+import ItemsList from "@/components/productPage/itemsList";
+import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
-import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
+import { SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
-import { CategoryDto } from "@/shop-shared/dto/category/category.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductDto, ProductItemDto } from "@/shop-shared/dto/product/product.dto";
+import arrayContains from "@/shop-shared/utils/arrayContains";
 import { bagStore } from "@/utils/bag/bagItemsStorage";
 import { IBagItem } from "@/utils/bag/iBagItem";
 import { createLikeItemKey, likeStore, useLikesStore } from "@/utils/likes/likeItemsStorage";
-import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
 function BreakParagraph() {
 	return <div className="my-10"></div>;
 }
 
-const drawAttributeTitle = (title: string, highlightMustSelect: boolean, highlightText: string) => {
-	return (
-		<div className="text-slate-600 dark:text-slate-300">
-			{title}
-			{highlightMustSelect && <span className="pl-3 text-red-500">{highlightText}</span>}
-		</div>
-	);
-};
-
-function findBySku(sku: string | null | undefined, product: ProductDto): ProductItemDto | null {
-	const foundItem = product.items.find((item) => item.sku === sku);
-	return foundItem ?? null;
-}
-
-function getSelectedItem(itemFromQuery: string | null, product: ProductDto): ProductItemDto | null {
-	if (itemFromQuery) {
-		const itemToShow = findBySku(itemFromQuery, product);
-		if (itemToShow) {
-			return itemToShow;
-		}
-	}
-
-	if (product.selectedItem) {
-		const itemToShow = findBySku(product.selectedItem, product);
-		if (itemToShow) {
-			return itemToShow;
-		}
-	}
-
-	if (product.items.length > 0) {
-		const itemToShow = product.items[0];
-		if (itemToShow) {
-			return itemToShow;
-		}
-	}
-
-	return null;
-}
-
-function useSelectedItem(itemFromQuery: null | string, product: ProductDto) {
-	const [selectedItem, setSelectedItem] = useState<ProductItemDto | null>(
-		getSelectedItem(itemFromQuery, product),
-	);
-
-	useEffect(() => {
-		const newSelectedItem = getSelectedItem(itemFromQuery, product);
-		const isSame = JSON.stringify(selectedItem) === JSON.stringify(newSelectedItem);
-		if (isSame) {
-			return;
-		}
-		setSelectedItem(newSelectedItem);
-	}, [itemFromQuery, product]);
-
-	return [selectedItem] as const;
-}
-
 export default function ProductPage({
 	product,
 	attributes,
-	categories,
 	pageQuery,
 	exchangeState,
 	currency,
 }: {
 	product: ProductDto;
 	attributes: AttributeDto[];
-	categories: CategoryDto[];
 	pageQuery: IProductPageQuery;
 	exchangeState: ExchangeState;
 	currency: CurrencyEnum;
 }) {
 	const t = useTranslations("ProductsPage");
-	const router = useRouter();
-	const pathName = usePathname();
 	const likeItems = useLikesStore();
 
-	const [buyButtonClicked, setBuyButtonClicked] = useState(false);
-	const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
-
-	const [selectedItem] = useSelectedItem(pageQuery["item"] ?? null, product);
-	console.log("ITEM: " + JSON.stringify(pageQuery["item"], null, 2));
+	const selectedItem = getSelectedItem(pageQuery["item"] ?? null, product);
 
 	const [imageIndex, setImageIndex] = useState(0);
 
-	useEffect(() => {
-		console.log(`selectedItem: ${JSON.stringify(selectedItem, null, 2)}`);
-	}, [selectedItem]);
+	const [buyButtonClicked, setBuyButtonClicked] = useState(false);
+	const highlightMustSelect = !selectedItem && buyButtonClicked;
 
-	// function AttributeColor({ className }: { className?: string }) {
-	// 	const attribute = attributes.find((attribute_) => attribute_.key === AttributesEnum.COLOR);
-	// 	if (!attribute) {
-	// 		return;
-	// 	}
-	//
-	// 	const key = attribute.key;
-	// 	const values = product.attrs[key] || [];
-	//
-	// 	const highlightMustSelect = !selectedItem && buyButtonClicked;
-	//
-	// 	return (
-	// 		<div key={key} className={className}>
-	// 			{drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectColor"))}
-	// 			<div
-	// 				className={`mt-2 flex space-x-4 p-2 text-sm ${
-	// 					highlightMustSelect && UNSELECTED_ATTR_STYLE
-	// 				}`}
-	// 			>
-	// 				{values.map((value) => {
-	// 					const style = getStyleByColorCode(value);
-	// 					return (
-	// 						<label key={value}>
-	// 							<input
-	// 								className="peer sr-only"
-	// 								name={key}
-	// 								type="radio"
-	// 								value={value}
-	// 								checked={value === selectedItem}
-	// 								onChange={onSelectedItemChange}
-	// 								// @ts-ignore
-	// 								onClick={onItemClick}
-	// 							/>
-	// 							<div
-	// 								className="flex h-9 w-9 cursor-pointer items-center
-	//                                             justify-center border-2
-	//                                             border-black
-	//                                             outline-black
-	//                                             peer-checked:border-4 peer-checked:outline
-	//                                             peer-checked:outline-4
-	//                                             dark:border-white
-	//                                             dark:outline-white
-	//                                             "
-	// 								style={style}
-	// 							></div>
-	// 						</label>
-	// 					);
-	// 				})}
-	// 			</div>
-	// 		</div>
-	// 	);
-	// }
+	const [isAddProductModalOpen, setIsAddProductModalOpen] = useState(false);
 
-	// function AttributeSize({ className }: { className?: string }) {
-	// 	const attributePair = Object.entries(product.attrs).find(([key, values]) =>
-	// 		SIZE_ATTRS.includes(key as AttributesEnum),
-	// 	);
-	// 	if (!attributePair) {
-	// 		return;
-	// 	}
-	//
-	// 	const attributeKey = attributePair[0];
-	// 	const attribute = attributes.find((attribute_) => attribute_.key === attributeKey);
-	// 	if (!attribute) {
-	// 		return;
-	// 	}
-	//
-	// 	const values = product.attrs[attributeKey] || [];
-	// 	const highlightMustSelect = !selectedSizeValue && buyButtonClicked;
-	//
-	// 	return (
-	// 		<div key={attributeKey} className={className}>
-	// 			{drawAttributeTitle(attribute?.title, highlightMustSelect, t("selectSize"))}
-	// 			<div
-	// 				className={`mt-2 flex space-x-4 p-2 text-sm ${
-	// 					highlightMustSelect && UNSELECTED_ATTR_STYLE
-	// 				}`}
-	// 			>
-	// 				{values.map((value) => {
-	// 					return (
-	// 						<label key={value}>
-	// 							<input
-	// 								className="peer sr-only"
-	// 								name={attributeKey}
-	// 								type="radio"
-	// 								value={value}
-	// 								onChange={(e) => onSizeChange(attributeKey, e.target.value)}
-	// 								disabled={!selectableSizeValues.has(value)}
-	// 								checked={value === selectedSizeValue}
-	// 							/>
-	// 							<div
-	// 								onClick={() => sizeSelect(value)}
-	// 								className="flex h-9 cursor-pointer items-center justify-center border p-3
-	//                                         text-slate-700 peer-checked:bg-slate-900 peer-checked:font-semibold
-	//                                         peer-checked:text-white peer-disabled:opacity-30 dark:border-white dark:text-slate-200
-	//                                         dark:peer-checked:bg-slate-100
-	//                                         dark:peer-checked:text-black
-	//                                         "
-	// 							>
-	// 								{
-	// 									attribute?.values.find((value_) => value_.key === value)
-	// 										?.title
-	// 								}
-	// 							</div>
-	// 						</label>
-	// 					);
-	// 				})}
-	// 			</div>
-	// 		</div>
-	// 	);
-	// }
-
-	function Characteristics({ className }: { className?: string }) {
-		const characteristics = attributes.filter(
-			(attribute) =>
-				![AttributesEnum.COLOR, ...SIZE_ATTRS].includes(attribute.key as AttributesEnum),
-		);
-		if (characteristics.length === 0) {
-			return;
-		}
-
-		return (
-			<div className={className}>
-				{characteristics.map((attribute) => (
-					<div key={attribute.key} className="my-2 flex">
-						{drawAttributeTitle(attribute?.title + ":", false, "")}
-						<div className="pl-3">
-							{(product.attrs[attribute.key] || []).map((value) => {
-								return (
-									<div key={value}>
-										{
-											attribute?.values.find((value_) => value_.key === value)
-												?.title
-										}
-									</div>
-								);
-							})}
-						</div>
-					</div>
-				))}
-			</div>
-		);
-	}
-
-	function ItemsList({
-		product,
-		className,
-		selectedItem,
-	}: {
-		product: ProductDto;
-		selectedItem: ProductItemDto | null;
-		className: string;
-	}) {
-		const items = product.items || [];
-
-		return (
-			<>
-				<div>{drawAttributeTitle(`${t("availableVariantsToBuy")}:`, false, "")}</div>
-				<div className={`${className}`}>
-					{items.map((item) => (
-						<div key={item.sku} className="my-2 flex">
-							<Item
-								item={item}
-								product={product}
-								isSelected={selectedItem?.sku === item.sku}
-							></Item>
-						</div>
-					))}
-				</div>
-			</>
-		);
-	}
-
-	function Item({
-		item,
-		product,
-		isSelected,
-	}: {
-		item: ProductItemDto;
-		product: ProductDto;
-		isSelected: boolean;
-	}) {
-		const colors = item.attributes[AttributesEnum.COLOR] || [];
-		const [size] =
-			item.attributes[AttributesEnum.SIZE] ||
-			item.attributes[AttributesEnum.SIZE_SHOES] ||
-			[];
-
-		return (
-			<Link
-				replace={true}
-				href={`/product/${product.publicId}?item=${item.sku}`}
-				className={`product-item flex gap-0 border-2 ${
-					isSelected
-						? "border-gray-400 dark:border-gray-400"
-						: "border-white dark:border-black"
-				} hover:border-gray-300 hover:dark:border-gray-500`}
-			>
-				{size && (
-					<div
-						className="flex h-9 items-center justify-center bg-gray-200 p-3 font-semibold
-						uppercase dark:bg-gray-700"
-					>
-						{size}
-					</div>
-				)}
-				{colors.map((color, index) => (
-					<div
-						key={`color+${index + 1}`}
-						className="h-9 w-9 border-2 border-gray-300 dark:border-gray-700"
-						style={getStyleByColorCode(color)}
-					></div>
-				))}
-			</Link>
-		);
-	}
-
-	const addToBag = () => {
+	const addToBag = useCallback(() => {
 		const attribute = attributes.find((attribute_) =>
-			SIZE_ATTRS.includes(attribute_.key as AttributesEnum),
+			arrayContains(SIZE_ATTRS, attribute_.key),
 		);
-		if (!attribute) {
-			throw new Error("No size attribute found");
-		}
+		assert.ok(attribute, new Error("No size attribute found"));
+		assert.ok(product.id, new Error("No product id"));
+		assert.ok(selectedItem, new Error("No selected item"));
 
-		if (!product.id) {
-			throw new Error("No product id");
-		}
-
-		if (!selectedItem) {
-			throw new Error("No selected item");
-		}
-
-		const bagItem: IBagItem = {
+		const bagItem = {
 			productId: product.id,
 			publicId: product.publicId,
 			title: product.title,
 			price: product.price,
 			item: selectedItem,
-		};
+		} as const satisfies IBagItem;
 
 		bagStore.addToStore(bagItem);
 
 		console.log(`Added to bag: ${JSON.stringify(bagItem, null, 2)}`);
-	};
+	}, [attributes, product, selectedItem]);
 
-	const buyNow = () => {
+	const buyNow = useCallback(() => {
 		addToBag();
-	};
+	}, [addToBag]);
 
 	return (
 		<div className="flex items-center justify-center">
@@ -479,14 +194,17 @@ export default function ProductPage({
 					</div>
 					<BreakParagraph></BreakParagraph>
 					<div>
-						{/*<AttributeColor className="mt-4"></AttributeColor>*/}
-						{/*<AttributeSize className="mt-4"></AttributeSize>*/}
-						<Characteristics className="mt-10"></Characteristics>
+						<Characteristics
+							className="mt-10"
+							product={product}
+							attributes={attributes}
+						></Characteristics>
 						<BreakParagraph></BreakParagraph>
 						<ItemsList
 							className="mt-1"
 							product={product}
 							selectedItem={selectedItem}
+							highlightMustSelect={highlightMustSelect}
 						></ItemsList>
 					</div>
 					<BreakParagraph></BreakParagraph>
@@ -566,4 +284,34 @@ export default function ProductPage({
 			</div>
 		</div>
 	);
+}
+
+function getSelectedItem(itemFromQuery: string | null, product: ProductDto): ProductItemDto | null {
+	if (itemFromQuery) {
+		const itemToShow = findBySku(itemFromQuery, product);
+		if (itemToShow) {
+			return itemToShow;
+		}
+	}
+
+	if (product.selectedItem) {
+		const itemToShow = findBySku(product.selectedItem, product);
+		if (itemToShow) {
+			return itemToShow;
+		}
+	}
+
+	if (product.items.length > 0) {
+		const itemToShow = product.items[0];
+		if (itemToShow) {
+			return itemToShow;
+		}
+	}
+
+	return null;
+}
+
+function findBySku(sku: string | null | undefined, product: ProductDto): ProductItemDto | null {
+	const foundItem = product.items.find((item) => item.sku === sku);
+	return foundItem ?? null;
 }

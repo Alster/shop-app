@@ -5,7 +5,6 @@ import ProductPage from "@/app/[locale]/product/[id]/productPage";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
-import { fetchCategoryList } from "@/utils/fetchCategoryList";
 import { fetchProduct } from "@/utils/fetchProduct";
 import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
@@ -24,10 +23,9 @@ export default async function Product({
 	unstable_setRequestLocale(params.locale);
 	const currency = getCurrencyStatic();
 
-	const [maybeProduct, attributes, categories, exchangeState] = await Promise.all([
+	const [maybeProduct, attributes, exchangeState] = await Promise.all([
 		fetchProduct(params.id, params.locale),
 		fetchAttributes(params.locale),
-		fetchCategoryList(params.locale),
 		getStaticExchange(),
 	]);
 
@@ -35,7 +33,6 @@ export default async function Product({
 		<ProductPage
 			product={maybeProduct}
 			attributes={attributes}
-			categories={categories}
 			pageQuery={searchParams}
 			exchangeState={exchangeState}
 			currency={currency}

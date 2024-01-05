@@ -23,6 +23,7 @@
     "hello": "Welcome to Next.js!",
     "selectColor": "Please, choose Color",
     "selectSize": "Please, select Size",
+    "selectItem": "Please, select item",
     "availableVariantsToBuy": "Available variants to buy",
     "bAddToBag": "Add to bag",
     "bBuyNow": "Buy now",

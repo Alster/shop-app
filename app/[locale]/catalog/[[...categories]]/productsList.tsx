@@ -288,7 +288,6 @@ export default function ProductsList({
 								selectedItemMapSet(new Map(selectedItemMap).set(product.id, sku));
 							}}
 						></ItemsLine>
-						{/*<AttributesLine className="mt-1" product={product}></AttributesLine>*/}
 					</div>
 				);
 			})}
