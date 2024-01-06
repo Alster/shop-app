@@ -1,4 +1,5 @@
 import * as React from "react";
+import { ReactElement } from "react";
 
 import AttributeTitle from "@/components/productPage/attributeTitle";
 import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
@@ -32,16 +33,24 @@ export default function Characteristics({
 						highlightText={""}
 					></AttributeTitle>
 					<div className="pl-3">
-						{(product.attrs[attribute.key] || []).map((value) => {
-							return (
-								<div key={value}>
-									{
-										attribute?.values.find((value_) => value_.key === value)
-											?.title
-									}
-								</div>
-							);
-						})}
+						{(product.attrs[attribute.key] || [])
+							.map((value) => {
+								return (
+									<span key={value}>
+										{
+											attribute?.values.find((value_) => value_.key === value)
+												?.title
+										}
+									</span>
+								);
+							})
+							.reduce((previous, element) => {
+								if (previous.length > 0) {
+									previous.push(<span>, </span>);
+								}
+								previous.push(element);
+								return previous;
+							}, [] as ReactElement[])}
 					</div>
 				</div>
 			))}

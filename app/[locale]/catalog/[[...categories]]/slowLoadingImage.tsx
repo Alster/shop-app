@@ -32,8 +32,7 @@ export default function SlowLoadingImage({
 				width={size}
 				height={size}
 				alt=""
-				loading="lazy"
-				priority={priority}
+				{...(priority ? { priority: true } : { loading: "lazy" })}
 				className={`${className} bg-cover`}
 				style={{
 					background: `url(${backgroundUrl}) no-repeat center`,

@@ -2,8 +2,6 @@
 
 import "./productPage.css";
 
-import assert from "node:assert";
-
 import { CheckIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
@@ -62,9 +60,15 @@ export default function ProductPage({
 		const attribute = attributes.find((attribute_) =>
 			arrayContains(SIZE_ATTRS, attribute_.key),
 		);
-		assert.ok(attribute, new Error("No size attribute found"));
-		assert.ok(product.id, new Error("No product id"));
-		assert.ok(selectedItem, new Error("No selected item"));
+		if (!attribute) {
+			throw new Error("No size attribute found");
+		}
+		if (!product.id) {
+			throw new Error("No product id");
+		}
+		if (!selectedItem) {
+			throw new Error("No selected item");
+		}
 
 		const bagItem = {
 			productId: product.id,

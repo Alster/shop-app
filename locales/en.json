@@ -6,7 +6,9 @@
   "ProductsList": {
     "hello": "Welcome to Next.js!",
     "emptyProductsList": "No products found",
-    "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters."
+    "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters.",
+    "bFilters": "Filters",
+    "bSearch": "Search"
   },
   "FilterSort": {
     "title": "Sort by",

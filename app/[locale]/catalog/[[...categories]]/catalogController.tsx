@@ -86,20 +86,22 @@ export default function CatalogController({
 		className?: string;
 		toggle: () => void;
 	}) {
+		const t = useTranslations("ProductsList");
+
 		return (
 			<Fragment>
 				<div className={`${className} flex flex-wrap`}>
 					<button
 						onClick={() => toggle()}
 						className="
-                                flex h-12 w-full items-center justify-center bg-slate-800 font-medium uppercase
+                                flex h-12 w-full items-center justify-center bg-slate-800 font-medium
                                  tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
                              "
 					>
 						<div className="flex items-center">
 							<AdjustmentsHorizontalIcon className="inline-block h-10 w-10"></AdjustmentsHorizontalIcon>
-							<div>Filters</div>
+							<div className="ml-2 text-3xl">{t("bFilters")}</div>
 						</div>
 					</button>
 				</div>
