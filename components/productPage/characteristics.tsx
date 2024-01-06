@@ -2,7 +2,6 @@ import * as React from "react";
 import { ReactElement } from "react";
 
 import AttributeTitle from "@/components/productPage/attributeTitle";
-import { AttributesEnum, SIZE_ATTRS } from "@/shop-shared/constants/attributesEnum";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductDto } from "@/shop-shared/dto/product/product.dto";
 
@@ -15,13 +14,14 @@ export default function Characteristics({
 	product: ProductDto;
 	attributes: AttributeDto[];
 }) {
-	const characteristics = attributes.filter(
-		(attribute) =>
-			![AttributesEnum.COLOR, ...SIZE_ATTRS].includes(attribute.key as AttributesEnum),
-	);
-	if (characteristics.length === 0) {
+	const characteristicsKeys = Object.keys(product.characteristics);
+	if (characteristicsKeys.length === 0) {
 		return;
 	}
+
+	const characteristics = characteristicsKeys
+		.map((key) => attributes.find((attribute) => attribute.key === key))
+		.filter((attribute): attribute is AttributeDto => !!attribute);
 
 	return (
 		<div className={className}>
