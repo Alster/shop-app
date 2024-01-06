@@ -8,10 +8,11 @@ import ImagePostfixType from "@/shop-shared/utils/imagePostfixType";
 export default function SlowLoadingImage({
 	postfixes,
 	product,
-	itemToShow,
-	indexToShow,
+	itemToShow = null,
+	indexToShow = 0,
 	size,
 	className,
+	priority = false,
 }: {
 	postfixes: [ImagePostfixType, ImagePostfixType];
 	product: ProductDto;
@@ -19,12 +20,11 @@ export default function SlowLoadingImage({
 	indexToShow?: number;
 	size: number;
 	className?: string;
+	priority?: boolean;
 }) {
-	const imageIndex = indexToShow || 0;
-
 	function RenderItem({ item }: { item: ProductItemDto }) {
-		const backgroundUrl = getImageUrl(item, postfixes[0], imageIndex);
-		const mainUrl = getImageUrl(item, postfixes[1], imageIndex);
+		const backgroundUrl = getImageUrl(item, postfixes[0], indexToShow);
+		const mainUrl = getImageUrl(item, postfixes[1], indexToShow);
 
 		return (
 			<Image
@@ -33,6 +33,7 @@ export default function SlowLoadingImage({
 				height={size}
 				alt=""
 				loading="lazy"
+				priority={priority}
 				className={`${className} bg-cover`}
 				style={{
 					background: `url(${backgroundUrl}) no-repeat center`,

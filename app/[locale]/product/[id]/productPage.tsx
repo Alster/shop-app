@@ -10,7 +10,7 @@ import { useTranslations } from "next-intl";
 import * as React from "react";
 import { useCallback, useState } from "react";
 
-import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
+import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/slowLoadingImage";
 import Modal from "@/components/modal";
 import Characteristics from "@/components/productPage/characteristics";
 import ItemsList from "@/components/productPage/itemsList";
@@ -149,6 +149,7 @@ export default function ProductPage({
 						itemToShow={selectedItem}
 						indexToShow={imageIndex}
 						size={1000}
+						priority={true}
 					></SlowLoadingImage>
 					{selectedItem && (
 						<div className="grid grid-cols-3 pt-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5">

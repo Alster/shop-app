@@ -6,7 +6,7 @@ import "./productsList.css";
 import * as qs from "qs";
 import * as React from "react";
 
-import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/SlowLoadingImage";
+import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/slowLoadingImage";
 import { Link } from "@/navigation";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
@@ -160,7 +160,6 @@ export default function ProductsList({
 			<div
 				onClick={() => {
 					selectedItemMapSetter(item.sku);
-					console.log("setChangeProductColorState");
 				}}
 				className={`product-item flex cursor-pointer gap-0 border-2 ${
 					isSelected
@@ -201,7 +200,6 @@ export default function ProductsList({
 
 		return (
 			<div className={`flex ${className} flex-wrap gap-x-2 gap-y-1`}>
-				{/*<div className={`flex flex-wrap gap-x-2 gap-y-1`}>*/}
 				{items.map((item) => (
 					<Item
 						key={item.sku}
@@ -212,7 +210,6 @@ export default function ProductsList({
 						selectedItemMapSetter={selectedItemMapSetter}
 					></Item>
 				))}
-				{/*</div>*/}
 			</div>
 		);
 	}
