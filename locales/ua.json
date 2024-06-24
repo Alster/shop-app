@@ -1,8 +1,14 @@
 {
+  "Metadata": {
+    "title": "Unicorn - Store",
+    "description": "Built with Next.js and next-intl"
+  },
   "ProductsList": {
     "hello": "Привіт!",
     "emptyProductsList": "Список товарів порожній",
-    "emptyProductsListDescription": "На жаль, товарів з такими параметрами не знайдено. Будь ласка, спробуйте змінити параметри пошуку."
+    "emptyProductsListDescription": "На жаль, товарів з такими параметрами не знайдено. Будь ласка, спробуйте змінити параметри пошуку.",
+    "bFilters": "Фільтри",
+    "bSearch": "Пошук"
   },
   "FilterSort": {
     "title": "Сортувати за",
@@ -19,6 +25,8 @@
     "hello": "Привіт!",
     "selectColor": "Будь ласка, оберіть колір",
     "selectSize": "Будь ласка, оберіть розмір",
+    "selectItem": "Будь ласка, оберіть товар",
+    "availableVariantsToBuy": "Доступні варіанти для покупки",
     "bAddToBag": "Додати в кошик",
     "bBuyNow": "Купити зараз",
     "bAdd": "Додати",

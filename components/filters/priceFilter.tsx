@@ -1,16 +1,16 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { usePathname, useRouter } from "next-intl/client";
 import * as qs from "qs";
 import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
 import MultiRangeSlider from "@/components/multiRangeSlider/multiRangeSlider";
+import { usePathname, useRouter } from "@/navigation";
 import { MoneyBig, moneyBigToSmall, moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 function ValueView({ value, className }: { value: number; className?: string }) {
-	return <span className={`${className} text-sm w-10`}>{value}</span>;
+	return <span className={`${className} w-10 text-sm`}>{value}</span>;
 }
 
 export default function PriceFilter({

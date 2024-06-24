@@ -3,12 +3,13 @@
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
 import { Fragment, ReactElement, useReducer, useState } from "react";
 
+import { Link, usePathname } from "@/navigation";
+import { LanguageEnum } from "@/shop-shared/constants/localization";
+
 interface IDropdownListItem {
-	key: string;
+	key: LanguageEnum;
 	title: string;
 	selected: boolean;
 	flag: ReactElement;
@@ -18,7 +19,7 @@ interface IDropdownListItem {
 
 const LANGUAGES_LIST: IDropdownListItem[] = [
 	{
-		key: "ua",
+		key: LanguageEnum.ua,
 		title: "Українська",
 		selected: false,
 		flag: (
@@ -31,7 +32,7 @@ const LANGUAGES_LIST: IDropdownListItem[] = [
 		),
 	},
 	{
-		key: "en",
+		key: LanguageEnum.en,
 		title: "English",
 		selected: false,
 		flag: (
@@ -55,7 +56,7 @@ const LANGUAGES_LIST: IDropdownListItem[] = [
 		),
 	},
 	{
-		key: "ru",
+		key: LanguageEnum.ru,
 		title: "Русский",
 		selected: false,
 		flag: (
@@ -102,7 +103,7 @@ export default function LanguageSelect({ className }: { className?: string }) {
 	const drawItem = (item: IDropdownListItem) => {
 		return (
 			<Fragment>
-				<div className="h-6 w-6 m-1 mr-2">{item.flag}</div>
+				<div className="m-1 mr-2 h-6 w-6">{item.flag}</div>
 				<div className="p-1">{item.title}</div>
 			</Fragment>
 		);
@@ -113,13 +114,13 @@ export default function LanguageSelect({ className }: { className?: string }) {
 			{!isListOpen && (
 				<button className="" type="button" onClick={toggleList}>
 					<div className="flex flex-wrap text-white">
-						<ChevronDownIcon className="pt-1 h-7 w-7 text-white inline-block" />{" "}
+						<ChevronDownIcon className="inline-block h-7 w-7 pt-1 text-white" />{" "}
 						{drawItem(selectedLanguage)}
 					</div>
 				</button>
 			)}
 			{isListOpen && (
-				<div className="absolute bg-white dark:bg-black border-2 border-black dark:border-white">
+				<div className="absolute border-2 border-black bg-white dark:border-white dark:bg-black">
 					{LANGUAGES_LIST.map((item) => (
 						<div key={item.key}>
 							<Link

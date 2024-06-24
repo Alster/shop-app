@@ -1,8 +1,14 @@
 {
+  "Metadata": {
+    "title": "Unicorn - Store",
+    "description": "Built with Next.js and next-intl"
+  },
   "ProductsList": {
     "hello": "Welcome to Next.js!",
     "emptyProductsList": "No products found",
-    "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters."
+    "emptyProductsListDescription": "Unfortunately, no products with such parameters were found. Please, try to change search parameters.",
+    "bFilters": "Filters",
+    "bSearch": "Search"
   },
   "FilterSort": {
     "title": "Sort by",
@@ -19,6 +25,8 @@
     "hello": "Welcome to Next.js!",
     "selectColor": "Please, choose Color",
     "selectSize": "Please, select Size",
+    "selectItem": "Please, select item",
+    "availableVariantsToBuy": "Available variants to buy",
     "bAddToBag": "Add to bag",
     "bBuyNow": "Buy now",
     "bAdd": "Add",
@@ -57,7 +65,7 @@
     "roomPlaceholder": "Enter room number"
   },
   "OrderStatusPage": {
-    "orderStatusWaiting":  "Waiting for payment",
+    "orderStatusWaiting": "Waiting for payment",
     "orderStatusWaitingDescription": "Your order is waiting for payment. Please, pay it as soon as possible.",
     "orderStatusSuccess": "Order successfully created",
     "orderStatusSuccessDescription": "Your order has been successfully created. Wait your order to be delivered soon!",

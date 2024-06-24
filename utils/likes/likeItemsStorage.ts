@@ -4,10 +4,7 @@ import { LocalListStorage, useLocalListStorage } from "@/utils/localListStorage"
 const LOCAL_STORAGE_KEY = "likes";
 
 export const createLikeItemKey = (item: ILikeItemKeySource) => {
-	const sortedAttributes = Object.entries(item.attributes);
-	sortedAttributes.sort(([keyA], [keyB]) => keyA.localeCompare(keyB));
-	const hash = sortedAttributes.map(([key, values]) => `${key}:${values.join(",")}`);
-	return `${item.productId}::${hash.join(";")}`;
+	return `${item.productId}::${item.item.sku}`;
 };
 
 export const likeStore = new LocalListStorage<ILikeItem>(LOCAL_STORAGE_KEY, createLikeItemKey);

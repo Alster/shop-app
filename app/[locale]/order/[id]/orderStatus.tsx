@@ -2,8 +2,8 @@
 
 import { CheckIcon, ClockIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useLocale, useTranslations } from "next-intl";
-import { ReactElement, ReactNode, useEffect, useState } from "react";
 import * as React from "react";
+import { ReactElement, ReactNode, useEffect, useState } from "react";
 
 import StatusInfo from "@/components/statusInfo";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
@@ -24,47 +24,47 @@ interface IStatusConfig {
 	textColor: string;
 }
 
-const CONFIG_WAITING: IStatusConfig = {
+const CONFIG_WAITING = {
 	icon: <ClockIcon></ClockIcon>,
 	translateKey: "orderStatusWaiting",
 	translateKeyDescription: "orderStatusWaitingDescription",
 	textColor: "text-blue-400",
-};
+} as const satisfies IStatusConfig;
 
-const CONFIG_SUCCESS: IStatusConfig = {
+const CONFIG_SUCCESS = {
 	icon: <CheckIcon></CheckIcon>,
 	translateKey: "orderStatusSuccess",
 	translateKeyDescription: "orderStatusSuccessDescription",
 	textColor: "text-green-400",
-};
+} as const satisfies IStatusConfig;
 
-const CONFIG_FAILED: IStatusConfig = {
+const CONFIG_FAILED = {
 	icon: <XMarkIcon></XMarkIcon>,
 	translateKey: "orderStatusFailed",
 	translateKeyDescription: "orderStatusFailedDescription",
 	textColor: "text-red-400",
-};
+} as const satisfies IStatusConfig;
 
-const StatusesConfig: { [key in OrderStatus]: IStatusConfig } = {
+const StatusesConfig = {
 	[ORDER_STATUS.CREATED]: CONFIG_WAITING,
 	[ORDER_STATUS.PENDING]: CONFIG_WAITING,
 	[ORDER_STATUS.PAID]: CONFIG_SUCCESS,
 	[ORDER_STATUS.FINISHED]: CONFIG_SUCCESS,
 	[ORDER_STATUS.FAILED]: CONFIG_FAILED,
-};
+} as const satisfies { [key in OrderStatus]: IStatusConfig };
 
-const LANG_TO_LOCALE: { [key in LanguageEnum]: string } = {
-	[LanguageEnum.EN]: "en-US",
-	[LanguageEnum.UA]: "uk-UA",
-	[LanguageEnum.RU]: "ru-RU",
-};
+const LANG_TO_LOCALE = {
+	[LanguageEnum.en]: "en-US",
+	[LanguageEnum.ua]: "uk-UA",
+	[LanguageEnum.ru]: "ru-RU",
+} as const satisfies { [key in LanguageEnum]: string };
 
 export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	const t = useTranslations("OrderStatusPage");
 	const tCheckout = useTranslations("CheckoutPage");
 	const locale = useLocale();
 	const [status, setStatus] = useState(order.status);
-	const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | undefined>();
+	const [timeoutId, setTimeoutId] = useState<number | undefined>();
 
 	const queueFetch = () => {
 		const timeoutId = setTimeout(async () => {
@@ -72,7 +72,14 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 			setStatus(status);
 
 			if (status === ORDER_STATUS.PAID) {
-				const alreadyBuyItems = order.itemsData.map((item) => createBagItemKey(item));
+				const alreadyBuyItems = order.itemsData.map((item) =>
+					createBagItemKey({
+						productId: item.productId,
+						item: {
+							sku: item.sku,
+						},
+					}),
+				);
 				bagStore.removeFromStore(...alreadyBuyItems);
 			}
 
@@ -80,7 +87,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 				queueFetch();
 			}
 		}, 1000);
-		setTimeoutId(timeoutId);
+		setTimeoutId(timeoutId as unknown as number);
 	};
 	useEffect(() => {
 		queueFetch();
@@ -97,7 +104,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	function InfoBlock({ title, children }: { title: string; children: ReactNode }) {
 		return (
 			<div className="flex flex-col p-4">
-				<div className="font-extrabold text-center">{title}</div>
+				<div className="text-center font-extrabold">{title}</div>
 				<div>{children}</div>
 			</div>
 		);
@@ -106,8 +113,8 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	function InfoRow({ title, value }: { title: string; value: string }) {
 		return (
 			<div className="flex font-mono">
-				<div className="w-1/2 text-right pr-2">{title}</div>
-				<div className="w-1/2 text-left pl-2">
+				<div className="w-1/2 pr-2 text-right">{title}</div>
+				<div className="w-1/2 pl-2 text-left">
 					<span className="bg-gray-200 dark:bg-gray-800">{value}</span>
 				</div>
 			</div>
@@ -115,7 +122,7 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 	}
 
 	return (
-		<div className="flex flex-col items-center justify-centent">
+		<div className="justify-centent flex flex-col items-center">
 			<div className="order-status">
 				{/*Status*/}
 				<div className="flex flex-col text-center">
@@ -192,12 +199,12 @@ export default function OrderStatusIndicator({ order }: { order: OrderDto }) {
 							queueFetch();
 						}}
 						className="
-                        flex justify-center w-full h-12 uppercase font-medium tracking-wider
+                        flex h-12 w-full justify-center bg-slate-800 font-medium uppercase
+                         tracking-wider text-white
                          dark:bg-slate-200 dark:text-black
-                         bg-slate-800 text-white
                      "
 					>
-						<span className="mt-3 ml-2">{`${t("bCancelOrder")}`}</span>
+						<span className="ml-2 mt-3">{`${t("bCancelOrder")}`}</span>
 					</button>
 				)}
 			</div>

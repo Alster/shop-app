@@ -1,6 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/20/solid";
-import { ReactNode, useState } from "react";
 import * as React from "react";
+import { ReactNode, useState } from "react";
 
 export default function FilterContainer({
 	title,
@@ -21,16 +21,16 @@ export default function FilterContainer({
 			onMouseEnter={() => setShowList(true)}
 			onMouseLeave={() => setShowList(false)}
 		>
-			<div className="cursor-pointer flex" onClick={() => setShowList(!showList)}>
+			<div className="flex cursor-pointer" onClick={() => setShowList(!showList)}>
 				{showList ? (
-					<ChevronUpIcon className="h-7 w-7 inline-block" />
+					<ChevronUpIcon className="inline-block h-7 w-7" />
 				) : (
-					<ChevronDownIcon className="h-7 w-7 inline-block" />
+					<ChevronDownIcon className="inline-block h-7 w-7" />
 				)}
 				{title}
 				{selectedCount > 0 && (
 					<span>
-						<span className="ml-1 inline-block unicorn-background w-5 text-sm rounded-full text-white text-center pb-0.5">
+						<span className="unicorn-background ml-1 inline-block w-5 rounded-full pb-0.5 text-center text-sm text-white">
 							{selectedCount}
 						</span>{" "}
 					</span>
@@ -45,7 +45,7 @@ export default function FilterContainer({
 				<div>
 					{showList && (
 						<div
-							className={`${className} md:absolute z-10 flex flex-wrap bg-white dark:bg-black border-2 border-gray-500 p-2 max-w-sm`}
+							className={`${className} z-10 flex max-w-sm flex-wrap border-2 border-gray-500 bg-white p-2 md:absolute dark:bg-black`}
 						>
 							{children}
 						</div>

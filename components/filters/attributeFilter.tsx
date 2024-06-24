@@ -1,12 +1,12 @@
 import { useSearchParams } from "next/navigation";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
 import * as qs from "qs";
 import * as React from "react";
 
-import { AttributesEnum } from "@/app/constants";
 import FilterContainer from "@/components/filters/filterContainer";
+import { Link, usePathname } from "@/navigation";
+import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
+import compareColors from "@/shop-shared/utils/colorSorter";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
@@ -22,6 +22,10 @@ export default function AttributeFilter({
 
 	if (!attributeInfo) {
 		return;
+	}
+
+	if (attributeInfo.key === AttributesEnum.COLOR) {
+		values.sort(compareColors);
 	}
 
 	const localeValue = (key: string) => {
@@ -66,7 +70,7 @@ export default function AttributeFilter({
 
 	const selected =
 		(qs.parse(searchParameters.toString()) as IFindProductsQuery).attrs?.find(
-			(attribute: any) => attribute.key === attributeInfo.key,
+			(attribute) => attribute.key === attributeInfo.key,
 		)?.values || [];
 
 	return (
@@ -79,12 +83,12 @@ export default function AttributeFilter({
 							key={value}
 							href={getToggledLink(attributeInfo.key, value)}
 							className={`
-                                            px-2 py-2 m-1 w-8 h-8 
-                                            border border-black dark:border-white 
+                                            m-1 h-8 w-8 border border-black 
+                                            p-2 dark:border-white 
                                             ${selected.includes(value) ? "border-4" : ""}
                                             ${
 												selected.includes(value)
-													? "outline outline-black dark:outline-white outline-2"
+													? "outline outline-2 outline-black dark:outline-white"
 													: ""
 											}
                                             `}
@@ -97,7 +101,7 @@ export default function AttributeFilter({
 					<Link
 						key={value}
 						href={getToggledLink(attributeInfo.key, value)}
-						className={`px-2 py-1 m-1 border border-black dark:border-white ${
+						className={`m-1 border border-black px-2 py-1 dark:border-white ${
 							selected.includes(value) ? "unicorn-background" : ""
 						}`}
 					>

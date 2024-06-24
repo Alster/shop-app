@@ -1,11 +1,10 @@
 import { useSearchParams } from "next/navigation";
 import { useTranslations } from "next-intl";
-import { usePathname } from "next-intl/client";
-import Link from "next-intl/link";
 import * as qs from "qs";
 import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
+import { Link, usePathname } from "@/navigation";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 interface IValue {
@@ -14,11 +13,11 @@ interface IValue {
 	direction: "asc" | "desc";
 }
 
-const values: IValue[] = [
+const values = [
 	{ key: "priceLowToHigh", field: "price", direction: "asc" },
 	{ key: "priceHighToLow", field: "price", direction: "desc" },
 	{ key: "newToOld", field: "createDate", direction: "desc" },
-];
+] as const satisfies IValue[];
 
 export default function SortFilter() {
 	const pathname = usePathname();
@@ -47,7 +46,7 @@ export default function SortFilter() {
 					<Link
 						key={value.key}
 						href={getHrefForValue(value)}
-						className={`px-2 py-1 m-1 border border-black dark:border-white ${
+						className={`m-1 border border-black px-2 py-1 dark:border-white ${
 							selected && selected.key === value.key ? "unicorn-background" : ""
 						}`}
 					>

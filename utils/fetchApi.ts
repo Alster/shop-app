@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS: IFetchOptions = {
 
 export async function fetchApi<T>(
 	path: string,
-	query: any,
+	query: unknown = {},
 	options: IFetchOptions = {},
 ): Promise<T> {
 	options = { ...DEFAULT_OPTIONS, ...options };

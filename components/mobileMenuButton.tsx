@@ -10,7 +10,7 @@ export default function MobileMenuButton({ className }: { className?: string }) 
 
 	return (
 		<Bars3Icon
-			className="h-16 w-16 lg:hidden text-white cursor-pointer"
+			className="ml-2 h-14 w-14 cursor-pointer text-white lg:hidden"
 			onClick={() => setCurrentViewScreen(MobileViewScreenEnum.Menu)}
 		></Bars3Icon>
 	);

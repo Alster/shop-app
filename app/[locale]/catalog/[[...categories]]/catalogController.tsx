@@ -45,6 +45,8 @@ export default function CatalogController({
 
 	const productsResponse: ProductListResponseDto = JSON.parse(productsResponseEncoded);
 
+	const colorInFilters = productsResponse.filters.color || [];
+
 	function Categories() {
 		return (
 			<div className="flex">
@@ -84,20 +86,22 @@ export default function CatalogController({
 		className?: string;
 		toggle: () => void;
 	}) {
+		const t = useTranslations("ProductsList");
+
 		return (
 			<Fragment>
 				<div className={`${className} flex flex-wrap`}>
 					<button
 						onClick={() => toggle()}
 						className="
-                                flex justify-center items-center w-full h-12 uppercase font-medium tracking-wider
+                                flex h-12 w-full items-center justify-center bg-slate-800 font-medium
+                                 tracking-wider text-white
                                  dark:bg-slate-200 dark:text-black
-                                 bg-slate-800 text-white
                              "
 					>
 						<div className="flex items-center">
-							<AdjustmentsHorizontalIcon className="h-10 w-10 inline-block"></AdjustmentsHorizontalIcon>
-							<div>Filters</div>
+							<AdjustmentsHorizontalIcon className="inline-block h-10 w-10"></AdjustmentsHorizontalIcon>
+							<div className="ml-2 text-3xl">{t("bFilters")}</div>
 						</div>
 					</button>
 				</div>
@@ -130,6 +134,7 @@ export default function CatalogController({
 						)}
 						<ProductsList
 							products={productsResponse.products}
+							colorInFilters={colorInFilters}
 							attributes={attributes}
 							currency={currency}
 							exchangeState={exchangeState}
@@ -148,18 +153,18 @@ export default function CatalogController({
 		children: React.ReactNode;
 	}) {
 		return (
-			<div className="fixed w-full h-full top-0">
-				<div className="flex flex-col h-full w-full bg-white dark:bg-slate-800">
+			<div className="fixed top-0 h-full w-full">
+				<div className="flex h-full w-full flex-col bg-white dark:bg-slate-800">
 					<div className="flex">
-						<div className="flex items-center text-xl pl-4">{title}</div>
+						<div className="flex items-center pl-4 text-xl">{title}</div>
 						<button
 							onClick={() => setCurrentViewScreen(MobileViewScreenEnum.Catalog)}
 							className="
-                                flex-auto flex justify-end items-center w-16 h-16 uppercase font-medium tracking-wider
+                                flex h-16 w-16 flex-auto items-center justify-end font-medium uppercase tracking-wider
                              "
 						>
 							<div className="flex items-center">
-								<XMarkIcon className="h-12 w-12 inline-block"></XMarkIcon>
+								<XMarkIcon className="inline-block h-12 w-12"></XMarkIcon>
 							</div>
 						</button>
 					</div>

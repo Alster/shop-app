@@ -1,15 +1,16 @@
-import { useLocale } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
+import NoProductPage from "@/app/[locale]/product/[id]/noProductPage";
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
-import { fetchCategoryList } from "@/utils/fetchCategoryList";
 import { fetchProduct } from "@/utils/fetchProduct";
-import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
+import { IProductPageQuery } from "@/utils/products/iFindProductsQuery";
 
 export interface IParametersProductId {
 	id: string;
+	locale: string;
 }
 
 export default async function Product({
@@ -17,26 +18,26 @@ export default async function Product({
 	searchParams,
 }: {
 	params: IParametersProductId;
-	searchParams: IFindProductsQuery;
+	searchParams: IProductPageQuery;
 }) {
-	const locale = useLocale();
+	unstable_setRequestLocale(params.locale);
 	const currency = getCurrencyStatic();
 
-	const [maybeProduct, attributes, categories, exchangeState] = await Promise.all([
-		fetchProduct(params.id, locale),
-		fetchAttributes(locale),
-		fetchCategoryList(locale),
+	const [maybeProduct, attributes, exchangeState] = await Promise.all([
+		fetchProduct(params.id, params.locale),
+		fetchAttributes(params.locale),
 		getStaticExchange(),
 	]);
 
-	return (
+	return maybeProduct ? (
 		<ProductPage
-			maybeProduct={maybeProduct}
+			product={maybeProduct}
 			attributes={attributes}
-			categories={categories}
 			pageQuery={searchParams}
 			exchangeState={exchangeState}
 			currency={currency}
 		></ProductPage>
+	) : (
+		<NoProductPage></NoProductPage>
 	);
 }
