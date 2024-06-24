@@ -23,7 +23,7 @@ ENV NODE_ENV production
 WORKDIR /app
 COPY . .
 COPY --from=install-dev-dependencies /app ./
-RUN yarn run build
+RUN pnpm run build
 USER node
 
 # Running the application:
@@ -33,5 +33,5 @@ WORKDIR /app
 COPY --from=create-build /app/build ./
 COPY --from=install-prod-dependencies /app/node_modules ./node_modules
 
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
 
