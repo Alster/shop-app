@@ -7,8 +7,7 @@ module.exports = {
 		},
 		ecmaVersion: "latest",
 		project: "tsconfig.json",
-		// eslint-disable-next-line unicorn/prefer-module
-		tsconfigRootDir: __dirname,
+		tsconfigRootDir: "./",
 		sourceType: "module",
 		parser: "@typescript-eslint/parser",
 	},

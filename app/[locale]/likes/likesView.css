@@ -1,0 +1,30 @@
+.magicButton, .magicButton:hover, .magicButton:focus, .magicButton:active {
+    background: linear-gradient(93.69deg, #edb680 4.17%, rgba(242, 124, 98, .67526) 100.02%);
+    transition: all 1s ease-out;
+}
+
+.magicButton {
+    background: linear-gradient(93.69deg, #edb680 4.17%, rgba(242, 124, 98, .97526) 100.02%), linear-gradient(90deg, #ffffff 0%, #ffffff 100%);
+    font-weight: 600;
+    border: solid 2px #fff;
+    box-shadow: 0 2px 20px 8px #fef6b280;
+    position: relative;
+    transition: all 1s ease-out;
+}
+
+
+.magicButton::before, .magicButton::after {
+    border-radius: 1rem;
+    content: "";
+    position: absolute;
+    left: -2px;
+    top: -2px;
+    background: linear-gradient(45deg, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000, #fb0094, #0000ff, #00ff00, #ffff00, #ff0000);
+    background-size: auto;
+    background-size: 400%;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    z-index: -1;
+    animation: loop 30s linear infinite;
+    transition: all 1s ease-out;
+}

@@ -163,15 +163,11 @@ export default function ProductsList({
 				}}
 				className={`product-item flex cursor-pointer gap-0 border-2 ${
 					isSelected
-						? "border-gray-400 dark:border-gray-400"
-						: "border-white dark:border-black"
+						? "border-white bg-black text-white dark:border-black dark:bg-white dark:text-black"
+						: "border-white bg-white text-black dark:border-black dark:bg-black dark:text-white"
 				} hover:border-gray-300 hover:dark:border-gray-500`}
 			>
-				{size && (
-					<div className="size-attribute bg-gray-200 uppercase dark:bg-gray-700">
-						{size}
-					</div>
-				)}
+				{size && <div className="size-attribute px-2 font-bold uppercase">{size}</div>}
 				{colors.map((color, index) => (
 					<div
 						key={`color+${index + 1}`}
@@ -215,7 +211,7 @@ export default function ProductsList({
 	}
 
 	return (
-		<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
+		<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
 			{products.map((product) => {
 				const getSelectedItem = (): { itemToShow: ProductItemDto; indexToShow: number } => {
 					const itemFromMap = selectedItemMap?.get(product.id);

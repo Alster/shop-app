@@ -6,7 +6,7 @@ import { CheckIcon, ShoppingBagIcon } from "@heroicons/react/24/outline";
 import { HeartIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 import * as React from "react";
-import { useCallback, useState } from "react";
+import { useCallback, useLayoutEffect, useState } from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/slowLoadingImage";
 import Modal from "@/components/modal";
@@ -50,6 +50,10 @@ export default function ProductPage({
 	const selectedItem = getSelectedItem(pageQuery["item"] ?? null, product);
 
 	const [imageIndex, setImageIndex] = useState(0);
+
+	useLayoutEffect(() => {
+		setImageIndex(0);
+	}, [selectedItem]);
 
 	const [buyButtonClicked, setBuyButtonClicked] = useState(false);
 	const highlightMustSelect = !selectedItem && buyButtonClicked;

@@ -24,15 +24,12 @@ export default function Item({
 			href={`/product/${product.publicId}?item=${item.sku}`}
 			className={`product-item flex gap-0 border-2 ${
 				isSelected
-					? "border-gray-400 dark:border-gray-400"
-					: "border-white dark:border-black"
+					? "border-white bg-black text-white dark:border-black dark:bg-white dark:text-black"
+					: "border-white bg-white text-black dark:border-black dark:bg-black dark:text-white"
 			} hover:border-gray-300 hover:dark:border-gray-500`}
 		>
 			{size && (
-				<div
-					className="flex h-9 items-center justify-center bg-gray-200 p-3 font-semibold
-						uppercase dark:bg-gray-700"
-				>
+				<div className="flex h-9 items-center justify-center p-3 font-bold uppercase">
 					{size}
 				</div>
 			)}

@@ -117,6 +117,7 @@ export default function CheckoutView({
 							name="first_name"
 							className="inputField"
 							placeholder=""
+							autoComplete="given-name"
 							required
 							minLength={3}
 						></input>
@@ -129,6 +130,7 @@ export default function CheckoutView({
 							name="last_name"
 							className="inputField"
 							placeholder=""
+							autoComplete="family-name"
 							required
 							minLength={3}
 						></input>
@@ -142,6 +144,7 @@ export default function CheckoutView({
 							className="inputField"
 							placeholder="0937562957"
 							pattern="[0-9]{10}"
+							autoComplete="tel-national"
 							required
 						></input>
 					</div>

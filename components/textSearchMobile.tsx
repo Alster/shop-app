@@ -26,7 +26,7 @@ export default function TextSearchMobile({ className }: { className?: string }) 
 	const newParameters = qs.stringify(newQuery);
 	const targetHref = `${pathname}?${newParameters}`;
 
-	const onSubmit = (event: any) => {
+	const onSubmit = (event: { preventDefault: () => void }) => {
 		event.preventDefault();
 		router.push(targetHref);
 	};
@@ -39,7 +39,7 @@ export default function TextSearchMobile({ className }: { className?: string }) 
 			<input
 				type="text"
 				value={currentValue}
-				onChange={(e) => setCurrentValue(e.target.value)}
+				onChange={(event) => setCurrentValue(event.target.value)}
 				placeholder={t("bSearch")}
 				className="h-14 w-full border-none bg-transparent text-3xl outline-none placeholder:text-black dark:placeholder:text-white"
 			></input>
