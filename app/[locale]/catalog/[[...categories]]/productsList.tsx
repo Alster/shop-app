@@ -26,7 +26,7 @@ export default function ProductsList({
 	exchangeState,
 }: {
 	products: ProductDto[];
-	colorInFilters: string[];
+	colorInFilters: readonly string[];
 	attributes: AttributeDto[];
 	currency: CurrencyEnum;
 	exchangeState: ExchangeState;
