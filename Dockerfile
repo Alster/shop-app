@@ -8,14 +8,14 @@ RUN yarn config set globalFolder /usr/local/share/.cache/yarn2
 FROM base AS install-dev-dependencies
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,sharing=locked,target=/usr/local/share/.cache/yarn2,rw yarn
+RUN --mount=type=cache,sharing=locked,id=yarn2,target=/usr/local/share/.cache/yarn2,rw yarn
 
 # Installing prod dependencies:
 FROM base AS install-prod-dependencies
 ENV NODE_ENV production
 WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
-RUN --mount=type=cache,sharing=locked,target=/usr/local/share/.cache/yarn2,rw yarn workspaces focus --all --production
+RUN --mount=type=cache,sharing=locked,id=yarn2,target=/usr/local/share/.cache/yarn2,rw yarn workspaces focus --all --production
 
 # Creating a build:
 FROM base AS create-build
