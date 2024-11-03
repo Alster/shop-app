@@ -20,7 +20,13 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/shop-exchange-shared/*": [
+        "./shop-exchange-shared/*"
+      ],
+      "@/shop-shared/*": [
+        "./shop-shared/*"
+      ]
     }
   },
   "include": [

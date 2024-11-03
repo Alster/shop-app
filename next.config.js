@@ -17,6 +17,12 @@ const nextConfig = {
 				port: "",
 				pathname: "/**",
 			},
+			{
+				protocol: "http",
+				hostname: "3.76.77.2",
+				port: "",
+				pathname: "/**",
+			},
 		],
 	},
 	eslint: {

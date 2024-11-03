@@ -4,9 +4,9 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 
 import { useRouter } from "@/navigation";
-import { setCookie } from "@/shop-exchange-shared/cookieClientHelper";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
 import { CURRENCIES, CURRENCY_TO_SYMBOL, CurrencyEnum } from "@/shop-shared/constants/exchange";
+import { setCookie } from "@/utils/exchange/cookieClientHelper";
 
 interface IDropdownListItemInterface {
 	key: string;
