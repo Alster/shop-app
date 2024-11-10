@@ -1,4 +1,4 @@
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
 import NoProductPage from "@/app/[locale]/product/[id]/noProductPage";
 import ProductPage from "@/app/[locale]/product/[id]/productPage";
@@ -17,15 +17,16 @@ export default async function Product({
 	params,
 	searchParams,
 }: {
-	params: IParametersProductId;
-	searchParams: IProductPageQuery;
+	params: Promise<IParametersProductId>;
+	searchParams: Promise<IProductPageQuery>;
 }) {
-	unstable_setRequestLocale(params.locale);
-	const currency = getCurrencyStatic();
+	const { locale, id } = await params;
+	setRequestLocale(locale);
+	const currency = await getCurrencyStatic();
 
 	const [maybeProduct, attributes, exchangeState] = await Promise.all([
-		fetchProduct(params.id, params.locale),
-		fetchAttributes(params.locale),
+		fetchProduct(id, locale),
+		fetchAttributes(locale),
 		getStaticExchange(),
 	]);
 
@@ -33,7 +34,7 @@ export default async function Product({
 		<ProductPage
 			product={maybeProduct}
 			attributes={attributes}
-			pageQuery={searchParams}
+			pageQuery={await searchParams}
 			exchangeState={exchangeState}
 			currency={currency}
 		></ProductPage>

@@ -6,7 +6,7 @@ import HeaderBagButton from "@/components/headerBagButton";
 import HeaderLikesButton from "@/components/headerLikesButton";
 import LanguageSelect from "@/components/languageSelect";
 import MobileMenuButton from "@/components/mobileMenuButton";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 
 export default async function Header() {
 	return (

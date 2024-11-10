@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { ProductDto, ProductItemDto } from "@/shop-shared/dto/product/product.dto";
 import { getStyleByColorCode } from "@/utils/products/getStyleByColorCode";
@@ -36,7 +36,7 @@ export default function Item({
 			{colors.map((color, index) => (
 				<div
 					key={`color+${index + 1}`}
-					className="h-9 w-9 border-2 border-gray-300 dark:border-gray-700"
+					className="size-9 border-2 border-gray-300 dark:border-gray-700"
 					style={getStyleByColorCode(color)}
 				></div>
 			))}

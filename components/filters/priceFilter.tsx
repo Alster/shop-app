@@ -5,7 +5,7 @@ import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
 import MultiRangeSlider from "@/components/multiRangeSlider/multiRangeSlider";
-import { usePathname, useRouter } from "@/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { MoneyBig, moneyBigToSmall, moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 

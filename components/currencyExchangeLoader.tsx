@@ -4,7 +4,7 @@ import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 
 export async function CurrencyExchangeLoader({ className }: { className?: string }) {
 	const exchangeState = await loadExchangeState();
-	const currency = getCurrencyStatic();
+	const currency = await getCurrencyStatic();
 
 	return (
 		<CurrencySelect

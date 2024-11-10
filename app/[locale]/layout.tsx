@@ -1,30 +1,43 @@
 import "../globals.css";
 
 import { Inter } from "next/font/google";
+import { notFound } from "next/navigation";
 import { NextIntlClientProvider } from "next-intl";
-import { getTranslations, unstable_setRequestLocale } from "next-intl/server";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { PropsWithChildren } from "react";
 
 import Header from "@/components/header";
 import { Providers } from "@/components/providers";
-import i18n from "@/i18n";
-import { SupportedLocales } from "@/navigation";
+import { routing } from "@/i18n/routing";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default async function RootLayout({
+export default async function LocaleLayout({
 	children,
-	params: { locale },
-}: PropsWithChildren & { params: { locale: LanguageEnum } }) {
-	unstable_setRequestLocale(locale);
+	params,
+}: PropsWithChildren & { params: Promise<{ locale: LanguageEnum }> }) {
+	const { locale } = await params;
 
-	const intlConfig = await i18n({ locale });
+	console.log("locale", locale);
+
+	// // Ensure that the incoming `locale` is valid
+	if (!routing.locales.includes(locale)) {
+		console.error(`Invalid locale: ${locale}. Allowed locales: ${routing.locales.join(", ")}`);
+		notFound();
+	}
+
+	// Enable static rendering
+	setRequestLocale(locale);
+
+	// Providing all messages to the client
+	// side is the easiest way to get started
+	const messages = await getMessages();
 
 	return (
 		<html lang={locale}>
 			<body className={inter.className}>
-				<NextIntlClientProvider {...intlConfig}>
+				<NextIntlClientProvider messages={messages}>
 					<Header></Header>
 					<Providers>{children}</Providers>
 				</NextIntlClientProvider>
@@ -35,15 +48,12 @@ export default async function RootLayout({
 
 // eslint-disable-next-line unicorn/prevent-abbreviations
 export function generateStaticParams() {
-	return SupportedLocales.map((locale) => ({ locale }));
+	return routing.locales.map((locale) => ({ locale }));
 }
 
-export async function generateMetadata({
-	params: { locale },
-}: {
-	params: { locale: LanguageEnum };
-}) {
-	const t = await getTranslations("Metadata");
+export async function generateMetadata({ params }: { params: Promise<{ locale: LanguageEnum }> }) {
+	const { locale } = await params;
+	const t = await getTranslations({ locale, namespace: "Metadata" });
 	return {
 		title: t("title"),
 		description: t("description"),

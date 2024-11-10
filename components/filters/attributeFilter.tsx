@@ -3,7 +3,7 @@ import * as qs from "qs";
 import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { AttributesEnum } from "@/shop-shared/constants/attributesEnum";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import compareColors from "@/shop-shared/utils/colorSorter";
@@ -83,8 +83,8 @@ export default function AttributeFilter({
 							key={value}
 							href={getToggledLink(attributeInfo.key, value)}
 							className={`
-                                            m-1 h-8 w-8 border border-black 
-                                            p-2 dark:border-white 
+                                            m-1 size-8 border border-black p-2 
+                                            dark:border-white 
                                             ${selected.includes(value) ? "border-4" : ""}
                                             ${
 												selected.includes(value)

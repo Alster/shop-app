@@ -8,13 +8,11 @@ export interface IParametersOrderId {
 	locale: string;
 }
 
-export default async function OrderPage({ params }: { params: IParametersOrderId }) {
-	const currency = getCurrencyStatic();
+export default async function OrderPage({ params }: { params: Promise<IParametersOrderId> }) {
+	const { locale, id } = await params;
+	const currency = await getCurrencyStatic();
 
-	const [exchangeState, order] = await Promise.all([
-		getStaticExchange(),
-		fetchOrder(params.id, params.locale),
-	]);
+	const [exchangeState, order] = await Promise.all([getStaticExchange(), fetchOrder(id, locale)]);
 
 	return <OrderStatusIndicator order={order}></OrderStatusIndicator>;
 }

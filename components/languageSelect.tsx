@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
 import { Fragment, ReactElement, useReducer, useState } from "react";
 
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 
 interface IDropdownListItem {
@@ -103,7 +103,7 @@ export default function LanguageSelect({ className }: { className?: string }) {
 	const drawItem = (item: IDropdownListItem) => {
 		return (
 			<Fragment>
-				<div className="m-1 mr-2 h-6 w-6">{item.flag}</div>
+				<div className="m-1 mr-2 size-6">{item.flag}</div>
 				<div className="p-1">{item.title}</div>
 			</Fragment>
 		);
@@ -114,7 +114,7 @@ export default function LanguageSelect({ className }: { className?: string }) {
 			{!isListOpen && (
 				<button className="" type="button" onClick={toggleList}>
 					<div className="flex flex-wrap text-white">
-						<ChevronDownIcon className="inline-block h-7 w-7 pt-1 text-white" />{" "}
+						<ChevronDownIcon className="inline-block size-7 pt-1 text-white" />{" "}
 						{drawItem(selectedLanguage)}
 					</div>
 				</button>

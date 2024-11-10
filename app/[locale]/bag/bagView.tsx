@@ -8,7 +8,7 @@ import { ReactElement } from "react";
 import HorizontalLine from "@/components/horizontalLine";
 import ProductItem from "@/components/productItem";
 import StatusInfo from "@/components/statusInfo";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -64,7 +64,7 @@ export default function BagView({
 										bagStore.removeFromStore(key);
 									}}
 								>
-									<TrashIcon className="h-6 w-6 text-gray-500" />
+									<TrashIcon className="size-6 text-gray-500" />
 								</button>
 							}
 						></ProductItem>
@@ -77,7 +77,7 @@ export default function BagView({
 						return previous;
 					}, [] as ReactElement[])}
 			</div>
-			<div className="m-2 bg-gray-100 p-2 dark:bg-gray-900 lg:w-1/3">
+			<div className="m-2 bg-gray-100 p-2 lg:w-1/3 dark:bg-gray-900">
 				<div className="flex text-lg">
 					<div className="flex-auto">{t("totalPrice")}:</div>
 					<div className="font-bold">

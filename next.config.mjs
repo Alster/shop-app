@@ -1,7 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires,unicorn/prefer-module
-const withNextIntl = require("next-intl/plugin")("./i18n.ts");
+import createNextIntlPlugin from "next-intl/plugin";
 
-/** @type {import("next").NextConfig} */
+const withNextIntl = createNextIntlPlugin();
+
+/** @type {import('next').NextConfig} */
 const nextConfig = {
 	images: {
 		remotePatterns: [
@@ -28,10 +29,6 @@ const nextConfig = {
 	eslint: {
 		ignoreDuringBuilds: true,
 	},
-	experimental: {
-		missingSuspenseWithCSRBailout: false,
-	},
 };
 
-// eslint-disable-next-line unicorn/prefer-module
-module.exports = withNextIntl(nextConfig);
+export default withNextIntl(nextConfig);

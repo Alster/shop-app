@@ -4,7 +4,7 @@ import * as qs from "qs";
 import * as React from "react";
 
 import FilterContainer from "@/components/filters/filterContainer";
-import { Link, usePathname } from "@/navigation";
+import { Link, usePathname } from "@/i18n/routing";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 interface IValue {

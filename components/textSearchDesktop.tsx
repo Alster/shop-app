@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import * as qs from "qs";
 import { useState } from "react";
 
-import { usePathname, useRouter } from "@/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export default function TextSearchDesktop({ className }: { className?: string }) {
@@ -36,7 +36,7 @@ export default function TextSearchDesktop({ className }: { className?: string })
 			className={`${className} flex border-b-2 border-black dark:border-white`}
 		>
 			<div className="ml-2 flex items-center">
-				<MagnifyingGlassIcon className="mr-2 h-6 w-6"></MagnifyingGlassIcon>
+				<MagnifyingGlassIcon className="mr-2 size-6"></MagnifyingGlassIcon>
 			</div>
 			<input
 				type="text"

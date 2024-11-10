@@ -7,7 +7,7 @@ import * as qs from "qs";
 import * as React from "react";
 
 import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/slowLoadingImage";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -171,7 +171,7 @@ export default function ProductsList({
 				{colors.map((color, index) => (
 					<div
 						key={`color+${index + 1}`}
-						className="h-6 w-6 border-2 border-gray-300 dark:border-gray-700"
+						className="size-6 border-2 border-gray-300 dark:border-gray-700"
 						style={getStyleByColorCode(color)}
 					></div>
 				))}

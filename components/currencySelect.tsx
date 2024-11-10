@@ -3,7 +3,7 @@
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Fragment, useState } from "react";
 
-import { useRouter } from "@/navigation";
+import { useRouter } from "@/i18n/routing";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
 import { CURRENCIES, CURRENCY_TO_SYMBOL, CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { setCookie } from "@/utils/exchange/cookieClientHelper";
@@ -49,12 +49,12 @@ export default function CurrencySelect({
 	const [selectedCurrency, setSelectedCurrency] =
 		useState<IDropdownListItemInterface>(initialCurrency);
 
-	const selectCurrency = (key: string) => {
+	const selectCurrency = async (key: string) => {
 		selectedCurrency.selected = false;
 		const foundCurrentCurrency = getCurrencyByKey(key);
 		foundCurrentCurrency.selected = true;
 		setSelectedCurrency(foundCurrentCurrency);
-		setCookie("currency", foundCurrentCurrency.key, 30);
+		await setCookie("currency", foundCurrentCurrency.key, 30);
 		router.refresh();
 		toggleList();
 	};
@@ -72,7 +72,7 @@ export default function CurrencySelect({
 			{!isListOpen && (
 				<button className="" type="button" onClick={toggleList}>
 					<div className="flex flex-wrap text-white">
-						<ChevronDownIcon className="inline-block h-7 w-7 pt-1 text-white" />{" "}
+						<ChevronDownIcon className="inline-block size-7 pt-1 text-white" />{" "}
 						{drawItem(selectedCurrency)}
 					</div>
 				</button>
@@ -83,7 +83,7 @@ export default function CurrencySelect({
 						<div key={item.key}>
 							<button
 								className="flex flex-wrap hover:bg-gray-500"
-								onClick={() => selectCurrency(item.key)}
+								onClick={async () => selectCurrency(item.key)}
 							>
 								{drawItem(item)}
 							</button>

@@ -2,7 +2,7 @@ import { useSearchParams } from "next/navigation";
 import * as qs from "qs";
 import * as React from "react";
 
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
 
 export default function CategoryTreeView({

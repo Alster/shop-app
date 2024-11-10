@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import * as qs from "qs";
 import { useState } from "react";
 
-import { usePathname, useRouter } from "@/navigation";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 export default function TextSearchMobile({ className }: { className?: string }) {
@@ -34,7 +34,7 @@ export default function TextSearchMobile({ className }: { className?: string }) 
 	return (
 		<form onSubmit={onSubmit} className={`${className} flex`}>
 			<div className="ml-2 flex items-center">
-				<MagnifyingGlassIcon className="mr-2 h-8 w-8"></MagnifyingGlassIcon>
+				<MagnifyingGlassIcon className="mr-2 size-8"></MagnifyingGlassIcon>
 			</div>
 			<input
 				type="text"

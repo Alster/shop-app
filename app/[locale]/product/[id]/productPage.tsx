@@ -12,7 +12,7 @@ import SlowLoadingImage from "@/app/[locale]/catalog/[[...categories]]/slowLoadi
 import Modal from "@/components/modal";
 import Characteristics from "@/components/productPage/characteristics";
 import ItemsList from "@/components/productPage/itemsList";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 import { doExchange } from "@/shop-exchange-shared/doExchange";
 import { formatPrice } from "@/shop-exchange-shared/formatPrice";
 import { ExchangeState } from "@/shop-exchange-shared/helpers";
@@ -104,7 +104,7 @@ export default function ProductPage({
 						>
 							<svg
 								aria-hidden="true"
-								className="h-5 w-5"
+								className="size-5"
 								fill="currentColor"
 								viewBox="0 0 20 20"
 								xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +120,7 @@ export default function ProductPage({
 					</div>
 					<div className="m-8 flex justify-center">
 						<div className="rounded-full bg-gray-100">
-							<CheckIcon className="m-4 h-16 w-16 text-green-400" />
+							<CheckIcon className="m-4 size-16 text-green-400" />
 						</div>
 					</div>
 					<Link
@@ -163,6 +163,7 @@ export default function ProductPage({
 						<div className="grid grid-cols-3 pt-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-4 xl:grid-cols-5">
 							{selectedItem.images.map((imageUrl, index) => (
 								<div
+									key={imageUrl}
 									className={`m-1 cursor-pointer border-4 ${
 										index === imageIndex
 											? "border-black dark:border-white"
@@ -236,7 +237,7 @@ export default function ProductPage({
                              "
 						>
 							<span className="mt-2">
-								<ShoppingBagIcon className="h-8 w-8" />
+								<ShoppingBagIcon className="size-8" />
 							</span>
 							<span className="ml-2 mt-4">
 								{t("bAdd")}
@@ -269,13 +270,13 @@ export default function ProductPage({
 								});
 							}}
 							className="
-                            border-slate-200\ flex h-12 w-12 flex-none items-center justify-center border text-slate-300
+                            border-slate-200\ flex size-12 flex-none items-center justify-center border text-slate-300
                         "
 							type="button"
 							aria-label="Like"
 						>
 							<HeartIcon
-								className={`h-8 w-8 ${
+								className={`size-8 ${
 									selectedItem &&
 									likeItems.hasOwnProperty(
 										createLikeItemKey({

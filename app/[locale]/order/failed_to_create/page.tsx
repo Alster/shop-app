@@ -1,19 +1,21 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useTranslations } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import * as React from "react";
 
 import StatusInfo from "@/components/statusInfo";
-import { Link } from "@/navigation";
+import { Link } from "@/i18n/routing";
 
 export default function FailedToCreateOrderPage({
 	searchParams,
 	params,
 }: {
-	searchParams: { reason: string };
-	params: { locale: string };
+	searchParams: Promise<{ reason: string }>;
+	params: Promise<{ locale: string }>;
 }) {
-	unstable_setRequestLocale(params.locale);
+	const { locale } = React.use(params);
+	const { reason } = React.use(searchParams);
+	setRequestLocale(locale);
 	const t = useTranslations("FailedToCreateOrderPage");
 
 	return (
@@ -27,9 +29,7 @@ export default function FailedToCreateOrderPage({
 					}}
 					title={t("failedToCreateOrder")}
 					description={t("failedToCreateOrderDescription")}
-					extraInfo={
-						<div className="font-semibold text-red-400">{searchParams.reason}</div>
-					}
+					extraInfo={<div className="font-semibold text-red-400">{reason}</div>}
 				></StatusInfo>
 
 				<Link

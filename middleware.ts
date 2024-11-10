@@ -1,33 +1,12 @@
-import { NextRequest } from "next/server";
-import createIntlMiddleware from "next-intl/middleware";
+import createMiddleware from "next-intl/middleware";
 
-import { DefaultLocale, LocalePrefix, SupportedLocales } from "@/navigation";
-import { LanguageEnum } from "@/shop-shared/constants/localization";
+import { routing } from "@/i18n/routing";
 
-export default async function middleware(request: NextRequest) {
-	// Step 1: Use the incoming request (example)
-	const defaultLocale =
-		(request.headers.get("x-default-locale") as LanguageEnum) ?? DefaultLocale;
-
-	// Step 2: Create and call the next-intl middleware (example)
-	const handleI18nRouting = createIntlMiddleware({
-		localePrefix: LocalePrefix,
-		locales: SupportedLocales,
-		defaultLocale,
-		localeDetection: true,
-	});
-	const response = handleI18nRouting(request);
-
-	// Step 3: Alter the response (example)
-	response.headers.set("x-default-locale", defaultLocale);
-
-	return response;
-}
+export default createMiddleware(routing);
 
 export const config = {
-	// // Skip all paths that should not be internationalized
-	matcher: ["/((?!api|_next|.*\\..*).*)"],
-
-	// Match only internationalized pathnames
-	// matcher: ["/", `/(${Object.values(LanguageEnum).join("|")})/:path*`],
+	matcher: [
+		"/", // Required when i18n is enabled, otherwise middleware won't be executed on index route
+		"/((?!api|_next/static|_next/image|img|favicon.png).*)",
+	],
 };

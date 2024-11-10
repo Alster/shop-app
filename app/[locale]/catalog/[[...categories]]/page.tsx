@@ -1,4 +1,4 @@
-import { unstable_setRequestLocale } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 
 import CatalogController from "@/app/[locale]/catalog/[[...categories]]/catalogController";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
@@ -17,24 +17,25 @@ export default async function CatalogPage({
 	params,
 	searchParams,
 }: {
-	params: IParametersCategories;
-	searchParams: IFindProductsQuery;
+	params: Promise<IParametersCategories>;
+	searchParams: Promise<IFindProductsQuery>;
 }) {
-	unstable_setRequestLocale(params.locale);
+	const { locale, categories } = await params;
+	const searchParametersAwaited = await searchParams;
+	setRequestLocale(locale);
 
-	const currency = getCurrencyStatic();
+	const currency = await getCurrencyStatic();
 
-	const selectedCategories =
-		params.categories && params.categories.length > 0 ? params.categories : [];
+	const selectedCategories = categories && categories.length > 0 ? categories : [];
 
 	const [productsResponse, attributes, exchangeState, categoryTree] = await Promise.all([
-		fetchProducts(params.locale, {
-			...searchParams,
+		fetchProducts(locale, {
+			...searchParametersAwaited,
 			categories: [selectedCategories.join("/")],
 		}),
-		fetchAttributes(params.locale),
+		fetchAttributes(locale),
 		getStaticExchange(),
-		fetchCategoryTree(params.locale),
+		fetchCategoryTree(locale),
 	]);
 
 	return (

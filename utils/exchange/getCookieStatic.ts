@@ -1,6 +1,7 @@
+import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
-export function getCookieStatic(key: string) {
-	const cookieStore = cookies();
+export async function getCookieStatic(key: string): Promise<RequestCookie | undefined> {
+	const cookieStore = await cookies();
 	return cookieStore.get(key);
 }
