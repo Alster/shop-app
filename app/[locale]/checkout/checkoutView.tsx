@@ -17,6 +17,7 @@ import { NOVA_POSHTA_DELIVERY_TYPE } from "@/shop-shared/constants/checkout";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CreateOrderItemDataDto } from "@/shop-shared/dto/order/createOrder.dto";
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
+import { buildUrl } from "@/shop-shared/utils/buildUrl";
 import { useBagStore } from "@/utils/bag/bagItemsStorage";
 import { fetchNovaPoshta } from "@/utils/fetchNovaPoshta";
 
@@ -103,7 +104,11 @@ export default function CheckoutView({
 	return (
 		<form
 			className="flex flex-col lg:flex-row"
-			action={`${process.env.NEXT_PUBLIC_APP_API_URL}order/create`}
+			action={buildUrl(
+				process.env.NEXT_PUBLIC_APP_API_URL ?? "http://localhost",
+				"order",
+				"create",
+			)}
 			method="get"
 		>
 			<div className="flex-auto px-2 lg:px-8">

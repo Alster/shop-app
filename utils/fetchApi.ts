@@ -1,5 +1,7 @@
 import * as qs from "qs";
 
+import { buildUrl } from "@/shop-shared/utils/buildUrl";
+
 export enum ParseMethodEnum {
 	JSON = "json",
 	TEXT = "text",
@@ -22,13 +24,14 @@ export async function fetchApi<T>(
 	options: IFetchOptions = {},
 ): Promise<T> {
 	options = { ...DEFAULT_OPTIONS, ...options };
-	const response = await fetch(
-		`${process.env.NEXT_PUBLIC_APP_API_URL}${path}?${qs.stringify(query)}`,
-		{
-			next: { revalidate: +(process.env.NEXT_PUBLIC_FETCH_REVALIDATE_SEC || "") },
-			method: options.method,
-		},
-	);
+	const url =
+		buildUrl(process.env.NEXT_PUBLIC_APP_API_URL ?? "http://localhost", path) +
+		`?${qs.stringify(query)}`;
+	console.log(`fetchApi: ${url}`);
+	const response = await fetch(url, {
+		next: { revalidate: +(process.env.NEXT_PUBLIC_FETCH_REVALIDATE_SEC || "") },
+		method: options.method,
+	});
 
 	if (!response.ok) {
 		throw new Error(`Fetch error: ${response.status} ${response.statusText}`);

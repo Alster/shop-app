@@ -1,4 +1,5 @@
 import { ProductDto } from "@/shop-shared/dto/product/product.dto";
+import { getErrorWithStack } from "@/shop-shared/utils/getErrorWithStack";
 import { fetchApi } from "@/utils/fetchApi";
 
 export async function fetchProduct(publicId: string, lang: string): Promise<ProductDto | null> {
@@ -7,7 +8,7 @@ export async function fetchProduct(publicId: string, lang: string): Promise<Prod
 			lang,
 		});
 	} catch (error) {
-		console.error(error);
+		console.error(...getErrorWithStack(error, `Cannot fetch product ${publicId}`));
 		return null;
 	}
 }

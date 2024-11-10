@@ -1,4 +1,5 @@
-import { CurrencyEnum } from "../shop-shared/constants/exchange";
+import { CurrencyEnum } from "@/shop-shared/constants/exchange";
+
 import { getCookie } from "./cookieClientHelper";
 
 export function getCurrencyClient(): CurrencyEnum {

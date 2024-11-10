@@ -11,7 +11,10 @@ COPY package.json pnpm-lock.yaml ./
 RUN --mount=type=cache,sharing=locked,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 ENV NODE_ENV production
 COPY . .
-RUN pnpm run build
+ENV EXCHANGE_MOCK true
+RUN pnpm build
+ENV EXCHANGE_MOCK false
+USER node
 
 # Installing prod dependencies:
 FROM base AS runner
