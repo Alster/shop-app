@@ -1,6 +1,6 @@
 "use client";
 
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { AdjustmentsHorizontalIcon } from "@heroicons/react/24/solid";
 import { useTranslations } from "next-intl";
 import * as React from "react";
@@ -11,6 +11,7 @@ import CategoryTreeView from "@/components/categoryTreeView";
 import AttributeFilter from "@/components/filters/attributeFilter";
 import PriceFilter from "@/components/filters/priceFilter";
 import SortFilter from "@/components/filters/sortFilter";
+import MobileScreenViewBase from "@/components/mobileScreenViewBase";
 import StatusInfo from "@/components/statusInfo";
 import TextSearchDesktop from "@/components/textSearchDesktop";
 import TextSearchMobile from "@/components/textSearchMobile";
@@ -143,35 +144,6 @@ export default function CatalogController({
 					</div>
 				</div>
 			</Fragment>
-		);
-	}
-
-	function MobileScreenViewBase({
-		title,
-		children,
-	}: {
-		title: string;
-		children: React.ReactNode;
-	}) {
-		return (
-			<div className="fixed top-0 size-full">
-				<div className="flex size-full flex-col bg-white dark:bg-slate-800">
-					<div className="flex">
-						<div className="flex items-center pl-4 text-xl">{title}</div>
-						<button
-							onClick={() => setCurrentViewScreen(MobileViewScreenEnum.Catalog)}
-							className="
-                                flex size-16 flex-auto items-center justify-end font-medium uppercase tracking-wider
-                             "
-						>
-							<div className="flex items-center">
-								<XMarkIcon className="inline-block size-12"></XMarkIcon>
-							</div>
-						</button>
-					</div>
-					{children}
-				</div>
-			</div>
 		);
 	}
 
