@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 
 import CatalogController from "@/app/[locale]/catalog/[[...categories]]/catalogController";
 import { getStaticExchange } from "@/shop-exchange-shared/staticStore";
+import { LanguageEnum } from "@/shop-shared/constants/localization";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 import { fetchAttributes } from "@/utils/fetchAttributes";
 import { fetchCategoryTree } from "@/utils/fetchCategoryTree";
@@ -10,7 +11,7 @@ import { IFindProductsQuery } from "@/utils/products/iFindProductsQuery";
 
 interface IParametersCategories {
 	categories: string[];
-	locale: string;
+	locale: LanguageEnum;
 }
 
 export default async function CatalogPage({
@@ -25,9 +26,7 @@ export default async function CatalogPage({
 	setRequestLocale(locale);
 
 	const currency = await getCurrencyStatic();
-
 	const selectedCategories = categories && categories.length > 0 ? categories : [];
-
 	const [productsResponse, attributes, exchangeState, categoryTree] = await Promise.all([
 		fetchProducts(locale, {
 			...searchParametersAwaited,

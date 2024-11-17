@@ -8,11 +8,9 @@ import { Fragment } from "react";
 
 import ProductsList from "@/app/[locale]/catalog/[[...categories]]/productsList";
 import CategoryTreeView from "@/components/categoryTreeView";
-import CurrencySelect from "@/components/currencySelect";
 import AttributeFilter from "@/components/filters/attributeFilter";
 import PriceFilter from "@/components/filters/priceFilter";
 import SortFilter from "@/components/filters/sortFilter";
-import LanguageSelect from "@/components/languageSelect";
 import StatusInfo from "@/components/statusInfo";
 import TextSearchDesktop from "@/components/textSearchDesktop";
 import TextSearchMobile from "@/components/textSearchMobile";
@@ -22,7 +20,10 @@ import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto
 import { moneySmallToBig } from "@/shop-shared/dto/primitiveTypes";
 import { AttributeDto } from "@/shop-shared/dto/product/attribute.dto";
 import { ProductListResponseDto } from "@/shop-shared/dto/product/productList.response.dto";
-import useMobileViewScreen, { MobileViewScreenEnum } from "@/utils/seearch/useMobileViewScreen";
+import { setCookie } from "@/utils/exchange/cookieClientHelper";
+import { MobileViewScreenEnum } from "@/utils/search/mobileViewScreenEnum";
+import useMobileViewScreen from "@/utils/search/useMobileViewScreen";
+import useSelectedCategories from "@/utils/search/useSelectedCategories";
 
 export default function CatalogController({
 	productsResponseEncoded,
@@ -39,7 +40,11 @@ export default function CatalogController({
 	exchangeState: ExchangeState;
 	currency: CurrencyEnum;
 }) {
-	console.log(`render view`);
+	console.log(`render catalog controller view`);
+	const [currentSelectedCategories] = useSelectedCategories(selectedCategories);
+	if (currentSelectedCategories) {
+		void setCookie("lastSelectedCategories", currentSelectedCategories.join("|"), 30);
+	}
 	const t = useTranslations("ProductsList");
 	const [currentViewScreen, setCurrentViewScreen] = useMobileViewScreen();
 
@@ -50,11 +55,7 @@ export default function CatalogController({
 	function Categories() {
 		return (
 			<div className="flex">
-				<CategoryTreeView
-					className="hidden lg:block"
-					tree={categories}
-					selectedCategories={selectedCategories}
-				></CategoryTreeView>
+				<CategoryTreeView className="hidden lg:block" tree={categories}></CategoryTreeView>
 			</div>
 		);
 	}
@@ -100,7 +101,7 @@ export default function CatalogController({
                              "
 					>
 						<div className="flex items-center">
-							<AdjustmentsHorizontalIcon className="inline-block h-10 w-10"></AdjustmentsHorizontalIcon>
+							<AdjustmentsHorizontalIcon className="inline-block size-10"></AdjustmentsHorizontalIcon>
 							<div className="ml-2 text-3xl">{t("bFilters")}</div>
 						</div>
 					</button>
@@ -153,18 +154,18 @@ export default function CatalogController({
 		children: React.ReactNode;
 	}) {
 		return (
-			<div className="fixed top-0 h-full w-full">
-				<div className="flex h-full w-full flex-col bg-white dark:bg-slate-800">
+			<div className="fixed top-0 size-full">
+				<div className="flex size-full flex-col bg-white dark:bg-slate-800">
 					<div className="flex">
 						<div className="flex items-center pl-4 text-xl">{title}</div>
 						<button
 							onClick={() => setCurrentViewScreen(MobileViewScreenEnum.Catalog)}
 							className="
-                                flex h-16 w-16 flex-auto items-center justify-end font-medium uppercase tracking-wider
+                                flex size-16 flex-auto items-center justify-end font-medium uppercase tracking-wider
                              "
 						>
 							<div className="flex items-center">
-								<XMarkIcon className="inline-block h-12 w-12"></XMarkIcon>
+								<XMarkIcon className="inline-block size-12"></XMarkIcon>
 							</div>
 						</button>
 					</div>
@@ -194,22 +195,7 @@ export default function CatalogController({
 	}
 
 	function MenuView() {
-		return (
-			<MobileScreenViewBase title="Menu">
-				<CategoryTreeView
-					className="lg:hidden"
-					tree={categories}
-					selectedCategories={selectedCategories}
-				></CategoryTreeView>
-				<div className="unicorn-background flex">
-					<LanguageSelect></LanguageSelect>
-					<CurrencySelect
-						currency={currency}
-						exchangeState={exchangeState}
-					></CurrencySelect>
-				</div>
-			</MobileScreenViewBase>
-		);
+		return <div></div>;
 	}
 
 	const ConfigToScreen = {

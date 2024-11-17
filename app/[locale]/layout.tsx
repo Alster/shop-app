@@ -6,20 +6,31 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { PropsWithChildren } from "react";
 
+import Body from "@/components/body";
 import Header from "@/components/header";
 import { Providers } from "@/components/providers";
 import { routing } from "@/i18n/routing";
+import { loadExchangeState } from "@/shop-exchange-shared/loadExchangeState";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
+import { pipe } from "@/shop-shared/utils/pipe";
+import { getCookieStatic } from "@/utils/exchange/getCookieStatic";
+import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
+import { fetchCategoryTree } from "@/utils/fetchCategoryTree";
 
 const inter = Inter({ subsets: ["latin"] });
+
+interface IParametersCategories {
+	categories: string[];
+	locale: LanguageEnum;
+}
 
 export default async function LocaleLayout({
 	children,
 	params,
-}: PropsWithChildren & { params: Promise<{ locale: LanguageEnum }> }) {
+}: PropsWithChildren & { params: Promise<IParametersCategories> }) {
 	const { locale } = await params;
 
-	console.log("locale", locale);
+	// console.log("locale", locale);
 
 	// // Ensure that the incoming `locale` is valid
 	if (!routing.locales.includes(locale)) {
@@ -27,19 +38,38 @@ export default async function LocaleLayout({
 		notFound();
 	}
 
-	// Enable static rendering
 	setRequestLocale(locale);
 
-	// Providing all messages to the client
-	// side is the easiest way to get started
-	const messages = await getMessages();
+	const [currency, lastSelectedCategories, messages, exchangeState, categoryTree] =
+		await Promise.all([
+			getCurrencyStatic(),
+			getCookieStatic("lastSelectedCategories"),
+			getMessages(),
+			loadExchangeState(),
+			fetchCategoryTree(locale),
+		]);
+
+	const selectedCategories = pipe(
+		lastSelectedCategories,
+		(value) => (value ? value.value : ""),
+		(value) => value.split("|"),
+	);
 
 	return (
 		<html lang={locale}>
 			<body className={inter.className}>
 				<NextIntlClientProvider messages={messages}>
 					<Header></Header>
-					<Providers>{children}</Providers>
+					<Providers>
+						<Body
+							categories={categoryTree}
+							selectedCategories={selectedCategories}
+							exchangeState={exchangeState}
+							currency={currency}
+						>
+							{children}
+						</Body>
+					</Providers>
 				</NextIntlClientProvider>
 			</body>
 		</html>

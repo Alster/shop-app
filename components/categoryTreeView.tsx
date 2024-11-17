@@ -1,23 +1,31 @@
+"use client";
+
 import { useSearchParams } from "next/navigation";
 import * as qs from "qs";
 import * as React from "react";
 
 import { Link } from "@/i18n/routing";
 import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
+import { MobileViewScreenEnum } from "@/utils/search/mobileViewScreenEnum";
+import useMobileViewScreen from "@/utils/search/useMobileViewScreen";
+import useSelectedCategories from "@/utils/search/useSelectedCategories";
 
 export default function CategoryTreeView({
 	tree,
-	selectedCategories,
 	className,
 }: {
 	tree: CategoriesNodeDto[];
-	selectedCategories: string[];
 	className?: string;
 }) {
+	console.log(`render catalog tree view`);
 	const searchParameters = useSearchParams();
+	const [selectedCategories] = useSelectedCategories();
 
 	let selectedLeafs: CategoriesNodeDto[] = [];
 	const findNode = (node: CategoriesNodeDto, parents: CategoriesNodeDto[], depth: number) => {
+		if (!selectedCategories) {
+			return;
+		}
 		const selectedCategory = selectedCategories[depth];
 		if (selectedCategory != node.publicId) {
 			return;
@@ -39,6 +47,7 @@ export default function CategoryTreeView({
 		node: CategoriesNodeDto;
 		parents: CategoriesNodeDto[];
 	}) {
+		const [, setCurrentViewScreen] = useMobileViewScreen();
 		const isSelected = selectedLeafs.some((v) => v.id === node.id);
 
 		const parameters = qs.parse(searchParameters.toString());
@@ -53,6 +62,7 @@ export default function CategoryTreeView({
 							.map((p) => p.publicId)
 							.join("/")}?${newSearchParameters}`}
 						className={isSelected ? "font-bold" : ""}
+						onClick={async () => setCurrentViewScreen(MobileViewScreenEnum.Catalog)}
 					>
 						{node.title}
 					</Link>

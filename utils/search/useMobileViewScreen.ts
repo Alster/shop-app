@@ -1,10 +1,8 @@
+"use client";
+
 import { useEffect, useState } from "react";
 
-export enum MobileViewScreenEnum {
-	Catalog = "catalog",
-	Filters = "filters",
-	Menu = "menu",
-}
+import { MobileViewScreenEnum } from "@/utils/search/mobileViewScreenEnum";
 
 let currentValue: MobileViewScreenEnum = MobileViewScreenEnum.Catalog;
 
