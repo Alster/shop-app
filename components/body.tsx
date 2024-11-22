@@ -10,6 +10,7 @@ import LanguageSelect from "@/components/languageSelect";
 import MobileScreenViewBase from "@/components/mobileScreenViewBase";
 import { CurrencyEnum } from "@/shop-shared/constants/exchange";
 import { CategoriesNodeDto } from "@/shop-shared/dto/category/categoriesTree.dto";
+import useCurrency from "@/utils/exchange/useCurrency";
 import { MobileViewScreenEnum } from "@/utils/search/mobileViewScreenEnum";
 import useMobileViewScreen from "@/utils/search/useMobileViewScreen";
 import useSelectedCategories from "@/utils/search/useSelectedCategories";
@@ -18,7 +19,7 @@ export default function Body({
 	children,
 	categories,
 	selectedCategories,
-	currency,
+	currency: initialCurrency,
 }: PropsWithChildren & {
 	categories: CategoriesNodeDto[];
 	selectedCategories: string[];
@@ -30,6 +31,7 @@ export default function Body({
 	updateSelectedCategoriesIfNeeded(selectedCategories);
 
 	const [currentViewScreen] = useMobileViewScreen();
+	const [currency] = useCurrency(initialCurrency);
 
 	if (currentViewScreen !== MobileViewScreenEnum.Menu) {
 		return <div>{children}</div>;
