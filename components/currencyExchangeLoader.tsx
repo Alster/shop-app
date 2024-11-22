@@ -3,14 +3,8 @@ import { loadExchangeState } from "@/shop-exchange-shared/loadExchangeState";
 import { getCurrencyStatic } from "@/utils/exchange/getCurrencyStatic";
 
 export async function CurrencyExchangeLoader({ className }: { className?: string }) {
-	const exchangeState = await loadExchangeState();
+	await loadExchangeState();
 	const currency = await getCurrencyStatic();
 
-	return (
-		<CurrencySelect
-			currency={currency}
-			exchangeState={exchangeState}
-			className={className}
-		></CurrencySelect>
-	);
+	return <CurrencySelect currency={currency} className={className}></CurrencySelect>;
 }

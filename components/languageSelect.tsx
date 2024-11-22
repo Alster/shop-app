@@ -1,11 +1,10 @@
 "use client";
 
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSearchParams } from "next/navigation";
 import { useLocale } from "next-intl";
-import { Fragment, ReactElement, useReducer, useState } from "react";
+import { ReactElement, useState } from "react";
 
-import { Link, usePathname } from "@/i18n/routing";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 
 interface IDropdownListItem {
@@ -73,12 +72,11 @@ const LANGUAGES_LIST: IDropdownListItem[] = [
 
 export default function LanguageSelect({ className }: { className?: string }) {
 	const pathname = usePathname();
+	const router = useRouter();
 	const query = useSearchParams();
 	const url = `${pathname}?${query.toString()}`;
 
 	const locale = useLocale();
-
-	const [isListOpen, toggleList] = useReducer((state) => !state, false);
 
 	const getLanguageByKey = (key: string) => {
 		const foundCurrentLanguage = LANGUAGES_LIST.find((item) => item.key === key);
@@ -90,51 +88,29 @@ export default function LanguageSelect({ className }: { className?: string }) {
 
 	const initialLanguage = getLanguageByKey(locale);
 	initialLanguage.selected = true;
-	const [selectedLanguage, setSelectedLanguage] = useState<IDropdownListItem>(initialLanguage);
+	const [selectedLanguage] = useState<IDropdownListItem>(initialLanguage);
 
 	const selectLanguage = (key: string) => {
 		selectedLanguage.selected = false;
-		const foundCurrentLanguage = getLanguageByKey(key);
-		foundCurrentLanguage.selected = true;
-		setSelectedLanguage(foundCurrentLanguage);
-		toggleList();
-	};
-
-	const drawItem = (item: IDropdownListItem) => {
-		return (
-			<Fragment>
-				<div className="m-1 mr-2 size-6">{item.flag}</div>
-				<div className="p-1">{item.title}</div>
-			</Fragment>
-		);
+		router.push(url, { locale: key });
 	};
 
 	return (
 		<div className={className}>
-			{!isListOpen && (
-				<button className="" type="button" onClick={toggleList}>
-					<div className="flex flex-wrap text-white">
-						<ChevronDownIcon className="inline-block size-7 pt-1 text-white" />{" "}
-						{drawItem(selectedLanguage)}
-					</div>
-				</button>
-			)}
-			{isListOpen && (
-				<div className="absolute border-2 border-black bg-white dark:border-white dark:bg-black">
-					{LANGUAGES_LIST.map((item) => (
-						<div key={item.key}>
-							<Link
-								className="flex flex-wrap hover:bg-gray-500"
-								href={url}
-								locale={item.key}
-								onClick={() => selectLanguage(item.key)}
-							>
-								{drawItem(item)}
-							</Link>
-						</div>
-					))}
-				</div>
-			)}
+			<label htmlFor="countries" className="block">
+				<div className="m-1 ml-3 mr-2 size-6">{selectedLanguage.flag}</div>
+			</label>
+			<select
+				id="countries"
+				className="unicorn-background"
+				onChange={(event) => selectLanguage(event.target.value)}
+			>
+				{LANGUAGES_LIST.map((item) => (
+					<option key={item.key} value={item.key} selected={item.selected}>
+						{item.title}
+					</option>
+				))}
+			</select>
 		</div>
 	);
 }

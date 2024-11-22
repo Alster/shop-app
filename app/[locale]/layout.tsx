@@ -10,7 +10,6 @@ import Body from "@/components/body";
 import Header from "@/components/header";
 import { Providers } from "@/components/providers";
 import { routing } from "@/i18n/routing";
-import { loadExchangeState } from "@/shop-exchange-shared/loadExchangeState";
 import { LanguageEnum } from "@/shop-shared/constants/localization";
 import { pipe } from "@/shop-shared/utils/pipe";
 import { getCookieStatic } from "@/utils/exchange/getCookieStatic";
@@ -40,14 +39,12 @@ export default async function LocaleLayout({
 
 	setRequestLocale(locale);
 
-	const [currency, lastSelectedCategories, messages, exchangeState, categoryTree] =
-		await Promise.all([
-			getCurrencyStatic(),
-			getCookieStatic("lastSelectedCategories"),
-			getMessages(),
-			loadExchangeState(),
-			fetchCategoryTree(locale),
-		]);
+	const [currency, lastSelectedCategories, messages, categoryTree] = await Promise.all([
+		getCurrencyStatic(),
+		getCookieStatic("lastSelectedCategories"),
+		getMessages(),
+		fetchCategoryTree(locale),
+	]);
 
 	const selectedCategories = pipe(
 		lastSelectedCategories,
@@ -64,7 +61,6 @@ export default async function LocaleLayout({
 						<Body
 							categories={categoryTree}
 							selectedCategories={selectedCategories}
-							exchangeState={exchangeState}
 							currency={currency}
 						>
 							{children}

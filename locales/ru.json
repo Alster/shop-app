@@ -90,5 +90,13 @@
   "ProductItem": {
     "color": "Цвет",
     "size": "Размер"
+  },
+  "Mobile": {
+    "Filters": {
+      "title": "Фильтры"
+    },
+    "Menu": {
+      "title": "Меню"
+    }
   }
 }

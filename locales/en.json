@@ -89,5 +89,13 @@
   "ProductItem": {
     "color": "Color",
     "size": "Size"
+  },
+  "Mobile": {
+    "Filters": {
+      "title": "Filters"
+    },
+    "Menu": {
+      "title": "Menu"
+    }
   }
 }

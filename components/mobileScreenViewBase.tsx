@@ -22,11 +22,9 @@ export default function MobileScreenViewBase({
 						className=" flex size-16 items-center justify-end font-medium uppercase tracking-wider
                              "
 					>
-						<div className="flex items-center">
-							<ChevronLeftIcon className="inline-block size-12"></ChevronLeftIcon>
-						</div>
+						<ChevronLeftIcon className="inline-block size-12"></ChevronLeftIcon>
 					</button>
-					<div className="flex-auto items-center pl-4 text-3xl">{title}</div>
+					<div className="flex-auto pl-2 text-3xl">{title}</div>
 				</div>
 				{children}
 			</div>

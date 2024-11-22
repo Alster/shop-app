@@ -90,5 +90,13 @@
   "ProductItem": {
     "color": "Колір",
     "size": "Розмір"
+  },
+  "Mobile": {
+    "Filters": {
+      "title": "Фільтри"
+    },
+    "Menu": {
+      "title": "Меню"
+    }
   }
 }

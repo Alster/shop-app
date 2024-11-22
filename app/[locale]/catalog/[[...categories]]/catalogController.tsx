@@ -47,6 +47,7 @@ export default function CatalogController({
 		void setCookie("lastSelectedCategories", currentSelectedCategories.join("|"), 30);
 	}
 	const t = useTranslations("ProductsList");
+	const tFilters = useTranslations("Mobile.Filters");
 	const [currentViewScreen, setCurrentViewScreen] = useMobileViewScreen();
 
 	const productsResponse: ProductListResponseDto = JSON.parse(productsResponseEncoded);
@@ -149,7 +150,7 @@ export default function CatalogController({
 
 	function FiltersView() {
 		return (
-			<MobileScreenViewBase title="Filters">
+			<MobileScreenViewBase title={tFilters("title")}>
 				<SortFilter></SortFilter>
 				<PriceFilter
 					defaultPriceMin={moneySmallToBig(productsResponse.priceMin) as number}
