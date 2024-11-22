@@ -1,12 +1,13 @@
 "use client";
 
 import { HeartIcon } from "@heroicons/react/24/outline";
+import * as React from "react";
 import { useEffect } from "react";
 
-import { Link } from "@/i18n/routing";
+import CounterButton from "@/components/counterButton";
 import { loadLikes, useLikesStore } from "@/utils/likes/likeItemsStorage";
 
-export default function HeaderLikesButton() {
+export default function HeaderLikesButton({ className }: { className?: string }) {
 	const likeItems = useLikesStore();
 
 	useEffect(() => {
@@ -14,18 +15,12 @@ export default function HeaderLikesButton() {
 	}, []);
 
 	return (
-		<Link
+		<CounterButton
+			className={className}
 			href="/likes"
-			className="
-                            m-2 flex size-12 flex-none items-center justify-center text-slate-300
-                        "
+			itemsCount={Object.values(likeItems).length}
 		>
-			<HeartIcon className="size-16" stroke="white" />
-			{Object.values(likeItems).length > 0 && (
-				<div className="absolute mt-2 w-6 rounded-full bg-red-500 pb-0.5 text-center text-white">
-					{Object.values(likeItems).length}
-				</div>
-			)}
-		</Link>
+			<HeartIcon className="size-full" stroke="white" />
+		</CounterButton>
 	);
 }

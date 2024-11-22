@@ -28,7 +28,7 @@ export default async function Header() {
 				</Link>
 				<div className="flex flex-auto items-center justify-end gap-2">
 					<HeaderLikesButton></HeaderLikesButton>
-					<HeaderBagButton></HeaderBagButton>
+					<HeaderBagButton className="mr-4"></HeaderBagButton>
 				</div>
 			</div>
 		</div>

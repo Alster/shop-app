@@ -211,7 +211,7 @@ export default function ProductsList({
 	}
 
 	return (
-		<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
+		<div className="m-1 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 xl:grid-cols-5">
 			{products.map((product) => {
 				const getSelectedItem = (): { itemToShow: ProductItemDto; indexToShow: number } => {
 					const itemFromMap = selectedItemMap?.get(product.id);
