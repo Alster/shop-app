@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  shop-app:
+    hostname: unicorn-shop-app
+    image: unicorn-shop-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - ./.env
+    environment:
+      - PORT=3022
+    ports:
+      - "3022:3022"
